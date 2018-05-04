@@ -1,0 +1,14 @@
+.grid-content {
+  border-radius: 4px;
+  min-height: 36px;
+}
+.el-row {
+  margin-bottom: 20px;
+}
+.el-col {
+  border-radius: 10px;
+}
+.testando{
+  background: #F18805
+}
+.el-card{border-radius:4px;border:1px solid ;background-color:#fff;overflow:hidden;color:#0e2252;-webkit-transition:.3s;transition:.3s}.el-card.is-always-shadow,.el-card.is-hover-shadow:focus,.el-card.is-hover-shadow:hover{-webkit-box-shadow:0 2px 12px 0 rgba(0,0,0,.1);box-shadow:0 2px 12px 0 rgba(0,0,0,.1)}.el-card__header{padding:18px 20px;border-bottom:1px solid #0e2252;-webkit-box-sizing:border-box;box-sizing:border-box}.el-card__body{padding:20px}
