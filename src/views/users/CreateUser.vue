@@ -1,15 +1,21 @@
 <template>
 <div>
     {{message}}
-    <el-col :span="8" :offset="8">
+                <center><img src="./logo.png" width="80px"></center>
+
+    <div class="app-container" style="width: 40%;">
         <el-card>
-            <div slot="header">
-                <center><span>Cadastro de Usuario</span></center>
-            </div>
-            <el-form ref="form" :model="user">
-                <el-form-item label="Login">
-                    <el-input v-model="user.login"></el-input>
+            <h2><strong> Criar Conta </strong></h2>
+            <hr>
+
+            <el-form ref="form" :model="user" >
+
+                <el-form-item label="Login" style="height: 10%">
+                    <el-input v-model="user.login" icon-class="user" ></el-input>
                 </el-form-item>
+                <el-form-item label="Nome">
+                        <el-input v-model="user.first_name"></el-input>
+                </el-form-item>                
 
                 <el-form-item prop="email" label="Email" :rules="[
                     { required: true, message: 'Please input email address', trigger: 'blur' },
@@ -18,20 +24,11 @@
                     <el-input v-model="user.email"></el-input>
                 </el-form-item>
 
-                <el-form-item label="Password" prop="pass">
+                <el-form-item label="Password" class="fonter" prop="pass">
                     <el-input type="password" v-model="user.password" auto-complete="off"></el-input>
                 </el-form-item>
-                
-                <el-form-item label="Nome">
-                        <el-input v-model="user.first_name"></el-input>
-                </el-form-item>
-                
-                <el-form-item label="Sobrenome">
-                        <el-input v-model="user.last_name"></el-input>
-                </el-form-item>
-                
-                <el-form-item label="Cpf">
-                        <el-input v-model="user.cpf"></el-input>
+                <el-form-item label="Cpf" >
+                        <el-input type="text"  v-model="maskCpf" v-mask-cpf></el-input>
                 </el-form-item>
                 
                 <el-form-item label="Tipo">
@@ -40,22 +37,20 @@
                     <el-option label="Cliente" value="cliente"></el-option>
                     </el-select>
                 </el-form-item>
-                
-                <el-date-picker v-model="user.birthday" type="date" placeholder="Pick a day">
-                
-                </el-date-picker>
-
-                <el-button @click.prevent="addUser()" type="primary">Cadastrar</el-button>
-                
+                <el-form-item label="Data de Nascimento">
+                    <el-date-picker v-model="user.birthday" type="date" placeholder="Pick a day">
+                    </el-date-picker>
+                </el-form-item>
+                <el-button class="btn-login" @click.prevent="addUser()" type="primary">Cadastrar</el-button>
             </el-form>
         </el-card>
-    </el-col>
+    </div>
 </div>
 </template>
 
 <script>
     import axios from 'axios'
-
+    import '@/styles/custom-buttons.scss'
     export default{
         name: 'CreateUser',
         data: function(){
@@ -88,3 +83,15 @@
         }
     }
 </script>
+
+<style lang="scss">
+    .el-card{
+        position: absolute;
+        left: 0;
+        right: 0;
+        width: 400px;
+        margin: auto;
+    }
+    
+    
+</style>
