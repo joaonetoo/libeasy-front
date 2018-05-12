@@ -14,13 +14,16 @@ import '@/styles/index.scss' // global css
 import App from './App'
 import router from './router'
 import store from './store'
-
 import '@/icons' // icon
 import '@/permission' // permission control
 import VueMask from 'di-vue-mask'
+import VModal from 'vue-js-modal'
+
 
 Vue.use(ElementUI, { locale })
 Vue.use(VueMask)
+Vue.use(VModal)
+
 Vue.config.productionTip = false
 
 new Vue({

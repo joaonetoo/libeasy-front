@@ -27,7 +27,8 @@
 <script>
     import axios from 'axios'
     import '@/styles/custom-buttons.scss'
-    export default{
+    import * as s from '@/utils/strings'
+    export default {
         name: 'LoginUser',
         data:function(){
             return{
@@ -46,27 +47,25 @@
                 axios
                 .post(process.env.URL_API+'/auth',data)
                 .then(response=>{
-                    localStorage.setItem("token", response.data.token)
                     this.message =response.data.message
-
-                    this.$notify({
-                    title: 'Success',
-                    message: response.data.message,
-                    type: 'success'
-                    });
-                    this.$router.push({name: "Dashboard"})
-
+                    if ( this.message ===  s.authUserAuthenticated ) {
+                        this.$notify({
+                        message: response.data.message,
+                        type: 'success'
+                        })
+                    }
+                    localStorage.setItem("token", response.data.token)
+                    this.$router.push({name: "Dashboard"});
                 })
                 .catch(e=>{
                     this.$notify.error({
                     title: 'Erro',
-                    message: "Preencha todos os campos do formulário"
+                    message:  "Error"
                     });
                 })
-            }
-
+            },        
         }
-}
+        }
 </script>
 <style lang="scss">
     .el-card{

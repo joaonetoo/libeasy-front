@@ -10,26 +10,69 @@
       <el-dropdown-menu class="user-dropdown" slot="dropdown">
         <router-link class="inlineBlock" to="/">
           <el-dropdown-item>
-            Home
+            home
           </el-dropdown-item>
         </router-link>
+        <button id="show-modal" @click="show()">Show Modal</button>
+        <!-- use the modal component, pass in the prop -->
+      
         <el-dropdown-item divided>
           <span @click="logout" style="display:block;">LogOut</span>
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
+<modal name="hello-world" 
+         :width="500"
+         :height="300"
+>
+            <vue-avatar class="vertical_input"
+                :width="400"
+                :height="400"
+                :rotation="rotation"
+                :scale="scale"
+                ref="vueavatar"
+                @vue-avatar-editor:image-ready="onImageReady"
+                >
+            </vue-avatar>
+            <div class="vertical_input" >
+            <label>
+                <input
+                type="range"
+                min=1
+                max=3
+                step=0.02
+                v-model='scale'
+                />
+            </label>
+            <br>
+            <button v-on:click="saveClicked">Get image</button>
+            <br>
+            <img ref="image">
+        </div>
+</modal>
   </el-menu>
+
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
+import {VueAvatar} from 'vue-avatar-editor-improved'
 
 export default {
+
+  data: function(){
+    return{
+      showModal: false,
+      rotation: 0,
+      scale: 1,
+    }
+  },
   components: {
     Breadcrumb,
-    Hamburger
+    Hamburger,
+    VueAvatar
   },
   computed: {
     ...mapGetters([
@@ -45,7 +88,23 @@ export default {
       this.$store.dispatch('LogOut').then(() => {
         location.reload() // 为了重新实例化vue-router对象 避免bug
       })
+    },
+    saveClicked () {
+        var img = this.$refs.vueavatar.getImageScaled()
+        this.$refs.image.src = img.toDataURL()
+    },
+    onImageReady () {
+        this.scale = 1
+        this.rotation = 0
+    },
+    show () {
+      this.$modal.show('hello-world');
+    },
+    hide () {
+      this.$modal.hide('hello-world');
     }
+
+
   }
 }
 </script>
@@ -89,6 +148,12 @@ export default {
       }
     }
   }
+    .vertical_input{
+        float: none;
+        display: inline-block;
+        vertical-align: inherit;
+    }
+
 }
 </style>
 

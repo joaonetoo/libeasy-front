@@ -40,7 +40,7 @@
                 <el-form-item label="Tipo">
                     <el-select v-model="user.type" placeholder="Selecione seu tipo de usuário">
                     <el-option label="Bibliotecário" value="librarian"></el-option>
-                    <el-option label="Cliente" value="cliente"></el-option>
+                    <el-option label="Cliente" value="client"></el-option>
                     </el-select>
                 </el-form-item>
                 <center><el-button class="btn-login" @click.prevent="addUser()" type="primary">Cadastrar</el-button></center>
@@ -97,7 +97,6 @@
                     this.message =response.data.message
 
                     this.$notify({
-                    title: 'Success',
                     message: response.data.message,
                     type: 'success'
                     });
