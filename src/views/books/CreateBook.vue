@@ -82,6 +82,7 @@
 
 
         methods:{
+            //corrigir algumas coisas
             addBook:function(){
                 const token = s.getToken()
                 console.log(token)
