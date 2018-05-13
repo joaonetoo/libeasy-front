@@ -16,7 +16,7 @@
                 <el-form-item label="Password" class="fonter" prop="pass">
                         <el-input type="password" v-model="user.password" auto-complete="off"></el-input>
                 </el-form-item>
-                <center><el-button class="btn-login" @click.prevent="signIn()" type="primary">Cadastrar</el-button></center>
+                <center><el-button class="btn-login" @click.prevent="signIn()"  type="primary">Login</el-button></center>
 
             </el-form>
         </el-card>
@@ -67,7 +67,7 @@
         }
         }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
     .el-card{
         position: absolute;
         left: 0;
@@ -75,4 +75,5 @@
         width: 400px;
         margin: auto;
     }
+
 </style>

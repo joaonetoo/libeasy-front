@@ -22,7 +22,7 @@ import VModal from 'vue-js-modal'
 
 Vue.use(ElementUI, { locale })
 Vue.use(VueMask)
-Vue.use(VModal,{dialog: true})
+Vue.use(VModal)
 
 Vue.config.productionTip = false
 

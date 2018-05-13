@@ -22,11 +22,14 @@ import Layout from '../views/layout/Layout'
   }
 **/
 export const constantRouterMap = [
+  { path: '/users/avatar', component: () => import('@/views/users/AvatarUser'),hidden:true},
   { path: '/users/auth', component: () => import('@/views/users/LoginUser'),hidden:true},
   { path: '/users/add', component: () => import('@/views/users/CreateUser'),hidden:true},
   { path: '/login', component: () => import('@/views/login/index'), hidden: true },
   { path: '/404', component: () => import('@/views/404'), hidden: true },
-
+  { path: '/books/add', component: () => import('@/views/books/CreateBook'), hidden:true},
+  { path: '/books/edit/:id', component: () => import('@/views/books/EditBook'), hidden:true},
+  
   {
     path: '/',
     component: Layout,
