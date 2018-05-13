@@ -43,7 +43,7 @@
                     <el-option label="Cliente" value="client"></el-option>
                     </el-select>
                 </el-form-item>
-                <center><el-button class="btn-login" @click.prevent="addUser()" type="primary">Cadastrar novo usuário</el-button></center>
+                <center><el-button class="btn-login" @click.prevent="addUser()" type="primary">Cadastrar</el-button></center>
             </el-form>
         </el-card>
     </div>
