@@ -6,7 +6,8 @@ const user = {
     token: getToken(),
     login: '',
     avatar: '',
-    roles: ''
+    roles: '',
+    id: ''
   },
   mutations: {
     SET_TOKEN: (state, token) => {
@@ -20,7 +21,11 @@ const user = {
     },
     SET_ROLES: (state, roles) => {
       state.roles = roles
+    },
+    SET_ID: (state, id) => {
+      state.id = id
     }
+
   },
 
   actions: {
@@ -38,7 +43,6 @@ const user = {
     //   })
     // },
 
-    // 获取用户信息
     GetInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
         commit('SET_TOKEN', getToken())
@@ -50,7 +54,9 @@ const user = {
             reject('Login ou password incorrect')
           }
           commit('SET_LOGIN', data.login)
-          // commit('SET_AVATAR', data.avatar)
+          commit('SET_ID', data.id)
+          const url = process.env.BASE_API +'/'+ data.profile_pic 
+          commit('SET_AVATAR', url)
           resolve()
         }).catch(error => {
           reject(error)
@@ -58,7 +64,6 @@ const user = {
       })
     },
 
-    // 登出
     LogOut({ commit, state }) {
       return new Promise((resolve, reject) => {
           commit('SET_TOKEN', '')
@@ -66,8 +71,18 @@ const user = {
           resolve()
       })
     },
-
-    // 前端 登出
+    ChangeAvatar({ commit, state }) {
+      return new Promise((resolve, reject) => {
+        getInfo(state.token).then(response => {
+          const data = response.data
+          const url = process.env.BASE_API +'/'+ data.profile_pic 
+          commit('SET_AVATAR', url)
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
     FedLogOut({ commit }) {
       return new Promise(resolve => {
         commit('SET_TOKEN', '')

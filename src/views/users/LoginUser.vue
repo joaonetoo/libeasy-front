@@ -67,7 +67,7 @@
         }
         }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
     .el-card{
         position: absolute;
         left: 0;
@@ -75,5 +75,4 @@
         width: 400px;
         margin: auto;
     }
-
 </style>

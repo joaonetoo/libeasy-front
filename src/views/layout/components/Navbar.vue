@@ -4,16 +4,19 @@
     <breadcrumb></breadcrumb>
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
-        <img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'">
+        <img class="user-avatar" :src="avatar">
         <i class="el-icon-caret-bottom"></i>
       </div>
       <el-dropdown-menu class="user-dropdown" slot="dropdown">
         <router-link class="inlineBlock" to="/">
           <el-dropdown-item>
-            home
+            Home
           </el-dropdown-item>
         </router-link>
-        <button id="show-modal" @click="show()">Show Modal</button>
+          <el-dropdown-item @click.prevent="show()">
+            <span @click="show()">Change Avatar</span>
+          </el-dropdown-item>
+
         <!-- use the modal component, pass in the prop -->
       
         <el-dropdown-item divided>
@@ -22,10 +25,10 @@
       </el-dropdown-menu>
     </el-dropdown>
 <modal name="hello-world" 
-         :width="500"
-         :height="300"
+         :width="600"
+         :height="320"
 >
-            <vue-avatar class="vertical_input"
+            <vue-avatar id="avatar-container"
                 :width="400"
                 :height="400"
                 :rotation="rotation"
@@ -34,21 +37,37 @@
                 @vue-avatar-editor:image-ready="onImageReady"
                 >
             </vue-avatar>
-            <div class="vertical_input" >
+          
             <label>
+              <span>Zoom</span>
+              <br>
                 <input
                 type="range"
                 min=1
                 max=3
                 step=0.02
-                v-model='scale'
+                v-model="scale"
+                class="range blue"
                 />
             </label>
+<br>
+  <label>
+    <span>Rotation</span>
+    <br>
+    <input
+      type="range"
+      min=0
+      max=360
+      step=1
+      v-model="rotation"
+      class="range"
+
+    />
+  </label>
+
             <br>
-            <button v-on:click="saveClicked">Get image</button>
+            <center><el-button class="btn-login" @click="saveClicked()"> Atualizar</el-button></center>
             <br>
-            <img ref="image">
-        </div>
 </modal>
   </el-menu>
 
@@ -59,6 +78,9 @@ import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 import {VueAvatar} from 'vue-avatar-editor-improved'
+import axios from 'axios'
+import store from '@/store'
+import '@/styles/custom-buttons.scss'
 
 export default {
 
@@ -77,7 +99,7 @@ export default {
   computed: {
     ...mapGetters([
       'sidebar',
-      'avatar'
+      'avatar',
     ])
   },
   methods: {
@@ -86,12 +108,23 @@ export default {
     },
     logout() {
       this.$store.dispatch('LogOut').then(() => {
-        location.reload() // 为了重新实例化vue-router对象 避免bug
+        location.reload()
       })
     },
-    saveClicked () {
-        var img = this.$refs.vueavatar.getImageScaled()
-        this.$refs.image.src = img.toDataURL()
+    saveClicked() {
+        const img = this.$refs.vueavatar.getImageScaled()
+        let formData = new FormData();
+        formData.append('profile_pic', img.toDataURL())
+        axios
+        .put(process.env.BASE_API+'/users/'+store.getters.id,formData,{headers: {'Content-Type': 'multipart/form-data'}})
+        .then(response=>{
+          this.$store.dispatch('ChangeAvatar').then(() => {
+            location.reload() 
+          })
+        })
+        .catch(e=>{
+          console.log(e)
+        })
     },
     onImageReady () {
         this.scale = 1
@@ -102,8 +135,7 @@ export default {
     },
     hide () {
       this.$modal.hide('hello-world');
-    }
-
+    },
 
   }
 }
@@ -148,12 +180,12 @@ export default {
       }
     }
   }
-    .vertical_input{
-        float: none;
-        display: inline-block;
-        vertical-align: inherit;
-    }
+  #avatar-container{
+    float: left;
+    padding: 10px;
+    margin: 5px;
+  }
 
 }
-</style>
+  </style>
 

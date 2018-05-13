@@ -18,4 +18,33 @@
 .btn-login.focus,.btn-login:focus{	color: rgb(255, 222, 73);box-shadow:0 0 0 .1rem rgba(52,58,64,.5)}
 .btn-login.disabled,.btn-login:disabled{background-color:#343a40;border-color:#343a40}
 .btn-login:not([disabled]):not(.disabled).active,.btn-login:not([disabled]):not(.disabled):active,.show>.btn-login.dropdown-toggle{color:#fff;background-color:#343a40;border-color:#343a40;box-shadow:0 0 0 .2rem rgba(52,58,64,.5)}
-
+.range {
+	-webkit-appearance: none;
+	position: absolute;
+	width: 200px;
+  }
+  
+  input[type=range]::-webkit-slider-runnable-track {
+	background: rgb(38, 17, 77);
+	height: 5px;
+  }
+  
+  input[type=range]:focus {
+	outline: none;
+  }
+  
+  
+  input[type=range]::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	border: 2px solid;
+	border-radius: 50%;
+	border-color: rgb(235, 216, 52);
+	height: 23px;
+	width: 23px;
+	position: relative;
+	bottom: 10px;
+	background-color:  rgb(38, 17, 77);
+  
+  }
+  
+  
