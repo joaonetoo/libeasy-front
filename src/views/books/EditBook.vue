@@ -1,22 +1,22 @@
 <template>
 <div class="app-conteiner">
-    <el-form ref="form" :model="book" label-width="120px">
+    <el-form ref="form" :model="book" label-width="0200px">
         <el-form-item id="el-form-label">
-            <h1>Edit Book</h1>
+           <center>  <h1>Editar Livro</h1> </center> 
         </el-form-item>
-        <el-form-item id="el-form-label" class="el-form-input" label="Book title">
+        <el-form-item id="el-form-label" class="el-form-input" label="Título do livro">
             <el-input v-model="book.title"></el-input>
         </el-form-item>
 
-        <el-form-item id="el-form-label" class="el-form-input" label="Book description">
+        <el-form-item id="el-form-label" class="el-form-input" label="Descrição do livro">
             <el-input v-model="book.description"></el-input>
         </el-form-item>
 
-        <el-form-item id="el-form-label" class="el-form-input" label="Book edition">
+        <el-form-item id="el-form-label" class="el-form-input" label="Edição do livro">
             <el-input v-model="book.edition"></el-input>
         </el-form-item>
 
-        <el-form-item id="el-form-label" label="Book language">
+        <el-form-item id="el-form-label" label="Idioma do livro">
             <el-select v-model="book.language" placeholder="please select the book language">
             <el-option label="Portugues (Brasil)" value="pt-br"></el-option>
             <el-option label="Portugues" value="pt-pt"></el-option>
@@ -24,16 +24,16 @@
             </el-select>
         </el-form-item>
 
-        <el-form-item id="el-form-label" class="el-form-input" label="Book category">
+        <el-form-item id="el-form-label" class="el-form-input" label="Categoria do livro">
             <el-input v-model="book.category"></el-input>
         </el-form-item>
 
-        <el-form-item id="el-form-label" class="el-form-input" label="Pages count">
+        <el-form-item id="el-form-label" class="el-form-input" label="Número de páginas">
             <el-input v-model="book.pages"></el-input>
         </el-form-item>
                
         <el-form-item id="el-form-label">
-            <el-button class="btn-login" @click.prevent="editBook()" type="primary">Update book</el-button>
+           <center>  <el-button class="btn-login" @click.prevent="editBook()" type="primary">Atualizar livro</el-button></center> 
         </el-form-item>        
     </el-form>
 </div>

@@ -1,14 +1,15 @@
 <template>
-<div>
-    <center><img src="./logo.png" width="80px" style="margin-top: 20px;"></center>
+<div class="app-conteiner">
+    
+    <div class="app-container" >
+       
 
-    <div class="app-container" style="width: 40%;">
-        <el-card>
-            <h2><strong> Adicionar um novo livro </strong></h2>
-            <hr>
 
-            <el-form ref="form" :model="book" >
-
+            <el-form ref="form" :model="book" label-width="200px">
+                 
+                <el-form-item id="el-form-label">
+                    <center> <h1>Adicionar Livro </h1></center>
+                </el-form-item>
                 <el-form-item label="Título do livro">
                         <el-input v-model="book.title" placeholder="Descrição do livro">                            
                         </el-input>
@@ -48,7 +49,7 @@
                 
                 <center><el-button class="btn-login" @click.prevent="addBook()" type="primary">Cadastrar novo Livro</el-button></center>
             </el-form>
-        </el-card>
+        
     </div>
 </div>
 </template>

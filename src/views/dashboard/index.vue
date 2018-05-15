@@ -1,8 +1,9 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">Welcome to LibEasy, where dreams come true</div>
-    <div class="dashboard-text">name:{{login}}</div>
-    <div class="dashboard-text"><span>{{roles}}</span></div>
+    <center><div class="dashboard-text"> Welcome to LibEasy {{login}}, where our dreams come true</div></center>
+            <div class="dashboard-text"><span>{{first_name}}</span></div>
+      
+      
   </div>
 </template>
 
