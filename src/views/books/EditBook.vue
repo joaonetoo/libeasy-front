@@ -1,21 +1,41 @@
 <template>
-<div>
-    <center><img src="./logo.png" width="80px" style="margin-top: 20px;"></center>
-    <div class="app-container" style="width: 40%;">
-        <el-card>
-            <h2><strong> Editar um novo livro </strong></h2>
-            <hr>
+<div class="app-conteiner">
+    <el-form ref="form" :model="book" label-width="120px">
+        <el-form-item>
+            <h1>Edit Book</h1>
+        </el-form-item>
+        <el-form-item class="el-form-input" label="Book title">
+            <el-input v-model="book.title"></el-input>
+        </el-form-item>
 
-            <el-form ref="form" :model="book" >
+        <el-form-item class="el-form-input" label="Book description">
+            <el-input v-model="book.description"></el-input>
+        </el-form-item>
 
-                <el-form-item label="Título do livro">
-                        <el-input v-model="title" placeholder="Descrição do livro">                            
-                        </el-input>
-                </el-form-item>               
-                <center><el-button class="btn-login" @click.prevent="editBook()" type="primary">Editar Livro</el-button></center>
-            </el-form>
-        </el-card>
-    </div>
+        <el-form-item class="el-form-input" label="Book edition">
+            <el-input v-model="book.edition"></el-input>
+        </el-form-item>
+
+        <el-form-item label="Book language">
+            <el-select v-model="book.language" placeholder="please select the book language">
+            <el-option label="Portugues (Brasil)" value="pt-br"></el-option>
+            <el-option label="Portugues" value="pt-pt"></el-option>
+            <el-option label="Inglês (Estados Unidos)" value="en-us"></el-option>
+            </el-select>
+        </el-form-item>
+
+        <el-form-item class="el-form-input" label="Book category">
+            <el-input v-model="book.category"></el-input>
+        </el-form-item>
+
+        <el-form-item class="el-form-input" label="Book number pages">
+            <el-input v-model="book.pages"></el-input>
+        </el-form-item>
+               
+        <el-form-item>
+            <el-button class="btn-login" @click.prevent="editBook()" type="primary">Editar Livro</el-button>
+        </el-form-item>        
+    </el-form>
 </div>
 </template>
 
@@ -26,9 +46,15 @@
     export default {
         name: "BookEdit",
         data: function() {
-        return {    
-            book: {},
-            title: "",
+            return {    
+                book: {
+                    title: "",
+                    description: "",
+                    edition: "",
+                    language: "",
+                    category: "",
+                    pages: ""
+                },
             };
             
         },
@@ -52,28 +78,11 @@
 </script>
 
 
-<style lang="scss">
-    .el-card{
-        position: absolute;
-        left: 0;
-        right: 0;
-        width: 400px;
-        margin: auto;
-    }
-    .vertical_input{
-        float: none;
-        display: inline-block;
-        vertical-align: inherit;
-    }
-    
-    .svg-container {
-        padding: 6px 5px 6px 15px;
-        width: 30px;
-        display: inline-block;
-
-  }
-    .el-input {
-        display: inline-block;
-    }
-
+<style scoped>
+.line{
+  text-align: center;
+}
+.el-form-input {
+    margin-right: 2%;
+}
 </style>

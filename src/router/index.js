@@ -94,7 +94,10 @@ export const constantRouterMap = [
         path: 'edit',
         name: 'Edit',
         component: () => import('@/views/books/EditBook'),
-        meta: { title: 'Edit', icon: 'edit' }
+        meta: { 
+          title: 'Edit',
+          icon: 'edit' 
+        }
       }
     ]
   },
