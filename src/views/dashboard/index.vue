@@ -1,5 +1,6 @@
 <template>
   <div class="dashboard-container">
+    <div class="dashboard-text">Welcome to LibEasy, where dreams come true</div>
     <div class="dashboard-text">name:{{login}}</div>
     <div class="dashboard-text"><span>{{roles}}</span></div>
   </div>

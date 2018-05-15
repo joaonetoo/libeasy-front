@@ -1,22 +1,22 @@
 <template>
 <div class="app-conteiner">
     <el-form ref="form" :model="book" label-width="120px">
-        <el-form-item>
+        <el-form-item id="el-form-label">
             <h1>Edit Book</h1>
         </el-form-item>
-        <el-form-item class="el-form-input" label="Book title">
+        <el-form-item id="el-form-label" class="el-form-input" label="Book title">
             <el-input v-model="book.title"></el-input>
         </el-form-item>
 
-        <el-form-item class="el-form-input" label="Book description">
+        <el-form-item id="el-form-label" class="el-form-input" label="Book description">
             <el-input v-model="book.description"></el-input>
         </el-form-item>
 
-        <el-form-item class="el-form-input" label="Book edition">
+        <el-form-item id="el-form-label" class="el-form-input" label="Book edition">
             <el-input v-model="book.edition"></el-input>
         </el-form-item>
 
-        <el-form-item label="Book language">
+        <el-form-item id="el-form-label" label="Book language">
             <el-select v-model="book.language" placeholder="please select the book language">
             <el-option label="Portugues (Brasil)" value="pt-br"></el-option>
             <el-option label="Portugues" value="pt-pt"></el-option>
@@ -24,16 +24,16 @@
             </el-select>
         </el-form-item>
 
-        <el-form-item class="el-form-input" label="Book category">
+        <el-form-item id="el-form-label" class="el-form-input" label="Book category">
             <el-input v-model="book.category"></el-input>
         </el-form-item>
 
-        <el-form-item class="el-form-input" label="Book number pages">
+        <el-form-item id="el-form-label" class="el-form-input" label="Pages count">
             <el-input v-model="book.pages"></el-input>
         </el-form-item>
                
-        <el-form-item>
-            <el-button class="btn-login" @click.prevent="editBook()" type="primary">Editar Livro</el-button>
+        <el-form-item id="el-form-label">
+            <el-button class="btn-login" @click.prevent="editBook()" type="primary">Update book</el-button>
         </el-form-item>        
     </el-form>
 </div>
@@ -46,7 +46,7 @@
     export default {
         name: "BookEdit",
         data: function() {
-            return {    
+            return {
                 book: {
                     title: "",
                     description: "",
@@ -56,7 +56,6 @@
                     pages: ""
                 },
             };
-            
         },
 
         methods:{
@@ -68,7 +67,7 @@
             axios
                 .put(process.env.URL_API+'/books/'+bookId, {titulo: this.title},
                  {headers: {"x-access-token": token}},)
-                .then(response => { 
+                .then(response => {
                             })
                 .catch(e =>
                     {this.message = "Erro"}
@@ -84,5 +83,9 @@
 }
 .el-form-input {
     margin-right: 2%;
+}
+
+#el-form-label {
+    margin-left: 2%;
 }
 </style>
