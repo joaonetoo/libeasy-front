@@ -41,7 +41,28 @@ export const constantRouterMap = [
       component: () => import('@/views/dashboard/index')
     }]
   },
-
+  {
+    path: '/materials',
+    component: Layout,
+    redirect: 'materials/add',
+    name: 'Material',
+    meta: {title: 'Material', icon: 'materials'},
+    children: [
+      {
+        path: 'add',
+        name: 'Add',
+        component: () => import('@/views/materials/CreateMaterial'),
+        meta: { title: 'Add',icon:'add'}
+      },
+      {
+        path: 'list',
+        name: 'List',
+        component: () => import('@/views/materials/ListMaterial'),
+        meta: { title: 'List',icon:'list'}
+      }
+    ]
+    
+  },
   {
     path: '/example',
     component: Layout,
