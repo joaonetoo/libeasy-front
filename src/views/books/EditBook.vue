@@ -1,10 +1,9 @@
 <template>
 <div>
     <center><img src="./logo.png" width="80px" style="margin-top: 20px;"></center>
-
     <div class="app-container" style="width: 40%;">
         <el-card>
-            <h2><strong> Adicionar um novo livro </strong></h2>
+            <h2><strong> Editar um novo livro </strong></h2>
             <hr>
 
             <el-form ref="form" :model="book" >

@@ -26,8 +26,9 @@ export const constantRouterMap = [
   { path: '/users/add', component: () => import('@/views/users/CreateUser'),hidden:true},
   { path: '/login', component: () => import('@/views/login/index'), hidden: true },
   { path: '/404', component: () => import('@/views/404'), hidden: true },
-  { path: '/books/add', component: () => import('@/views/books/CreateBook'), hidden:true},
-  { path: '/books/edit/:id', component: () => import('@/views/books/EditBook'), hidden:true},
+  // { path: '/books/add', component: () => import('@/views/books/CreateBook'), hidden:true},
+  // { path: '/books/edit/:id', component: () => import('@/views/books/EditBook'), hidden:true},
+  // { path: '/reserve/add', component: () => import('@/views/reserve/CreateReserve'), hidden:true},
   
   {
     path: '/',
@@ -72,6 +73,28 @@ export const constantRouterMap = [
         name: 'Form',
         component: () => import('@/views/form/index'),
         meta: { title: 'Form', icon: 'form' }
+      }
+    ]
+  },
+
+  {
+    path: '/books',
+    component: Layout,
+    redirect: '/books/add',
+    name: 'Books',
+    meta: { title: 'Books', icon: 'books' },
+    children: [
+      {
+        path: 'add',
+        name: 'Add',
+        component: () => import('@/views/books/CreateBook'),
+        meta: { title: 'Add', icon: 'add' }
+      },
+      {
+        path: 'edit',
+        name: 'Edit',
+        component: () => import('@/views/books/EditBook'),
+        meta: { title: 'Edit', icon: 'edit' }
       }
     ]
   },
