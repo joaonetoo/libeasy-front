@@ -86,15 +86,30 @@
             addBook:function(){
                 const token = s.getToken()
                 console.log(token)
-                axios
-                .post(process.env.URL_API+'/books',this.book,{headers: {"x-access-token": token}})
+                let postBook = axios.post(process.env.URL_API+'/books',this.book,{headers: {"x-access-token": token}})
                 .then(response=>{
                     this.message=response.data.message                 
-                    console.log(response.data)
-                    console.log(book.id)
+                    let id = response.data.object.id;
+                    axios.post(process.env.URL_API+'/authors',this.author,{headers: {"x-access-token": token}})
+                    .then(response => {
+                        console.log(response.data)
+                        axios.post(process.env.URL_API+'/categories',this.category,{headers: {"x-access-token": token}})
+                        .then(response => {
+                            console.log(response.data)
+                        })
+                    })
                 })
-               
-            },
+                // let postAuthor = axios.post(process.env.URL_API+'/authors',this.author,{headers: {"x-access-token": token}})
+                // .then(response=>{
+                //     this.message=response.data.message                 
+                //     console.log(response.data)
+                // })
+                // let postCategory = axios.post(process.env.URL_API+'/categories',this.category,{headers: {"x-access-token": token}})
+                // .then(response=>{
+                //     this.message=response.data.message                 
+                //     console.log(response.data)
+                // })
+            }
         }
     }
 </script>

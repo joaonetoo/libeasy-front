@@ -82,13 +82,13 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '/books/add',
     name: 'Books',
-    meta: { title: 'Books', icon: 'books' },
+    meta: { title: 'Books', icon: 'el-icon-edit' },
     children: [
       {
         path: 'add',
         name: 'Add',
         component: () => import('@/views/books/CreateBook'),
-        meta: { title: 'Add', icon: 'add' }
+        meta: { title: 'Add', icon: 'el-icon-edit' }
       },
       {
         path: 'edit',
