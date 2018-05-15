@@ -66,8 +66,7 @@
                     description: "",
                     edition: "",
                     language: "",
-                    page_count: "",
-                    category:"",                 
+                    page_count: ""
                 },
                 author:{
                     name:"",
@@ -86,29 +85,38 @@
             addBook:function(){
                 const token = s.getToken()
                 console.log(token)
-                let postBook = axios.post(process.env.URL_API+'/books',this.book,{headers: {"x-access-token": token}})
-                .then(response=>{
-                    this.message=response.data.message                 
-                    let id = response.data.object.id;
-                    axios.post(process.env.URL_API+'/authors',this.author,{headers: {"x-access-token": token}})
+                axios.post(process.env.URL_API+'/books', this.book, {headers: {"x-access-token": token}})
+                .then(response=>{                 
+                    let bookId = response.data.object.id;
+                    axios.post(process.env.URL_API+'/authors', this.author, {headers: {"x-access-token": token}})
                     .then(response => {
-                        console.log(response.data)
-                        axios.post(process.env.URL_API+'/categories',this.category,{headers: {"x-access-token": token}})
+                        let authorId = response.data.object.id;
+                        axios.post(process.env.URL_API+'/categories', this.category, {headers: {"x-access-token": token}})
                         .then(response => {
                             console.log(response.data)
+                            let idsAuthor = {
+                                bookId: bookId,
+                                authorId: authorId
+                            }
+
+                            let addAuthorToBook = axios.post(process.env.URL_API+'/addAuthorToBook', idsAuthor, {headers: {"x-access-token": token}})    
+                            .then(response => {
+                                console.log(response.data)
+                            })
+
+                            let category = response.data.object;
+                            let idsCategory = {
+                                bookId: bookId,
+                                categoryId: category.id,
+                            }
+
+                            let addCategoryToBook = axios.post(process.env.URL_API+'/addCategoryToBook', idsCategory, {headers: {"x-access-token": token}})    
+                            .then(response => {
+                                console.log(response.data)
+                            })
                         })
                     })
                 })
-                // let postAuthor = axios.post(process.env.URL_API+'/authors',this.author,{headers: {"x-access-token": token}})
-                // .then(response=>{
-                //     this.message=response.data.message                 
-                //     console.log(response.data)
-                // })
-                // let postCategory = axios.post(process.env.URL_API+'/categories',this.category,{headers: {"x-access-token": token}})
-                // .then(response=>{
-                //     this.message=response.data.message                 
-                //     console.log(response.data)
-                // })
             }
         }
     }
