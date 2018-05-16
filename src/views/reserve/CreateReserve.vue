@@ -8,6 +8,7 @@
         <el-form-item label="Book Id">
                 <el-input v-model="dataToReserve.bookId" placeholder="Descrição do livro" required>                            
                 </el-input>
+                
         </el-form-item> 
 
         <el-form-item label="User Id">

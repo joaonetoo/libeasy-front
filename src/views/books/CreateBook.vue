@@ -15,6 +15,7 @@
                         </el-input>
                 </el-form-item>  
 
+
                 <el-form-item label="Descrição do livro">
                         <el-input type="textarea" v-model="book.description" placeholder="Descrição do livro" required>
                         </el-input>
