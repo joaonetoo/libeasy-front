@@ -20,17 +20,22 @@
             }
         },
         created: function(){
-            axios
-            .get(process.env.URL_API+'/materials',{headers: {"x-access-token": store.getters.token}})
-            .then(response=>{
-                this.materials = response.data
-            })
-            .catch(e=>{
-                console.log("error")
-            })
+            if (store.getters.roles === 'librarian'){
+                axios
+                .get(process.env.URL_API+'/materials',{headers: {"x-access-token": store.getters.token}})
+                .then(response=>{
+                    this.materials = response.data
+                })
+                .catch(e=>{
+                    console.log("error")
+                })
+            }else{
+                this.$router.push({name: "Dashboard"})
+
+            }
         },
         methods:{
-            removerUser:function(id,index){
+            removerMaterial:function(id,index){
                 axios
                 .delete(process.env.URL_API+'/materials/'+store.getters.id,{headers: {"x-access-token": store.getters.token}})
                 .then( response =>{
