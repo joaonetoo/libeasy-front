@@ -29,19 +29,6 @@ const user = {
   },
 
   actions: {
-    // Login({ commit }, userInfo) {
-    //   const login = userInfo.login.trim()
-    //   return new Promise((resolve, reject) => {
-    //     login(login, userInfo.password).then(response => {
-    //       const data = response.data
-    //       // setToken(data.token)
-    //       commit('SET_TOKEN', data.token)
-    //       resolve()
-    //     }).catch(error => {
-    //       reject(error)
-    //     })
-    //   })
-    // },
 
     GetInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
@@ -55,8 +42,16 @@ const user = {
           }
           commit('SET_LOGIN', data.login)
           commit('SET_ID', data.id)
-          const url = process.env.BASE_API +'/'+ data.profile_pic 
-          commit('SET_AVATAR', url)
+  
+          if (data.profile_pic) {
+            const url = process.env.BASE_API +'/'+ data.profile_pic 
+            commit('SET_AVATAR', url)
+
+          } else {
+            const url = process.env.BASE_API+ '/'+data.id+".png"
+            commit('SET_AVATAR', url)
+
+          }
           resolve()
         }).catch(error => {
           reject(error)
@@ -71,12 +66,13 @@ const user = {
           resolve()
       })
     },
-    ChangeAvatar({ commit, state }) {
+    ChangeAvatar({ commit }) {
       return new Promise((resolve, reject) => {
-        getInfo(state.token).then(response => {
-          const data = response.data
-          const url = process.env.BASE_API +'/'+ data.profile_pic 
+        getInfo(getToken()).then(response => {
+          const data = response.data.profile_pic
+          const url = process.env.BASE_API +'/'+ data
           commit('SET_AVATAR', url)
+          this.state.avatar = url
           resolve()
         }).catch(error => {
           reject(error)

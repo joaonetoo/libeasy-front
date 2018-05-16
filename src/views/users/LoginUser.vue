@@ -7,7 +7,6 @@
             <h2><strong> Sign In </strong></h2>
             <hr>
             <el-form ref="form" :model="user" >
-
                 <el-form-item label="Login" style="height: 10%">
                     <el-input v-model="user.login" icon-class="user" placeholder="Login">
                         fa-thumbs-up

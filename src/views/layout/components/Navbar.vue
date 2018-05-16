@@ -13,8 +13,8 @@
             Home
           </el-dropdown-item>
         </router-link>
-          <el-dropdown-item @click.prevent="show()">
-            <span @click="show()">Change Avatar</span>
+          <el-dropdown-item>
+            <span @click.prevent="show()">Change Avatar</span>
           </el-dropdown-item>
 
         <!-- use the modal component, pass in the prop -->

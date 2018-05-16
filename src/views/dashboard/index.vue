@@ -3,7 +3,7 @@
     <div v-if="roles === 'client'"></div>
     <div class="dashboard-text">Welcome to LibEasy, where dreams come true</div>
     <div class="dashboard-text">name:{{login}}</div>
-    <div class="dashboard-text"><span>{{roles}}</span></div>
+    <div class="dashboard-text"><span>{{avatar}}</span></div>
   </div>
 </template>
 
@@ -15,7 +15,8 @@ export default {
   computed: {
     ...mapGetters([
       'login',
-      'roles'
+      'roles',
+      'avatar'
     ])
   }
 }
