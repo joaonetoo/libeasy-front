@@ -11,42 +11,42 @@
                     <center> <h1>Adicionar Livro </h1></center>
                 </el-form-item>
                 <el-form-item label="Título do livro">
-                        <el-input v-model="book.title" placeholder="Descrição do livro">                            
+                        <el-input v-model="book.title" placeholder="Descrição do livro" required>                            
                         </el-input>
                 </el-form-item>  
 
                 <el-form-item label="Descrição do livro">
-                        <el-input type="textarea" v-model="book.description" placeholder="Descrição do livro">
+                        <el-input type="textarea" v-model="book.description" placeholder="Descrição do livro" required>
                         </el-input>
                 </el-form-item>
 
                 <el-form-item label="Edição do livro">
-                        <el-input v-model="book.edition" placeholder="Edição do livro">                            
+                        <el-input v-model="book.edition" placeholder="Edição do livro" required>                            
                         </el-input>
                 </el-form-item>  
 
                 <el-form-item label="Idioma do livro">
-                        <el-input v-model="book.language" placeholder="Idioma do livro">                            
+                        <el-input v-model="book.language" placeholder="Idioma do livro" required>                            
                         </el-input>
                 </el-form-item>  
 
                 <el-form-item label="Categorias do livro">
-                        <el-input v-model="category.description" placeholder="Categorias do livro">                            
+                        <el-input v-model="category.description" placeholder="Categorias do livro" required>                            
                         </el-input>
                 </el-form-item> 
 
                 <el-form-item label="Autores do livro">
-                        <el-input v-model="author.name" placeholder="Autores do livro">                            
+                        <el-input v-model="author.name" placeholder="Autores do livro" required>                            
                         </el-input>
                 </el-form-item> 
 
                 <el-form-item label="Número de páginas do livro">
-                        <el-input v-model="book.page_count" placeholder="Número de páginas do livro">                            
+                        <el-input v-model="book.page_count" placeholder="Número de páginas do livro" required>                            
                         </el-input>
                 </el-form-item>  
                 
-                <el-form-item label="Quantidade de livros">
-                        <el-input v-model="amountOfBooks" placeholder="Quantidade de livros">                            
+                <el-form-item label="Amount of books">
+                        <el-input v-model="amountOfBooks" placeholder="Quantidade de livros" required>                            
                         </el-input>
                 </el-form-item>  
 
