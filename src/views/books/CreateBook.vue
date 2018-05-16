@@ -46,7 +46,7 @@
                 </el-form-item>  
                 
                 <el-form-item label="Quantidade de livros">
-                        <el-input v-model="book.page_count" placeholder="Quantidade de livros">                            
+                        <el-input v-model="amountOfBooks" placeholder="Quantidade de livros">                            
                         </el-input>
                 </el-form-item>  
 
@@ -81,50 +81,52 @@
                     description:"",
                 },
 
-                amountBooks: "",
+                amountOfBooks: 1,
             }   
         }, 
-        
+
         methods:{
             //corrigir algumas coisas
             addBook:function(){
                 const token = s.getToken()
                 console.log(token)
-                axios.post(process.env.URL_API+'/books', this.book, {headers: {"x-access-token": token}})
-                .then(response=>{                 
-                    let bookId = response.data.object.id;
-                    let createAuthor = axios.post(process.env.URL_API+'/authors', this.author, {headers: {"x-access-token": token}})
-                    .then(response => {
-                        console.log(response.data)
-                        let authorId = response.data.object.id;
-                        let idsAuthor = {
-                            bookId: bookId,
-                            authorId: authorId
-                        }
-
-                        let addAuthorToBook = axios.post(process.env.URL_API+'/addAuthorToBook', idsAuthor, {headers: {"x-access-token": token}})    
-                            .then(response => {
-                                console.log(response.data)
-                            })
-                        
-                    })
-
-                    let createCategory = axios.post(process.env.URL_API+'/categories', this.category, {headers: {"x-access-token": token}})
+                for(let i = 0; i < this.amountOfBooks; i++) {
+                    axios.post(process.env.URL_API+'/books', this.book, {headers: {"x-access-token": token}})
+                    .then(response=>{                 
+                        let bookId = response.data.object.id;
+                        let createAuthor = axios.post(process.env.URL_API+'/authors', this.author, {headers: {"x-access-token": token}})
                         .then(response => {
                             console.log(response.data)
-
-                            let category = response.data.object;
-                            let idsCategory = {
+                            let authorId = response.data.object.id;
+                            let idsAuthor = {
                                 bookId: bookId,
-                                categoryId: category.id,
+                                authorId: authorId
                             }
 
-                            let addCategoryToBook = axios.post(process.env.URL_API+'/addCategoryToBook', idsCategory, {headers: {"x-access-token": token}})    
+                            let addAuthorToBook = axios.post(process.env.URL_API+'/addAuthorToBook', idsAuthor, {headers: {"x-access-token": token}})    
+                                .then(response => {
+                                    console.log(response.data)
+                                })
+                            
+                        })
+
+                        let createCategory = axios.post(process.env.URL_API+'/categories', this.category, {headers: {"x-access-token": token}})
                             .then(response => {
                                 console.log(response.data)
+
+                                let category = response.data.object;
+                                let idsCategory = {
+                                    bookId: bookId,
+                                    categoryId: category.id,
+                                }
+
+                                let addCategoryToBook = axios.post(process.env.URL_API+'/addCategoryToBook', idsCategory, {headers: {"x-access-token": token}})    
+                                .then(response => {
+                                    console.log(response.data)
+                                })
                             })
-                        })
-                })
+                    })
+                }
             }
         }
     }
