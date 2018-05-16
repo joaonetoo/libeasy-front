@@ -112,6 +112,7 @@ export const constantRouterMap = [
         component: () => import('@/views/books/CreateBook'),
         meta: { title: 'Add', icon: 'el-icon-edit' }
       },
+
       {
         path: 'edit',
         name: 'Edit',
@@ -120,7 +121,16 @@ export const constantRouterMap = [
           title: 'Edit',
           icon: 'edit' 
         }
-      }
+      },
+      {
+        path: 'search',
+        name: 'Buscar',
+        component: () => import('@/views/books/FindBook'),
+        meta: { 
+          title: 'Search',
+          icon: 'search' 
+        }
+      },
     ]
   },
 
