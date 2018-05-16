@@ -19,18 +19,16 @@
             </el-form-item>
 
             <el-form-item label="Avatar" >
+                 <input type="file" @change="onFileChange">
 
-                <el-upload style="margin-top: 30px;width: 30%;"
+
+                <!-- <el-upload style="margin-top: 30px;width: 30%;"
                     class="upload-demo"
-                    drag
-                    action="http://localhost:3000/materials"
-                    :on-preview="handlePreview"
-                    :on-remove="handleRemove"
-                    :file-list="fileList"
+                    
                     >
                     <i class="el-icon-upload"></i>
                     <div class="el-upload__text">Drop file here or <em>click to upload</em></div>
-                </el-upload>
+                </el-upload> -->
             </el-form-item>
 
             <center><el-button class="btn-login" @click.prevent="addMaterial()"  type="primary">Cadastrar</el-button></center>
@@ -53,9 +51,8 @@
                     name: "",
                     description: "",
                     category: "",
-                    image: File
                 },
-                fileList: []
+                image: "",
             }
         },
         created: function(){
@@ -66,12 +63,16 @@
         methods:{
             addMaterial: function(){
                 const token = auth.getToken()
-                if (this.fileList.length != 0){
-                    this.material.image = fileList[0]
+                const data = {
+                    name: this.material.name,
+                    description: this.material.description,
+                    category: this.material.category,
+                    image: this.image
                 }
-
+                const form = new FormData()
+                form.append('image', this.image)
                 axios
-                .post(process.env.URL_API+'/materials', formData,{headers: {"x-access-token": token}})
+                .post(process.env.URL_API+'/materials', data,{headers: {"x-access-token": token}})
                 .then(response =>{
                     console.log(response.data.message)
                     this.$router.push({name: "Dashboard"})
@@ -100,6 +101,22 @@
             },
             handlePreview(file) {
                 console.log(file);
+            },
+            onFileChange(e) {
+            var files = e.target.files || e.dataTransfer.files;
+            if (!files.length)
+                return;
+            this.createImage(files[0]);
+            },
+            createImage(file) {
+            var image = new Image();
+            var reader = new FileReader();
+            var vm = this;
+
+            reader.onload = (e) => {
+                vm.image = e.target.result;
+            };
+            reader.readAsDataURL(file);
             },
         }
     }
