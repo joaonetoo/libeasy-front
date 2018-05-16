@@ -10,45 +10,49 @@
                 <el-form-item id="el-form-label">
                     <center> <h1>Adicionar Livro </h1></center>
                 </el-form-item>
-                <el-form-item label="Título do livro">
+                <el-form-item id="el-form-label" label="Título do livro" >
                         <el-input v-model="book.title" placeholder="Descrição do livro" required>                            
                         </el-input>
                 </el-form-item>  
 
-
-                <el-form-item label="Descrição do livro">
+                <el-form-item id="el-form-label" label="Descrição do livro">
                         <el-input type="textarea" v-model="book.description" placeholder="Descrição do livro" required>
                         </el-input>
                 </el-form-item>
 
-                <el-form-item label="Edição do livro">
+                <el-form-item id="el-form-label" label="Edição do livro">
                         <el-input v-model="book.edition" placeholder="Edição do livro" required>                            
                         </el-input>
                 </el-form-item>  
 
-                <el-form-item label="Idioma do livro">
+                <el-form-item id="el-form-label" label="Idioma do livro">
                         <el-input v-model="book.language" placeholder="Idioma do livro" required>                            
                         </el-input>
                 </el-form-item>  
+                <el-row :key="index" v-for="(categ, index) in category">
+                    <el-form-item id="el-form-label" label="Categoria">
+                            {{ index+1 }}<el-input :id="index" v-model="categ.description" placeholder="Categorias do livro" required>                            
+                            </el-input>
+                    </el-form-item>
+                    <el-button v-if="index > 0" id="el-form-label" type="primary" circle icon="el-icon-delete" @click.prevent="removeRowCategory(index)"></el-button>
+                </el-row>
+                <el-button id="el-form-label" type="primary" circle icon="el-icon-plus" @click.prevent="addRowCategory()"></el-button>
 
-                <el-form-item label="Categorias do livro">
-                        <el-input v-model="category.description" placeholder="Categorias do livro" required>                            
-                        </el-input>
-                </el-form-item> 
-
-                <el-form-item label="Autores do livro">
-                        <el-input v-model="author.name" placeholder="Autores do livro" required>                            
-                        </el-input>
-                </el-form-item> 
-
-                <el-form-item label="Número de páginas do livro">
-                        <el-input v-model="book.page_count" placeholder="Número de páginas do livro" required>                            
-                        </el-input>
+                <el-row :key="index" v-for="(autho, index) in author">
+                    <el-form-item id="el-form-label" label="Autores do livro">
+                            {{ index+1 }}<el-input v-model="autho.name" placeholder="Autores do livro" required>                            
+                            </el-input>
+                    </el-form-item> 
+                    <el-button v-if="index > 0" id="el-form-label" type="primary" circle icon="el-icon-delete" @click.prevent="removeRowAuthor(index)"></el-button>
+                </el-row>
+                <el-button id="el-form-label" type="primary" circle icon="el-icon-plus" @click.prevent="addRowAuthor()"></el-button>
+                
+                <el-form-item id="el-form-label" label="Número de páginas do livro">
+                    <br><el-input-number v-model="book.page_count"  :min="1"></el-input-number>
                 </el-form-item>  
                 
-                <el-form-item label="Amount of books">
-                        <el-input v-model="amountOfBooks" placeholder="Quantidade de livros" required>                            
-                        </el-input>
+                <el-form-item id="el-form-label" label="Amount of books">
+                        <br><el-input-number v-model="amountOfBooks" :min="1"></el-input-number>
                 </el-form-item>  
 
 
@@ -64,25 +68,28 @@
     import axios from 'axios'
     import '@/styles/custom-buttons.scss'
     import * as s from '@/utils/auth/'
+
     export default{
         name: 'CreateBook',
         data: function(){
-            return{
-                book:{
+            return {
+                book: {
                     title: "",
                     description: "",
                     edition: "",
                     language: "",
                     page_count: ""
                 },
-                author:{
+                author:[{
                     name:"",
-                },
-                category:{
+                }],
+
+                category:[{
                     description:"",
-                },
+                }],
 
                 amountOfBooks: 1,
+
             }   
         }, 
 
@@ -95,66 +102,80 @@
                     axios.post(process.env.URL_API+'/books', this.book, {headers: {"x-access-token": token}})
                     .then(response=>{                 
                         let bookId = response.data.object.id;
-                        let createAuthor = axios.post(process.env.URL_API+'/authors', this.author, {headers: {"x-access-token": token}})
-                        .then(response => {
-                            console.log(response.data)
-                            let authorId = response.data.object.id;
-                            let idsAuthor = {
-                                bookId: bookId,
-                                authorId: authorId
-                            }
 
-                            let addAuthorToBook = axios.post(process.env.URL_API+'/addAuthorToBook', idsAuthor, {headers: {"x-access-token": token}})    
-                                .then(response => {
-                                    console.log(response.data)
-                                })
-                            
-                        })
-
-                        let createCategory = axios.post(process.env.URL_API+'/categories', this.category, {headers: {"x-access-token": token}})
+                        for(let i = 0; i < this.author.length; i++) {
+                            let createAuthor = axios.post(process.env.URL_API+'/authors', this.author[i], {headers: {"x-access-token": token}})
                             .then(response => {
                                 console.log(response.data)
-
-                                let category = response.data.object;
-                                let idsCategory = {
+                                let authorId = response.data.object.id;
+                                let idsAuthor = {
                                     bookId: bookId,
-                                    categoryId: category.id,
+                                    authorId: authorId
                                 }
 
-                                let addCategoryToBook = axios.post(process.env.URL_API+'/addCategoryToBook', idsCategory, {headers: {"x-access-token": token}})    
+                                let addAuthorToBook = axios.post(process.env.URL_API+'/addAuthorToBook', idsAuthor, {headers: {"x-access-token": token}})    
+                                    .then(response => {
+                                        console.log(response.data)
+                                    })
+                                
+                            })
+                        }
+
+                        for(let i = 0; i < this.category.length; i++) {
+                            let createCategory = axios.post(process.env.URL_API+'/categories', this.category[i], {headers: {"x-access-token": token}})
                                 .then(response => {
                                     console.log(response.data)
+
+                                    let category = response.data.object;
+                                    let idsCategory = {
+                                        bookId: bookId,
+                                        categoryId: category.id,
+                                    }
+
+                                    let addCategoryToBook = axios.post(process.env.URL_API+'/addCategoryToBook', idsCategory, {headers: {"x-access-token": token}})    
+                                    .then(response => {
+                                        console.log(response.data)
+                                    })
                                 })
-                            })
+                        }
                     })
+                    
                 }
+            },
+
+            addRowCategory:function() {
+                this.category.push({
+                    description: ''
+                })
+            },
+
+            removeRowCategory:function(index) {
+                    this.category.splice(index, 1)
+            },
+
+            addRowAuthor:function() {
+                this.author.push({
+                    name: ''
+                })
+            },
+
+            removeRowAuthor:function(index) {
+                this.author.splice(index, 1)
             }
         }
     }
 </script>
 
-<style lang="scss">
-    .el-card{
-        position: absolute;
-        left: 0;
-        right: 0;
-        width: 400px;
-        margin: auto;
-    }
-    .vertical_input{
-        float: none;
-        display: inline-block;
-        vertical-align: inherit;
-    }
-    
-    .svg-container {
-        padding: 6px 5px 6px 15px;
-        width: 30px;
-        display: inline-block;
 
-  }
-    .el-input {
-        display: inline-block;
+<style scoped>
+    .line{
+    text-align: center;
+    }
+    .el-form-input {
+        margin-right: 2%;
     }
 
+    #el-form-label {
+        margin-left: 2%;
+}
 </style>

@@ -28,7 +28,7 @@ export const constantRouterMap = [
   { path: '/404', component: () => import('@/views/404'), hidden: true },
   // { path: '/books/add', component: () => import('@/views/books/CreateBook'), hidden:true},
   // { path: '/books/edit/:id', component: () => import('@/views/books/EditBook'), hidden:true},
-  // { path: '/reserve/add', component: () => import('@/views/reserve/CreateReserve'), hidden:true},
+  { path: '/reserve/add', component: () => import('@/views/reserve/CreateReserve'), hidden:true},
   
   {
     path: '/',
