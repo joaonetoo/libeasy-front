@@ -22,13 +22,14 @@ import Layout from '../views/layout/Layout'
   }
 **/
 export const constantRouterMap = [
-  { path: '/users/auth', component: () => import('@/views/users/LoginUser'), hidden: true },
-  { path: '/users/add', component: () => import('@/views/users/CreateUser'), hidden: true },
+  { path: '/users/auth', component: () => import('@/views/users/LoginUser'),hidden:true},
+  { path: '/users/add', component: () => import('@/views/users/CreateUser'),hidden:true},
   { path: '/login', component: () => import('@/views/login/index'), hidden: true },
   { path: '/404', component: () => import('@/views/404'), hidden: true },
   // { path: '/books/add', component: () => import('@/views/books/CreateBook'), hidden:true},
   // { path: '/books/edit/:id', component: () => import('@/views/books/EditBook'), hidden:true},
   // { path: '/reserve/add', component: () => import('@/views/reserve/CreateReserve'), hidden:true},
+  
   {
     path: '/',
     component: Layout,
@@ -43,24 +44,26 @@ export const constantRouterMap = [
   {
     path: '/materials',
     component: Layout,
-    redirect: 'materials/add',
+    redirect: '/materials/list',
     name: 'Material',
-    meta: { title: 'Material', icon: 'materials' },
+    meta: {title: 'Materials', icon: 'materials'},
     children: [
       {
         path: 'add',
-        name: 'Add',
+        name: 'AddMaterial',
         component: () => import('@/views/materials/CreateMaterial'),
-        meta: { title: 'Add', icon: 'add' }
+        meta: { title: 'Adicionar',icon:'add'}
       },
       {
         path: 'list',
-        name: 'List',
+        name: 'ListMaterial',
         component: () => import('@/views/materials/ListMaterial'),
-        meta: { title: 'List', icon: 'list' }
+        meta: { title: 'Todos', icon:'list'}
       }
     ]
+    
   },
+
   {
     path: '/example',
     component: Layout,
@@ -113,14 +116,12 @@ export const constantRouterMap = [
         path: 'edit',
         name: 'Edit',
         component: () => import('@/views/books/EditBook'),
-        meta: { title: 'Edit', icon: 'edit' }
-      },
-      {
-        path: 'find',
-        name: 'Find',
-        component: () => import('@/views/books/FindBook'),
-        meta: { title: 'Find', icon: 'el-icon-edit' }
-      }]
+        meta: { 
+          title: 'Edit',
+          icon: 'edit' 
+        }
+      }
+    ]
   },
 
   { path: '*', redirect: '/404', hidden: true }
@@ -131,4 +132,3 @@ export default new Router({
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRouterMap
 })
-

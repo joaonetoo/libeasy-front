@@ -1,7 +1,7 @@
 <template>
   <div class="menu-wrapper">
     <template v-for="item in routes" v-if="!item.hidden&&item.children">
-
+      
       <router-link v-if="hasOneShowingChildren(item.children) && !item.children[0].children&&!item.alwaysShow" :to="item.path+'/'+item.children[0].path"
         :key="item.children[0].name">
         <el-menu-item :index="item.path+'/'+item.children[0].path" :class="{'submenu-title-noDropdown':!isNest}">
@@ -9,13 +9,12 @@
           <span v-if="item.children[0].meta&&item.children[0].meta.title" slot="title">{{item.children[0].meta.title}}</span>
         </el-menu-item>
       </router-link>
-
-      <el-submenu v-else :index="item.name||item.path" :key="item.name">
+      <div v-else-if="roles === 'librarian'">
+      <el-submenu :index="item.name||item.path" :key="item.name">
         <template slot="title">
           <svg-icon v-if="item.meta&&item.meta.icon" :icon-class="item.meta.icon"></svg-icon>
           <span v-if="item.meta&&item.meta.title" slot="title">{{item.meta.title}}</span>
         </template>
-
         <template v-for="child in item.children" v-if="!child.hidden">
           <sidebar-item :is-nest="true" class="nest-menu" v-if="child.children&&child.children.length>0" :routes="[child]" :key="child.path"></sidebar-item>
 
@@ -27,14 +26,23 @@
           </router-link>
         </template>
       </el-submenu>
-
+    </div>
     </template>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'SidebarItem',
+   computed: {
+    ...mapGetters([
+      'sidebar',
+      'avatar',
+      'roles'
+    ])
+  },
   props: {
     routes: {
       type: Array

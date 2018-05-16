@@ -1,9 +1,9 @@
 <template>
   <div class="dashboard-container">
-    <center><div class="dashboard-text"> Welcome to LibEasy {{login}}, where our dreams come true</div></center>
-            <div class="dashboard-text"><span>{{first_name}}</span></div>
-      
-      
+    <div v-if="roles === 'client'"></div>
+    <div class="dashboard-text">Welcome to LibEasy, where dreams come true</div>
+    <div class="dashboard-text">name:{{login}}</div>
+    <div class="dashboard-text"><span>{{roles}}</span></div>
   </div>
 </template>
 

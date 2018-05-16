@@ -15,10 +15,11 @@
                 </el-form-item>
                 <el-form-item label="Password" class="fonter" prop="pass">
                         <el-input type="password" v-model="user.password" auto-complete="off"></el-input>
+                        <router-link style="float: right" :to="{ path: '/users/add' }">Não possui conta? Cadastra-se</router-link>
                 </el-form-item>
                 <center><el-button class="btn-login" @click.prevent="signIn()"  type="primary">Login</el-button></center>
-
             </el-form>
+
         </el-card>
     </div>
 </div>
@@ -67,7 +68,7 @@
         }
         }
 </script>
-<style lang="scss">
+<style lang="scss" scopedSlots>
     .el-card{
         position: absolute;
         left: 0;
@@ -75,5 +76,6 @@
         width: 400px;
         margin: auto;
     }
+
 
 </style>
