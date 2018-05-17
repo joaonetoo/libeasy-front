@@ -30,11 +30,17 @@
                         </el-input>
                 </el-form-item>  
                 <el-row :key="index" v-for="(categ, index) in category">
+                        <!-- {{ index+1 }}<br><el-autocomplete
+                        v-model="categ.description"
+                        :fetch-suggestions="querySearchAsync"
+                        placeholder="Please Input"
+                        :trigger-on-focus="false"
+                        ></el-autocomplete> -->
                     <el-form-item id="el-form-label" label="Categoria">
                             {{ index+1 }}<el-input :id="index" v-model="categ.description" placeholder="Categorias do livro" required>                            
                             </el-input>
                     </el-form-item>
-                    <el-button v-if="index > 0" id="el-form-label" type="primary" circle icon="el-icon-delete" @click.prevent="removeRowCategory(index)"></el-button>
+                    <el-button id="el-form-label" type="primary" circle icon="el-icon-delete" @click.prevent="removeRowCategory(index)"></el-button>
                 </el-row>
                 <el-button id="el-form-label" type="primary" circle icon="el-icon-plus" @click.prevent="addRowCategory()"></el-button>
 
@@ -43,7 +49,9 @@
                             {{ index+1 }}<el-input v-model="autho.name" placeholder="Autores do livro" required>                            
                             </el-input>
                     </el-form-item> 
-                    <el-button v-if="index > 0" id="el-form-label" type="primary" circle icon="el-icon-delete" @click.prevent="removeRowAuthor(index)"></el-button>
+                    <el-form-item>
+                    <el-button id="el-form-label" type="primary" circle icon="el-icon-delete" @click.prevent="removeRowAuthor(index)"></el-button>
+                    </el-form-item>
                 </el-row>
                 <el-button id="el-form-label" type="primary" circle icon="el-icon-plus" @click.prevent="addRowAuthor()"></el-button>
                 
@@ -71,8 +79,10 @@
 
     export default{
         name: 'CreateBook',
-        data: function(){
+        data() {
             return {
+                categories:[{
+                }],
                 book: {
                     title: "",
                     description: "",
@@ -88,9 +98,11 @@
                     description:"",
                 }],
 
-                amountOfBooks: 1,
+                timeout: null,
 
-            }   
+                amountOfBooks: 1,
+            }
+           
         }, 
 
         methods:{
@@ -144,6 +156,7 @@
             },
 
             addRowCategory:function() {
+                this.displayCategory = true
                 this.category.push({
                     description: ''
                 })
@@ -154,6 +167,7 @@
             },
 
             addRowAuthor:function() {
+                this.displayAuthor = true
                 this.author.push({
                     name: ''
                 })
@@ -161,8 +175,80 @@
 
             removeRowAuthor:function(index) {
                 this.author.splice(index, 1)
+            },
+
+            // querySearch(queryString, cb) {
+            //     const token = s.getToken();
+            //     axios.get(process.env.URL_API + '/categories', {headers: {"x-access-token": token}})
+            //         .then(response => {
+            //             if(response) {
+            //                 for(let i = 0; i < response.data.length; i++) {
+            //                     this.categoriesAutocomplete.push(response.data[i].description)
+            //                 }
+            //             }
+            //             console.log(this.categoriesAutocomplete)
+            //             cb(this.categoriesAutocomplete)
+            //             this.categoriesAutocomplete = []
+            //         })
+            // },
+
+            loadAll() {
+                const token = s.getToken()
+                return [
+        //             { "value": "vue", "link": "https://github.com/vuejs/vue" },
+        //   { "value": "element", "link": "https://github.com/ElemeFE/element" },
+        //   { "value": "cooking", "link": "https://github.com/ElemeFE/cooking" },
+        //   { "value": "mint-ui", "link": "https://github.com/ElemeFE/mint-ui" },
+        //   { "value": "vuex", "link": "https://github.com/vuejs/vuex" },
+        //   { "value": "vue-router", "link": "https://github.com/vuejs/vue-router" },
+        //   { "value": "babel", "link": "https://github.com/babel/babel" }
+                    axios.get(process.env.URL_API + '/categories', {headers: {"x-access-token": token}})
+                    .then(response => {
+                        return response.data
+                        // let array = [];
+                        // if(response) {
+                        //     for(let i = 0; i < response.data.length; i++) {
+                        //         array.push(response.data[i])
+                        //     }
+                        // }
+                        // console.log(array)
+
+                        // return array;
+                    })
+                ]
+            },
+            querySearchAsync(queryString, cb) {
+                let categories = this.categories;
+                let results = queryString ? categories.filter(this.createFilter(queryString)) : categories;
+
+                clearTimeout(this.timeout);
+                this.timeout = setTimeout(() => {
+                    console.log(results)
+                    cb(results);
+                    console.log(results)
+                }, 3000 * Math.random());
+            },
+            
+            createFilter(queryString) {
+                return (category) => {
+                    Promise.resolve(category)
+                    .then((value) => {
+                        value.forEach((element) => {
+                            console.log(element.description)
+                            return (element.description.toLowerCase().indexOf(queryString.toLowerCase()) === 0); 
+                        });
+                    })
+                };
+            },
+
+            handleSelect(item) {
+                console.log(item);
+            },
+        },
+            mounted() {
+                console.log(this.categories)
+                this.categories = this.loadAll();
             }
-        }
     }
 </script>
 
@@ -177,5 +263,5 @@
 
     #el-form-label {
         margin-left: 2%;
-}
+    }
 </style>
