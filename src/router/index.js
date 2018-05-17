@@ -30,6 +30,7 @@ export const constantRouterMap = [
   // { path: '/books/edit/:id', component: () => import('@/views/books/EditBook'), hidden:true},
   { path: '/reserve/add', component: () => import('@/views/reserve/CreateReserve'), hidden:true},
   { path: '/materials/edit/:id', component: () => import('@/views/materials/EditMaterial'), hidden:true},
+  { path: '/books/edit/:id', component: () => import('@/views/books/EditBook'), hidden:true},
 
   {
     path: '/',
@@ -113,23 +114,13 @@ export const constantRouterMap = [
         component: () => import('@/views/books/CreateBook'),
         meta: { title: 'Add', icon: 'el-icon-edit' }
       },
-
       {
-        path: 'edit',
-        name: 'Edit',
-        component: () => import('@/views/books/EditBook'),
+        path: 'list',
+        name: 'Listar',
+        component: () => import('@/views/books/ListBook'),
         meta: { 
-          title: 'Edit',
-          icon: 'edit' 
-        }
-      },
-      {
-        path: 'search',
-        name: 'Buscar',
-        component: () => import('@/views/books/FindBook'),
-        meta: { 
-          title: 'Search',
-          icon: 'search' 
+          title: 'List',
+          icon: 'List' 
         }
       },
     ]
