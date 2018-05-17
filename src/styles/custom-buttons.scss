@@ -1,21 +1,21 @@
 .btn-login{
-	color: rgb(255, 222, 73);
+	color: rgb(255, 195, 0);
 	border:1px solid #343a40;
 	background:-webkit-gradient( linear, left top, left bottom, color-stop(5%, #424a5d), color-stop(100%, #424a5d) );
 	background-color:#424a5d;
 }.btn-login:hover {
-	color: rgb(255, 222, 73);
+	color: rgb(255, 195, 0);
 	border:1px solid #343a40;
 	background:-webkit-gradient( linear, left top, left bottom, color-stop(5%, #343a40), color-stop(100%, #343a40) );
 	background-color:#343a40;
 }.btn-login:active {
-		color: rgb(255, 222, 73);
+		color: rgb(255, 195, 0);
 
 	border:1px solid black;
 	position:relative;
 	top:1px;
 }
-.btn-login.focus,.btn-login:focus{	color: rgb(255, 222, 73);box-shadow:0 0 0 .1rem rgba(52,58,64,.5)}
+.btn-login.focus,.btn-login:focus{	color: rgb(255, 195, 0);box-shadow:0 0 0 .1rem rgba(52,58,64,.5)}
 .btn-login.disabled,.btn-login:disabled{background-color:#343a40;border-color:#343a40}
 .btn-login:not([disabled]):not(.disabled).active,.btn-login:not([disabled]):not(.disabled):active,.show>.btn-login.dropdown-toggle{color:#fff;background-color:#343a40;border-color:#343a40;box-shadow:0 0 0 .2rem rgba(52,58,64,.5)}
 .range {
@@ -38,7 +38,7 @@
 	-webkit-appearance: none;
 	border: 2px solid;
 	border-radius: 50%;
-	border-color: rgb(235, 216, 52);
+	border-color: rgb(255, 195, 0);
 	height: 23px;
 	width: 23px;
 	position: relative;

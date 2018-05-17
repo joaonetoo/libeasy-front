@@ -29,7 +29,8 @@ export const constantRouterMap = [
   // { path: '/books/add', component: () => import('@/views/books/CreateBook'), hidden:true},
   // { path: '/books/edit/:id', component: () => import('@/views/books/EditBook'), hidden:true},
   { path: '/reserve/add', component: () => import('@/views/reserve/CreateReserve'), hidden:true},
-  
+  { path: '/materials/edit/:id', component: () => import('@/views/materials/EditMaterial'), hidden:true},
+
   {
     path: '/',
     component: Layout,

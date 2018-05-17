@@ -1,7 +1,10 @@
 <template>
         <div class="app-conteiner">
         <el-form ref="form" :model="material" style="padding: 20px" >
-
+                <el-form-item style="magin: 10px" >
+                    <center> <h1>Adicionar Material </h1></center>
+                    <hr>
+                </el-form-item>
             <el-form-item label="Nome" style="height: 10%">
                 <el-input v-model="material.name" icon-class="user" placeholder="Insira o nome do material">
                     fa-thumbs-up
@@ -19,6 +22,7 @@
             </el-form-item>
 
             <el-form-item label="Avatar" >
+                <br>
                  <input type="file" @change="onFileChange">
 
 
@@ -75,7 +79,7 @@
                 .post(process.env.URL_API+'/materials', data,{headers: {"x-access-token": token}})
                 .then(response =>{
                     console.log(response.data.message)
-                    this.$router.push({name: "Dashboard"})
+                    this.$router.push({path: "/materials/list"})
                 }).catch(e=>{
                     this.$notify.error({
                         title: 'Erro',
@@ -122,3 +126,22 @@
     }
 </script>
 
+<style>
+input[type='file'] {
+  background-color: #263238;
+  border-radius: 5px;
+  color: rgb(255, 195, 0);
+  padding: 5px 20px;
+  height: 30px;
+  display: block;
+
+}
+
+::-webkit-file-upload-button {
+  background: #263238;
+  color: rgb(255, 195, 0);
+  border-radius: 7px;
+  display: block;
+
+}
+</style>
