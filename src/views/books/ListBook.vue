@@ -3,10 +3,9 @@
     <el-row>
     <el-col :span="5" v-for="(book,index) in books" :key="book.id" style="margin: 10px;" >
         <el-card :body-style="{ padding: '10px' }">
-        <center>{{book.title}}</center>
+        <center><img :src="setImage(book.image)"  class="image" style="width: 220px; height: 150px"></center>
         <div style="padding: 14px;">
-            <span>{{book.name}}</span>
-            <span>{{book.description}}</span>
+            <span>{{book.title}}</span>
             
             <div class="bottom clearfix">
             <el-button type="text" class="btn-login button"  @click.prevent="removerBook(book.id,index)">Deletar</el-button>
@@ -35,20 +34,15 @@
             }
         },
         created: function(){
-            if (store.getters.roles === 'librarian'){
-                axios
-                .get(process.env.URL_API+'/books',{headers: {"x-access-token": store.getters.token}})
-                .then(response=>{
-                    this.books = response.data
-                    
-                })
-                .catch(e=>{
-                    console.log("error")
-                })
-            }else{
-                this.$router.push({name: "Dashboard"})
-
-            }
+            axios
+            .get(process.env.URL_API+'/books',{headers: {"x-access-token": store.getters.token}})
+            .then(response=>{
+                this.books = response.data
+                
+            })
+            .catch(e=>{
+                console.log("error")
+            })
         },
         methods:{
          
@@ -56,7 +50,7 @@
         axios
             .delete(process.env.URL_API+'/books/'+id,{headers: {"x-access-token": store.getters.token}})
                 .then( response =>{
-                    this.materials.splice(index, 1);
+                    this.books.splice(index, 1);
                     this.message = response.data.message
                 })
                 .catch(e =>{
@@ -65,7 +59,11 @@
             },
         editBook:function(id){
                 this.$router.push({path: "/books/edit/"+id})
-        }
+        },
+
+        setImage:function(img){
+            return process.env.URL_API+'/'+img
+        },
 
             
         }
@@ -74,3 +72,36 @@
         
     }
 </script>
+<style scopedSlots>
+    .el-col{
+        width: 299px;
+        margin: 100px;
+    }
+    .bottom {
+    margin-top: 13px;
+    line-height: 12px;
+  }
+
+  .button {
+    padding: 0;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 3px;
+    padding-right: 3px;
+    margin-left: 5px;
+
+    float: right;
+  }
+
+
+  .clearfix:before,
+  .clearfix:after {
+      display: table;
+      content: "";
+  }
+  
+  .clearfix:after {
+      clear: both
+  }
+   
+</style>

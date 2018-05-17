@@ -1,11 +1,11 @@
 <template>
 <div class="app-conteiner">
-    <el-form ref="form" :model="book" label-width="200px">
+    <el-form ref="form" :model="book">
         <el-form-item id="el-form-label">
            <center>  <h1>Editar Livro</h1> </center> 
         </el-form-item>
         <el-form-item id="el-form-label" class="el-form-input" label="Título do livro">
-            <el-input v-model=" title"></el-input>
+            <el-input v-model="book.title"></el-input>
         </el-form-item>
 
         <el-form-item id="el-form-label" class="el-form-input" label="Descrição do livro">
@@ -24,9 +24,9 @@
             </el-select>
         </el-form-item>
 
-        <el-form-item id="el-form-label" class="el-form-input" label="Categoria do livro">
+        <!-- <el-form-item id="el-form-label" class="el-form-input" label="Categoria do livro">
             <el-input v-model="book.category"></el-input>
-        </el-form-item>
+        </el-form-item> -->
 
         <el-form-item id="el-form-label" class="el-form-input" label="Número de páginas">
             <el-input v-model="book.pages"></el-input>
@@ -43,6 +43,8 @@
     import axios from 'axios'
     import '@/styles/custom-buttons.scss'
     import * as s from '@/utils/auth/'
+    import store from '@/store'
+
     export default {
         name: "BookAdd",
         data: function() {
@@ -61,10 +63,10 @@
     },
 
     created: function(){
-        const bookId = this.$route.params.id
         if (store.getters.roles === 'librarian'){
             axios
-            .get(process.env.URL_API+'/books/'+bookId,{headers: {"x-access-token": store.getters.token}})                .then(response=>{
+            .get(process.env.URL_API+'/books/'+this.$route.params.id,{headers: {"x-access-token": store.getters.token}})                
+            .then(response=>{
                     this.book = response.data             
                 })
                 .catch(e=>{

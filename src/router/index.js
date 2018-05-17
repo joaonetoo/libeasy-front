@@ -27,7 +27,6 @@ export const constantRouterMap = [
   { path: '/login', component: () => import('@/views/login/index'), hidden: true },
   { path: '/404', component: () => import('@/views/404'), hidden: true },
   { path: '/reserve/add', component: () => import('@/views/reserve/CreateReserve'), hidden:true},
-  { path: '/books/edit/:id', component: () => import('@/views/books/EditBook'), hidden:true},
 
   {
     path: '/',
@@ -119,9 +118,9 @@ export const constantRouterMap = [
     children: [
       {
         path: 'add',
-        name: 'Add',
+        name: 'Adicionar',
         component: () => import('@/views/books/CreateBook'),
-        meta: { title: 'Add', icon: 'el-icon-edit' }
+        meta: { title: 'Adicionar', icon: 'el-icon-edit' }
       },
       {
         path: 'list',
@@ -131,6 +130,12 @@ export const constantRouterMap = [
           title: 'List',
           icon: 'List' 
         }
+      },
+      {
+        path: 'edit/:id',
+        name: 'Edit',
+        component: () => import('@/views/books/EditBook'),
+        hidden: true
       },
     ]
   },

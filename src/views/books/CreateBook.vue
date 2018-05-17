@@ -63,6 +63,10 @@
                         <br><el-input-number v-model="amountOfBooks" :min="1"></el-input-number>
                 </el-form-item>  
 
+            <el-form-item label="Avatar" >
+                <br>
+                 <input type="file" @change="onFileChange">
+            </el-form-item>
 
                 
                 <center><el-button class="btn-login" @click.prevent="addBook()" type="primary">Cadastrar novo Livro</el-button></center>
@@ -76,6 +80,7 @@
     import axios from 'axios'
     import '@/styles/custom-buttons.scss'
     import * as s from '@/utils/auth/'
+    import store from '@/store'
 
     export default{
         name: 'CreateBook',
@@ -101,17 +106,31 @@
                 timeout: null,
 
                 amountOfBooks: 1,
+                image: "",
             }
            
         }, 
-
+        created: function(){
+            if(store.getters.roles !== 'librarian'){
+                this.$router.push({name: "Dashboard"})
+            }
+        },
         methods:{
             //corrigir algumas coisas
             addBook:function(){
                 const token = s.getToken()
-                console.log(token)
+                const data ={
+                    title: this.book.title,
+                    description: this.book.description,
+                    edition: this.book.edition,
+                    language: this.book.language,
+                    page_count: this.book.page_count,
+                    image: this.image
+                }
+                const form = new FormData()
+                form.append('image', this.image)
                 for(let i = 0; i < this.amountOfBooks; i++) {
-                    axios.post(process.env.URL_API+'/books', this.book, {headers: {"x-access-token": token}})
+                    axios.post(process.env.URL_API+'/books',data, {headers: {"x-access-token": token}})
                     .then(response=>{                 
                         let bookId = response.data.object.id;
 
@@ -153,6 +172,7 @@
                     })
                     
                 }
+                this.$router.push({path: "/books/list"})
             },
 
             addRowCategory:function() {
@@ -244,6 +264,23 @@
             handleSelect(item) {
                 console.log(item);
             },
+            onFileChange(e) {
+            var files = e.target.files || e.dataTransfer.files;
+            if (!files.length)
+                return;
+            this.createImage(files[0]);
+            },
+            createImage(file) {
+            var image = new Image();
+            var reader = new FileReader();
+            var vm = this;
+
+            reader.onload = (e) => {
+                vm.image = e.target.result;
+            };
+            reader.readAsDataURL(file);
+            },
+
         },
             mounted() {
                 console.log(this.categories)
@@ -264,4 +301,23 @@
     #el-form-label {
         margin-left: 2%;
     }
+</style>
+<style>
+input[type='file'] {
+  background-color: #263238;
+  border-radius: 5px;
+  color: rgb(255, 195, 0);
+  padding: 5px 20px;
+  height: 30px;
+  display: block;
+
+}
+
+::-webkit-file-upload-button {
+  background: #263238;
+  color: rgb(255, 195, 0);
+  border-radius: 7px;
+  display: block;
+
+}
 </style>
