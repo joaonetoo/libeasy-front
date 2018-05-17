@@ -8,8 +8,9 @@
             <span>{{book.title}}</span>
             
             <div class="bottom clearfix">
-            <el-button type="text" class="btn-login button"  @click.prevent="removerBook(book.id,index)">Deletar</el-button>
+            <el-button type="text" class="btn-login button" @click.prevent="removerBook(book.id,index)">Deletar</el-button>
             <el-button type="text" class="btn-login button" @click.prevent="editBook(book.id)">Editar</el-button>
+            <el-button type="text" class="btn-login button" @click.prevent="reserveBook(id, book.id)">Reservar</el-button>
 
             </div>
         </div>
@@ -25,12 +26,21 @@
     import '@/styles/custom-buttons.scss'
     import * as auth from '@/utils/auth/'
     import store from '@/store'
+    import { mapGetters } from 'vuex'
+
+    import CreateReserveVue from '../reserve/CreateReserve.vue';
+
     export default {
         name: 'ListBook',
+        computed: {
+            ...mapGetters([
+                'id',
+            ])
+        },
         data: function(){
             return {
                 books: [],
-                image: "dasdasdsa"
+                image: "dasdasdsa",
             }
         },
         created: function(){
@@ -45,30 +55,38 @@
             })
         },
         methods:{
-         
-        removerBook:function(id,index){
-        axios
-            .delete(process.env.URL_API+'/books/'+id,{headers: {"x-access-token": store.getters.token}})
-                .then( response =>{
-                    this.books.splice(index, 1);
-                    this.message = response.data.message
-                })
-                .catch(e =>{
-                    this.message = "Não foi possível deletar o livro"
-                })
+            removerBook:function(id,index){
+                axios.delete(process.env.URL_API+'/books/'+id,{headers: {"x-access-token": store.getters.token}})
+                    .then( response => {
+                        this.books.splice(index, 1);
+                        this.message = response.data.message
+                    })
+                    .catch(e =>{
+                        this.message = "Não foi possível deletar o livro"
+                    })
             },
-        editBook:function(id){
-                this.$router.push({path: "/books/edit/"+id})
-        },
+            editBook:function(id){
+                    this.$router.push({path: "/books/edit/"+id})
+            },
 
-        setImage:function(img){
-            return process.env.URL_API+'/'+img
-        },
+            setImage:function(img){
+                return process.env.URL_API+'/'+img
+            },
 
+            reserveBook:function(userId, bookId) {
+                const token = auth.getToken();
+                let data = {
+                    userId: userId,
+                    bookId: bookId
+                 }
+
+                axios.post(process.env.URL_API + '/reservations', data, {headers: {"x-access-token": token}})
+                .then(response => {
+                    console.log(response.data)
+                })
+            }
             
-        }
-       
-        
+        },
         
     }
 </script>

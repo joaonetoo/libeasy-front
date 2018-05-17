@@ -36,7 +36,7 @@ export default {
     },
 
     methods: {
-        addReserve:function() {
+        addReserve:function(userId, bookId) {
             const token = s.getToken();
 
             axios.post(process.env.URL_API + '/reservations', this.dataToReserve, {headers: {"x-access-token": token}})
