@@ -1,6 +1,6 @@
 <template>
 <div class="app-conteiner">
-    <el-form ref="form" :model="book" label-width="0200px">
+    <el-form ref="form" :model="book" label-width="200px">
         <el-form-item id="el-form-label">
            <center>  <h1>Editar Livro</h1> </center> 
         </el-form-item>
