@@ -26,10 +26,7 @@ export const constantRouterMap = [
   { path: '/users/add', component: () => import('@/views/users/CreateUser'),hidden:true},
   { path: '/login', component: () => import('@/views/login/index'), hidden: true },
   { path: '/404', component: () => import('@/views/404'), hidden: true },
-  // { path: '/books/add', component: () => import('@/views/books/CreateBook'), hidden:true},
-  // { path: '/books/edit/:id', component: () => import('@/views/books/EditBook'), hidden:true},
   { path: '/reserve/add', component: () => import('@/views/reserve/CreateReserve'), hidden:true},
-  { path: '/materials/edit/:id', component: () => import('@/views/materials/EditMaterial'), hidden:true},
   { path: '/books/edit/:id', component: () => import('@/views/books/EditBook'), hidden:true},
 
   {
@@ -61,7 +58,19 @@ export const constantRouterMap = [
         name: 'ListMaterial',
         component: () => import('@/views/materials/ListMaterial'),
         meta: { title: 'Todos', icon:'list'}
-      }
+      },
+      {
+        path: 'edit/:id',
+        name: 'Edit',
+        component: () => import('@/views/materials/EditMaterial'),
+        hidden: true
+      },
+      {
+        path: 'show/:id',
+        name: 'Show',
+        component: () => import('@/views/materials/ShowMaterial'),
+        hidden: true
+      },
     ]
     
   },

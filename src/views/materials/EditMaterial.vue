@@ -1,3 +1,4 @@
+
 <template>
             <div class="app-conteiner">
         <el-form ref="form" :model="material" style="padding: 20px" >
@@ -35,14 +36,16 @@
                 </el-upload> -->
             </el-form-item>
 
-            <center><el-button class="btn-login" @click.prevent="addMaterial()"  type="primary">Cadastrar</el-button></center>
+            <center><el-button class="btn-login" @click.prevent="editMaterial()"  type="primary">Cadastrar</el-button></center>
 
         </el-form>
     </div>
+
 </template>
 
 <script>
     import axios from 'axios'
+    import store from '@/store'
     export default {
     name: 'ListMaterial',
     data: function(){
@@ -71,8 +74,8 @@
         }
     },
         methods:{
-        addMaterial: function(){
-            const token = auth.getToken()
+        editMaterial: function(){
+            const token = store.getters.token
             const data = {
                 name: this.material.name,
                 description: this.material.description,
@@ -82,9 +85,8 @@
             const form = new FormData()
             form.append('image', this.image)
             axios
-            .post(process.env.URL_API+'/materials', data,{headers: {"x-access-token": token}})
+            .put(process.env.URL_API+'/materials/'+this.$route.params.id, data,{headers: {"x-access-token": token}})
             .then(response =>{
-                console.log(response.data.message)
                 this.$router.push({path: "/materials/list"})
             }).catch(e=>{
                 this.$notify.error({
@@ -127,3 +129,23 @@
 
 
 </script>
+
+<style>
+input[type='file'] {
+  background-color: #263238;
+  border-radius: 5px;
+  color: rgb(255, 195, 0);
+  padding: 5px 20px;
+  height: 30px;
+  display: block;
+
+}
+
+::-webkit-file-upload-button {
+  background: #263238;
+  color: rgb(255, 195, 0);
+  border-radius: 7px;
+  display: block;
+
+}
+</style>

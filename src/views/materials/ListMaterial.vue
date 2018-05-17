@@ -7,41 +7,42 @@
         <div style="padding: 14px;">
             <span>{{material.name}}</span>
             <div class="bottom clearfix">
-            <el-button type="text" class="btn-login button"  @click.prevent="removerMaterial(material.id,index)">Deletar</el-button>
-            <el-button type="text" class="btn-login button" @click.prevent="editMaterial(material.id)">Editar</el-button>
+            <div v-if="roles === 'librarian'">
+                <el-button type="text" class="btn-login button"  @click.prevent="removerMaterial(material.id,index)">Deletar</el-button>
+                <el-button type="text" class="btn-login button" @click.prevent="editMaterial(material.id)">Editar</el-button>
+            </div>
+            <div v-else-if="roles === 'client'">
+                <el-button type="text" class="btn-login button"  @click.prevent="showMaterial(material.id)">Mais Informações</el-button>
+            </div>
 
             </div>
         </div>
         </el-card>
     </el-col>
     </el-row>
-
-        <!-- <ul>
-            <li v-for="(material,index) in materials" :key="material.id">
-                <el-card>
-                    image
-                </el-card>
-                {{material.category}} - <button  class="btn btn-success" @click.prevent="removerMaterial(material.id,index)">remover</button>
-            </li>
-        </ul> -->
     </div>
 </template>
 
 <script>
+    import { mapGetters } from 'vuex'
     import axios from 'axios'
     import '@/styles/custom-buttons.scss'
     import * as auth from '@/utils/auth/'
     import store from '@/store'
     export default {
         name: 'ListMaterial',
+        computed: {
+            ...mapGetters([
+            'roles'
+            ])
+        },
         data: function(){
             return {
                 materials: [],
-                image: "dasdasdsa"
+                image: "dsadas"
             }
         },
         created: function(){
-            if (store.getters.roles === 'librarian'){
                 axios
                 .get(process.env.URL_API+'/materials',{headers: {"x-access-token": store.getters.token}})
                 .then(response=>{
@@ -50,10 +51,7 @@
                 .catch(e=>{
                     console.log("error")
                 })
-            }else{
-                this.$router.push({name: "Dashboard"})
-
-            }
+    
         },
         methods:{
             removerMaterial:function(id,index){
@@ -72,6 +70,9 @@
             },
             editMaterial:function(id){
                 this.$router.push({path: "/materials/edit/"+id})
+            },
+            showMaterial:function(id){
+                this.$router.push({path: "/materials/show/"+id})
             }
     }
 }
@@ -98,10 +99,6 @@
     float: right;
   }
 
-  .image {
-    width: 100%;
-    display: block;
-  }
 
   .clearfix:before,
   .clearfix:after {
