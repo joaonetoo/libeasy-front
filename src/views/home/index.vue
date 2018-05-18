@@ -1,6 +1,6 @@
 <template>
 <div>
-    <center><img src="" width="80px" style="margin-top: 10px;"></center>
+    <center><img src="../users/logo.png" width="80px" style="margin-top: 20px;"></center>
      <div class="app-container" style="width: 100%;">
         <el-carousel :interval="4000" type="card" height="700px">
             <el-carousel-item v-for="item in 6" :key="item">
@@ -45,5 +45,5 @@
        left: 0;
         right: 0;
         margin: 1%;
-  }
+    }
 </style>
