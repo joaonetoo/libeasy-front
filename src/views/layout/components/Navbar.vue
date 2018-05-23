@@ -2,11 +2,20 @@
   <el-menu class="navbar" mode="horizontal">
     <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
     <breadcrumb></breadcrumb>
+    <screenfull class= "navbar">
+      <div class="search">
+         <form id="demo-2">
+	        <input type= "search" placeholder="Search books">
+        </form>
+      </div>
+    </screenfull>
+
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
         <img class="user-avatar" :src="avatar">
         <i class="el-icon-caret-bottom"></i>
       </div>
+      
       <el-dropdown-menu class="user-dropdown" slot="dropdown">
         <router-link class="inlineBlock" to="/">
           <el-dropdown-item>
@@ -83,7 +92,7 @@ import store from '@/store'
 import '@/styles/custom-buttons.scss'
 
 export default {
-
+  
   data: function(){
     return{
       showModal: false,
@@ -137,7 +146,6 @@ export default {
     hide () {
       this.$modal.hide('hello-world');
     },
-
   }
 }
 </script>
@@ -153,30 +161,73 @@ export default {
     float: left;
     padding: 0 10px;
   }
-  .screenfull {
+  
+  input[type=search] {
+    outline: none;
     position: absolute;
-    right: 90px;
-    top: 16px;
-    color: red;
+    right: 100px;
+    top: 5px;
+    -webkit-appearance: textfield;
+    -webkit-box-sizing: content-box;
+    font-family: inherit;
+    font-size: 100%;
+  }
+  input::-webkit-search-decoration,
+  input::-webkit-search-cancel-button {
+    display: none; 
+  }
+
+
+  input[type=search] {
+    background: #ededed url(https://static.tumblr.com/ftv85bp/MIXmud4tx/search-icon.png) no-repeat 9px center;
+    border: solid 1px #ccc;
+    padding: 10px 450px 9px 32px;
+    width: 55px;
+    
+    -webkit-border-radius: 10em;
+    -moz-border-radius: 10em;
+    border-radius: 10em;
+    
+    -webkit-transition: all .5s;
+    -moz-transition: all .5s;
+    transition: all .5s;
+  }
+  input[type=search]:focus {
+    
+    width: 130px;
+    background-color: #fff;
+    border-color: #556B2F;
+    
+    -webkit-box-shadow: 0 0 5px rgba(109,207,246,.5);
+    -moz-box-shadow: 0 0 5px rgba(109,207,246,.5);
+    box-shadow: 0 0 5px rgba(109,207,246,.5);
+  }
+
+
+  input:-moz-placeholder {
+    color: #999;
+  }
+  input::-webkit-input-placeholder {
+    color: #999;
   }
   .avatar-container {
+    top: -10px;
     height: 50px;
-    display: inline-block;
+    
     position: absolute;
     right: 35px;
     .avatar-wrapper {
-      cursor: pointer;
-      margin-top: 5px;
+      margin-top: 15px;
       position: relative;
       .user-avatar {
-        width: 40px;
-        height: 40px;
-        border-radius: 10px;
+        width: 30px;
+        height:30px;
+        border-radius: 20px;
       }
       .el-icon-caret-bottom {
         position: absolute;
-        right: -20px;
-        top: 25px;
+        right: 5px;
+        top: 10px;
         font-size: 12px;
       }
     }
@@ -188,4 +239,5 @@ export default {
   }
 
 }
+
   </style>
