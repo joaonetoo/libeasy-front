@@ -2,12 +2,17 @@
 <div>
     <center><img router-link to="/home" src="../users/logo.png" width="80px" style="margin-top: 10px;" ></center>
      <div class="app-container" style="width: 100%;">
-        <el-carousel :interval="4000" type="card" height="700px">
-            <el-carousel-item v-for="item in 3" :key="item">
-                  <!-- Imagens personalizadas serão adicionadas -->
-                <img v-if="item == 1" src="./1.jpg">
-                <img v-if="item == 2" src="https://papoindependente.files.wordpress.com/2016/06/direito-pc3bablico-2.jpg?w=1000&h=700&crop=1">
-                <img v-if="item == 3" src="http://www.gilbertopadovaneditore.it/wp-content/gallery/anbrosiana-milano/4.jpg">
+        <el-carousel :interval="1200" type="card" height="700px">
+            <el-carousel-item v-for="item in 9" :key="item">
+                <img v-if="item == 1" src="./libeasy.png">
+                <img v-if="item == 2" src="./2.png">
+                <img v-if="item == 3" src="./3.png">
+                <img v-if="item == 4" src="./4.png">
+                <img v-if="item == 5" src="./5.png">
+                <img v-if="item == 6" src="./6.png">
+                <img v-if="item == 7" src="./7.png">
+                <img v-if="item == 8" src="./8.png">
+                <img v-if="item == 9" src="./9.png">
             </el-carousel-item>
         </el-carousel>
     </div>
