@@ -7,8 +7,12 @@
       :collapse="isCollapse"
       background-color="#263238"
       text-color="#FFC300"
-      active-text-color="#616161"
+      active-text-color="#616161" 
     >
+      <div>
+        <center v-if="isCollapse != true" ><img src="./logo.png" width="180px"></center>
+        <center v-else ><img src="./libeasysidebar.png" width="40px"></center>
+      </div>    
       <sidebar-item :routes="routes"></sidebar-item>
     </el-menu>
   </scroll-bar>

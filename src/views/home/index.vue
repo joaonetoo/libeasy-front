@@ -1,6 +1,6 @@
 <template>
 <div>
-    <center><img src="../users/logo.png" width="80px" style="margin-top: 10px;"></center>
+    <center><img router-link to="/home" src="../users/logo.png" width="80px" style="margin-top: 10px;" ></center>
      <div class="app-container" style="width: 100%;">
         <el-carousel :interval="4000" type="card" height="700px">
             <el-carousel-item v-for="item in 3" :key="item">
@@ -13,7 +13,7 @@
     </div>
     <div>
         <el-card>
-            <router-link to="{ path: '/users/auth' }">
+            <router-link to="/users/auth">
             <center><el-button type="primary" >Acessar</el-button></center>
             </router-link>
         </el-card>
