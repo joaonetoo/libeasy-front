@@ -22,6 +22,9 @@
             Home
           </el-dropdown-item>
         </router-link>
+        <el-dropdown-item>
+            <span  @click.prevent="editUser()">Edit User</span>
+        </el-dropdown-item>
           <el-dropdown-item>
             <span @click.prevent="show()">Change Avatar</span>
           </el-dropdown-item>
@@ -109,7 +112,8 @@ export default {
     ...mapGetters([
       'sidebar',
       'avatar',
-      'roles'
+      'roles',
+      'id'
     ])
   },
   methods: {
@@ -136,6 +140,10 @@ export default {
           console.log(e)
         })
     },
+    editUser:function(id){
+            this.$router.push({path: "/users/"+store.getters.id})
+            },
+
     onImageReady () {
         this.scale = 1
         this.rotation = 0

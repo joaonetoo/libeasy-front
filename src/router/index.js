@@ -25,6 +25,7 @@ export const constantRouterMap = [
   { path: '/home', component: () => import('@/views/home/index'),hidden:true},
   { path: '/users/auth', component: () => import('@/views/users/LoginUser'),hidden:true},
   { path: '/users/add', component: () => import('@/views/users/CreateUser'),hidden:true},
+  { path: '/users/:id', component: () => import('@/views/users/EditUser'), hidden: true},
   { path: '/login', component: () => import('@/views/login/index'), hidden: true },
   { path: '/404', component: () => import('@/views/404'), hidden: true },
   { path: '/reserve/add', component: () => import('@/views/reserve/CreateReserve'), hidden:true},
