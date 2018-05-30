@@ -10,7 +10,9 @@
       active-text-color="#616161" 
     >
       <div>
-        <center v-if="isCollapse != true" ><img src="./libeasysidebar.png" width="150px"></center>
+        <center v-if="isCollapse != true" ><img src="./logo.png" width="60px">
+        <br>
+        <br></center>
         <center v-else ><img src="./libeasysidebar.png" width="40px"></center>
       </div>    
       <sidebar-item :routes="routes"></sidebar-item>

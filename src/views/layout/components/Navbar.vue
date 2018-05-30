@@ -1,19 +1,14 @@
 <template>
-  <el-menu class="navbar" mode="horizontal">
+  <!-- <el-menu class="navbar" mode="horizontal"> -->
+  <el-menu class="navbar">
     <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
     <breadcrumb></breadcrumb>
-    <screenfull class= "navbar">
-      <div class="search">
-         <form id="demo-2">
-	        <input type= "search" placeholder="Search books">
-        </form>
-      </div>
-    </screenfull>
+	        <input type= "search" placeholder="Search books" v-on:keyup="space">
 
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
         <img class="user-avatar" :src="avatar">
-        <i class="el-icon-caret-bottom"></i>
+        <i class="el-icon-caret-bottom" style="margin-right: -20px;"></i>
       </div>
       
       <el-dropdown-menu class="user-dropdown" slot="dropdown">
@@ -154,6 +149,10 @@ export default {
     hide () {
       this.$modal.hide('hello-world');
     },
+    space: function(e){
+      if(e.which === 32)
+        return true;
+      }
   }
 }
 </script>
@@ -175,48 +174,34 @@ export default {
     position: absolute;
     right: 100px;
     top: 5px;
-    -webkit-appearance: textfield;
-    -webkit-box-sizing: content-box;
-    font-family: inherit;
     font-size: 100%;
-  }
-  input::-webkit-search-decoration,
-  input::-webkit-search-cancel-button {
-    display: none; 
   }
 
 
   input[type=search] {
-    background: #ededed url(https://static.tumblr.com/ftv85bp/MIXmud4tx/search-icon.png) no-repeat 9px center;
-    border: solid 1px #ccc;
-    padding: 10px 450px 9px 32px;
-    width: 55px;
+    background: #ffff url(https://static.tumblr.com/ftv85bp/MIXmud4tx/search-icon.png) no-repeat 9px center;
+    border: solid 1px #999;
+    width: 450px;
+    height: 35px;
+    padding-left: 30px;
     
     -webkit-border-radius: 10em;
     -moz-border-radius: 10em;
     border-radius: 10em;
-    
-    -webkit-transition: all .5s;
-    -moz-transition: all .5s;
-    transition: all .5s;
   }
   input[type=search]:focus {
     
-    width: 130px;
-    background-color: #fff;
-    border-color: #556B2F;
+    background-color: #ffff;
+    border-color: #263238;
     
-    -webkit-box-shadow: 0 0 5px rgba(109,207,246,.5);
-    -moz-box-shadow: 0 0 5px rgba(109,207,246,.5);
-    box-shadow: 0 0 5px rgba(109,207,246,.5);
   }
 
 
   input:-moz-placeholder {
-    color: #999;
+    color: #FFC300;
   }
   input::-webkit-input-placeholder {
-    color: #999;
+    color: #FFC300;
   }
   .avatar-container {
     top: -10px;
@@ -225,11 +210,12 @@ export default {
     position: absolute;
     right: 35px;
     .avatar-wrapper {
+      cursor: pointer;
       margin-top: 15px;
       position: relative;
       .user-avatar {
-        width: 30px;
-        height:30px;
+        width: 40px;
+        height:40px;
         border-radius: 20px;
       }
       .el-icon-caret-bottom {
