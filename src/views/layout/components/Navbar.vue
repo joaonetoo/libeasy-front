@@ -3,7 +3,7 @@
   <el-menu class="navbar">
     <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
     <breadcrumb></breadcrumb>
-	        <input type= "search" placeholder="Search books" v-on:keyup="space">
+	        <input v-model="text" type= "search" placeholder="Search books" @keyup="space">
 
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
@@ -17,9 +17,12 @@
             Home
           </el-dropdown-item>
         </router-link>
+        <router-link class="inlineBlock" :to="'/users/'+id">
         <el-dropdown-item>
-            <span  @click.prevent="editUser()">Edit User</span>
+            Edit User
         </el-dropdown-item>
+
+        </router-link>
           <el-dropdown-item>
             <span @click.prevent="show()">Change Avatar</span>
           </el-dropdown-item>
@@ -96,6 +99,7 @@ export default {
       showModal: false,
       rotation: 0,
       scale: 1,
+      text: "",
     }
   },
   components: {
@@ -135,10 +139,6 @@ export default {
           console.log(e)
         })
     },
-    editUser:function(id){
-            this.$router.push({path: "/users/"+store.getters.id})
-            },
-
     onImageReady () {
         this.scale = 1
         this.rotation = 0
@@ -150,9 +150,18 @@ export default {
       this.$modal.hide('hello-world');
     },
     space: function(e){
-      if(e.which === 32)
-        return true;
+      if(e.which === 32){
+        return true
       }
+      if(e.which === 13){
+        if (store.getters.roles == 'librarian'){
+            this.$store.dispatch('GetBooks',this.text).then(() => {
+              this.text = ""
+          })        
+          }
+      }
+    }
+
   }
 }
 </script>
