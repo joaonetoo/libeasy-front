@@ -35,16 +35,23 @@ const books = {
 
         })
     },
+
     GetBooksClient({commit, state}, array){
-        commit('SET_ROLES', true)
+        commit('SET_LOADING',true)
+        commit('SET_BOOKS',[])
         axios
-        .get('http://localhost:3000/books/search/'+array,{headers: {"x-access-token": getToken()}})
+        .get('http://localhost:3000/books/infos/'+array,{headers: {"x-access-token": getToken()}})
         .then(res => {
             let books = res.data
+            books.forEach(book => {
+                book.image = process.env.BASE_API+'/'+book.image
+            });
             commit('SET_BOOKS',books)
-            commit('SET_ROLES',false)
+            commit('SET_LOADING',false)
+            commit('SET_RESULT_SEARCHING',"Resultados encontrados para: "+"'"+array+"'")
         })
     },
+    
     GetLast({commit, state}){
         axios
         .get('http://localhost:3000/books/',{headers: {"x-access-token": getToken()}})

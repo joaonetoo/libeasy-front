@@ -159,6 +159,11 @@ export default {
             this.$store.dispatch('GetBooks',this.text).then(() => {
               this.text = ""
           })        
+        }
+        else{
+            this.$store.dispatch('GetBooksClient',this.text).then(() => {
+              this.text = ""
+          })        
           }
       }
     }
