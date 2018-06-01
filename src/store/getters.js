@@ -9,4 +9,6 @@ const getters = {
   books: state => state.books.books,
   loading: state=> state.books.loading
 }
+
+
 export default getters
