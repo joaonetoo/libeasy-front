@@ -96,7 +96,7 @@
                     if(response) {
                         console.log(response)
                         this.reservedBooks.push(bookId)
-                        alert("Livro "+bookId+" reservado!\n"+"Voçê tem até ")
+                        alert("Livro "+bookId+" reservado para voçê!")
                     }
                 })
             },
