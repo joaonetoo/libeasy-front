@@ -4,7 +4,7 @@ const books = {
   state: {
     books: [],
     loading: true,
-    roles:'client'
+    resultSearch: ""
 
 },
   mutations: {
@@ -14,24 +14,27 @@ const books = {
     SET_LOADING: (state,l) =>{
         state.loading = l
     },
-    SET_ROLES: (state, r) =>{
-        state.roles = r
+    SET_RESULT_SEARCHING: (state,s) =>{
+        state.resultSearch = s
     }
-  },
+  
+    },
 
   actions: {
 
     GetBooks({ commit, state },array) {
-          commit('SET_LOADING',true)
-          axios
-          .get('http://localhost:3000/books/search/'+array,{headers: {"x-access-token": getToken()}})
-          .then(res => {
-              let books = res.data
-              commit('SET_BOOKS',books)
-              commit('SET_LOADING',false)
-          })
-    },
+        commit('SET_LOADING',true)
+        commit('SET_BOOKS',[])
+        axios
+        .get('http://localhost:3000/books/search/'+array,{headers: {"x-access-token": getToken()}})
+        .then(res => {
+            let books = res.data
+            commit('SET_BOOKS',books)
+            commit('SET_LOADING',false)
+            commit('SET_RESULT_SEARCHING',"Resultados encontrados para: "+"'"+array+"'")
 
+        })
+    },
     GetBooksClient({commit, state}, array){
         commit('SET_ROLES', true)
         axios
@@ -41,7 +44,25 @@ const books = {
             commit('SET_BOOKS',books)
             commit('SET_ROLES',false)
         })
-    }
+    },
+    GetLast({commit, state}){
+        axios
+        .get('http://localhost:3000/books/',{headers: {"x-access-token": getToken()}})
+        .then(res =>{
+          let books = res.data
+          if (books.length > 11){
+            books = books.slice(books.length-11, books.length-1)
+          }
+          books.forEach(book => {
+            book.image = process.env.BASE_API+'/'+book.image
+          });
+          commit('SET_BOOKS',books)
+          commit('SET_LOADING',false)
+          commit('SET_RESULT_SEARCHING',"New Books")
+  
+        })
+      }
+  
 
   }
 }

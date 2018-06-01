@@ -3,7 +3,7 @@
     <el-row>
     <el-col :span="5" v-for="(book,index) in books" :key="book.id" style="margin: 10px;" >
         <el-card :body-style="{ padding: '10px' }">
-        <center><img :src="setImage(book.image)"  class="image" style="width: 220px; height: 150px"></center>
+        <center><img :src="setImage(book.image)"  class="image" style="width: 128px; height:192px"></center>
         <div style="padding: 14px;">
             <span>{{book.title}}</span>
             

@@ -6,6 +6,7 @@
 	        <input v-model="text" type= "search" placeholder="Search books" @keyup="space">
 
     <el-dropdown class="avatar-container" trigger="click">
+      <!-- Icons made by Freepik from www.flaticon.com is licensed by CC 3.0 BY -->
       <div class="avatar-wrapper">
         <img class="user-avatar" :src="avatar">
         <i class="el-icon-caret-bottom" style="margin-right: -20px;"></i>
@@ -112,7 +113,7 @@ export default {
       'sidebar',
       'avatar',
       'roles',
-      'id'
+      'id',
     ])
   },
   methods: {

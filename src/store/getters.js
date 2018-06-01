@@ -7,7 +7,8 @@ const getters = {
   roles: state => state.user.roles,
   id: state => state.user.id,
   books: state => state.books.books,
-  loading: state=> state.books.loading
+  loading: state=> state.books.loading,
+  resultSearch: state=> state.books.resultSearch
 }
 
 
