@@ -1,11 +1,28 @@
 <template>
   <div class="dashboard-container">
-    <div v-if="roles === 'client'"></div>
+    <div v-if="roles === 'client'">
+              <div  v-loading="loading"  element-loading-text="Loading">
+      <div class="form-control">
+        <el-row>
+          <el-col :span="5" v-for="(book) in books" :key="book.id" style="margin: 10px;" >
+              <el-card :body-style="{ padding: '10px' }">
+                <center><img :src="book.images.smallThumbnail"  class="image" style="width: 128px; height:192px"></center>
+              <div style="padding: 14px;">
+                  <span>{{book.title}}</span>
+              </div>
+            </el-card>
+          </el-col>
+      </el-row>
+    </div>
+                </div>
+
+    </div>
+      
     <div v-else class="dashboard-text">
                 <div  v-loading="loading"  element-loading-text="Loading">
       <div class="form-control">
         <el-row>
-          <el-col :span="5" v-for="(book,index) in books" :key="book.id" style="margin: 10px;" >
+          <el-col :span="5" v-for="(book) in books" :key="book.id" style="margin: 10px;" >
               <el-card :body-style="{ padding: '10px' }">
                 <center><img :src="book.images.smallThumbnail"  class="image" style="width: 128px; height:192px"></center>
               <div style="padding: 14px;">
