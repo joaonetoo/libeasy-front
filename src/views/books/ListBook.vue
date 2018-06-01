@@ -10,8 +10,7 @@
             <div class="bottom clearfix">
             <el-button type="text" class="btn-login button" @click.prevent="removerBook(book.id,index)">Deletar</el-button>
             <el-button type="text" class="btn-login button" @click.prevent="editBook(book.id)">Editar</el-button>
-            <el-button type="text" class="btn-login button" @click.prevent="reserveBook(id, book.id)">Reservar</el-button>
-
+            <el-button :disabled="checkReservation(book.id)" type="text" class="btn-login button" @click.prevent="reserveBook(id, book.id)">Reservar</el-button>
             </div>
         </div>
         </el-card>
@@ -41,6 +40,7 @@
             return {
                 books: [],
                 image: "dasdasdsa",
+                reservedBooks: [],
             }
         },
         created: function(){
@@ -50,8 +50,19 @@
                 this.books = response.data
                 
             })
-            .catch(e=>{
+            .catch(e => {
                 console.log("error")
+            })
+
+            axios.get(process.env.URL_API+"/reservations", {headers: {"x-access-token": store.getters.token}})
+            .then(response => {
+                console.log(response.data)
+                let reservedBooks = []
+                for(let i = 0; i < response.data.length; i++) {
+                    reservedBooks.push(response.data[i].bookId)
+                }
+
+                this.reservedBooks = reservedBooks;
             })
         },
         methods:{
@@ -82,9 +93,21 @@
 
                 axios.post(process.env.URL_API + '/reservations', data, {headers: {"x-access-token": token}})
                 .then(response => {
-                    console.log(response.data)
+                    if(response) {
+                        console.log(response)
+                        this.reservedBooks.push(bookId)
+                        alert("Livro "+bookId+" reservado!\n"+"Voçê tem até ")
+                    }
                 })
-            }
+            },
+            checkReservation:function(bookId) {
+                for(let i = 0; i < this.reservedBooks.length; i++) {
+                    if(bookId == this.reservedBooks[i]) {
+                        return true;
+                    }
+                }
+                return false 
+            },
             
         },
         

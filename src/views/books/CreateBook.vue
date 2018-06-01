@@ -34,7 +34,7 @@
                         v-model="categ.description"
                         :fetch-suggestions="querySearchAsync"
                         placeholder="Please Input"
-                        :trigger-on-focus="false"
+                        :trigger-on-focus="true"
                         ></el-autocomplete> -->
                     <el-form-item id="el-form-label" label="Categoria">
                             {{ index+1 }}<el-input :id="index" v-model="categ.description" placeholder="Categorias do livro" required>                            
@@ -87,6 +87,7 @@
         data() {
             return {
                 categories:[{
+                    description: "",
                 }],
                 book: {
                     title: "",
@@ -214,36 +215,24 @@
 
             loadAll() {
                 const token = s.getToken()
-                return [
-        //             { "value": "vue", "link": "https://github.com/vuejs/vue" },
-        //   { "value": "element", "link": "https://github.com/ElemeFE/element" },
-        //   { "value": "cooking", "link": "https://github.com/ElemeFE/cooking" },
-        //   { "value": "mint-ui", "link": "https://github.com/ElemeFE/mint-ui" },
-        //   { "value": "vuex", "link": "https://github.com/vuejs/vuex" },
-        //   { "value": "vue-router", "link": "https://github.com/vuejs/vue-router" },
-        //   { "value": "babel", "link": "https://github.com/babel/babel" }
+                let array = []
                     axios.get(process.env.URL_API + '/categories', {headers: {"x-access-token": token}})
                     .then(response => {
-                        return response.data
-                        // let array = [];
-                        // if(response) {
-                        //     for(let i = 0; i < response.data.length; i++) {
-                        //         array.push(response.data[i])
-                        //     }
-                        // }
-                        // console.log(array)
+                        for(let i = 0; i < response.data.length; i++) {
+                            array.push({"description": response.data[i].description});
+                        }
 
-                        // return array;
+                        console.log(array)
+                        return array
                     })
-                ]
+                
             },
             querySearchAsync(queryString, cb) {
-                let categories = this.categories;
-                let results = queryString ? categories.filter(this.createFilter(queryString)) : categories;
+                let category = this.categories;
+                let results = queryString ? category.filter(this.createFilter(queryString)) : category;
 
                 clearTimeout(this.timeout);
                 this.timeout = setTimeout(() => {
-                    console.log(results)
                     cb(results);
                     console.log(results)
                 }, 3000 * Math.random());
@@ -251,13 +240,14 @@
             
             createFilter(queryString) {
                 return (category) => {
-                    Promise.resolve(category)
-                    .then((value) => {
-                        value.forEach((element) => {
-                            console.log(element.description)
-                            return (element.description.toLowerCase().indexOf(queryString.toLowerCase()) === 0); 
-                        });
-                    })
+                    return (category.description.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+                    // Promise.resolve(category)
+                    // .then((value) => {
+                    //     value.forEach((element) => {
+                    //         console.log(element.description)
+                    //         return (element.description.toLowerCase().indexOf(queryString.toLowerCase()) === 0); 
+                    //     });
+                    // })
                 };
             },
 
