@@ -1,23 +1,58 @@
 
 <template>
-
+<!--Depois dou uma refatorada kk -->
     <div class="app-container">
         <el-card>
-            <h2><strong> Editar Conta </strong></h2>
+            <center> <h1><strong> Edit User </strong></h1> </center>
             <hr>
 
             <el-form ref="form" :model="user" >
 
                 <el-form-item label="Login" style="height: 10%">
                     <el-input v-model="user.login" icon-class="user" placeholder="Login">
-                        fa-thumbs-up
                     </el-input>
                 </el-form-item>
                 <el-form-item label="Nome">
                         <el-input v-model="user.first_name" placeholder="Seu nome completo">
-                            
                         </el-input>
-                </el-form-item>                
+                </el-form-item> 
+                <el-form-item prop="email" label="Email" :rules="[
+                    { required: true, message: 'Please input email address', trigger: 'blur' },
+                    { type: 'email', message: 'Please input correct email address', trigger: ['blur', 'change'] }
+                    ]">
+                    <el-input v-model="user.email" placeholder="exemplo@examplo.br" ></el-input>
+                </el-form-item>
+                 <el-form-item class="vertical_input" label="Cpf" style="width: 40%;" >
+                        <el-input  type="text" placeholder="XXX.XXX.XXX-XX" v-model="user.cpf" v-mask-cpf></el-input>
+                </el-form-item>
+                <el-form-item class="vertical_input" label="Data de Nascimento" style="width: 40%;">
+                    <el-date-picker v-model="user.birthday" type="date" placeholder="Data de Nascimento">
+                    </el-date-picker>
+                </el-form-item>
+                <el-form-item label="Tipo">
+                    <el-select v-model="user.type" placeholder="Selecione seu tipo de usuário">
+                    <el-option label="Bibliotecário" value="librarian"></el-option>
+                    <el-option label="Cliente" value="client"></el-option>
+                    </el-select>
+                </el-form-item>
+
+                
+                <el-button type="primary" @click="dialogTableVisible = true">Mudar Senhar</el-button>
+                <el-dialog v-el-drag-dialog @dragDialog="handleDrag" title="Edit Password" :visible.sync="dialogTableVisible">
+                        <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="120px" class="demo-ruleForm">
+                        <el-form-item label="Password" prop="pass">
+                            <el-input type="password" v-model="ruleForm2.pass" auto-complete="off"></el-input>
+                        </el-form-item>
+                        <el-form-item label="Confirm" prop="checkPass">
+                            <el-input type="password" v-model="ruleForm2.checkPass" auto-complete="off"></el-input>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" @click="editPassword('ruleForm2')">Update</el-button>
+                            <el-button @click="resetForm('ruleForm2')">Reset</el-button>
+                        </el-form-item>
+                        </el-form>
+                </el-dialog>
+                             
                 <center><el-button class="btn-login" @click.prevent="editUser()" type="primary">Editar</el-button></center>
             </el-form>
         </el-card>
@@ -30,11 +65,51 @@
     export default {
     name: 'EditUser',
     data: function(){
+
+      var validatePass = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('Please input the password'));
+        } else {
+          if (this.ruleForm2.checkPass !== '') {
+            this.$refs.ruleForm2.validateField('checkPass');
+          }
+          callback();
+        }
+      };
+      var validatePass2 = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('Please input the password again'));
+        } else if (value !== this.ruleForm2.pass) {
+          callback(new Error('Two inputs don\'t match!'));
+        } else {
+          callback();
+        }
+        };
         return{
+            dialogTableVisible: false,
             user:{
                 login: "",
-                first_name: ""
+                first_name: "",
+                email: "",
+                password: "",
+                cpf: "",
+                birthday: "",
+                address: "",
+                type: ""    
             },
+            ruleForm2: {
+            pass: "",
+            checkPass: ""
+        },
+        rules2: {
+          pass: [
+            { validator: validatePass, trigger: 'blur' }
+          ],
+          checkPass: [
+            { validator: validatePass2, trigger: 'blur' }
+          ]          
+        }
+      
         }
     },
     created: function(){
@@ -57,9 +132,13 @@
             const token = store.getters.token
             const data = {
                 login: this.user.login,
-                first_name: this.user.first_name
-            }
-            
+                first_name: this.user.first_name,
+                email: this.user.email,
+                cpf: this.user.cpf,
+                birthday: this.user.birthday,
+                address: this.user.address,
+                type: this.user.type
+            } 
             axios
             .put(process.env.URL_API+'/users/'+this.$route.params.id, data,{headers: {"x-access-token": token}})
             .then(response =>{
@@ -71,6 +150,28 @@
                 });
             })
         },
+          editPassword: function(formName){
+            this.$refs[formName].validate((valid) => {
+            const token = store.getters.token
+            const data = {
+                password: this.ruleForm2.checkPass
+            }
+            if (valid) {
+            axios
+            .put(process.env.URL_API+'/users/'+this.$route.params.id, data,{headers: {"x-access-token": token}})
+            .then(response =>{
+                this.$store.dispatch('LogOut').then(() => {
+                    location.reload()})
+            }).catch(e=>{
+                this.$notify.error({
+                    title: 'Erro',
+                    message: "Preencha todos os campos do formulário"
+                });
+            })
+            }
+            })
+        },
+
         success: function(msg){
             if(msg == "User Editado"){
                 this.$notify({
@@ -84,6 +185,9 @@
                 });    
             }
         },
+      resetForm(formName) {
+        this.$refs[formName].resetFields();
+      }
     }
 }
 
