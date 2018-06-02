@@ -4,49 +4,66 @@
           <h2>{{resultSearch}}</h2>
       <hr>
         <div v-if="loading" id="loader"></div>
-          <div element-loading-text="Loading">
-            <div class="form-control">
-              <el-row>
-                <el-col :span="5" v-for="(book) in books" :key="book.id" style="margin: 10px;" >
-                    <el-card :body-style="{ padding: '10px' }">
-                      <center><img :src="book.image"  class="image" style="width: 128px; height:192px"></center>
-                    <div style="padding: 14px;">
-                        <span>{{book.title}}</span>
-                    </div>
-                  </el-card>
-                </el-col>
-            </el-row>
-          </div>
-    </div>
-    
+        <div v-for="(book,index) in books" :key="book.id" style="margin: 10px; float:left">
+                  <div class='card'>
+                  <div class='card_left'>
+                    <img :src="book.image">
+                  </div>
+                  <div class='card_right'>
+                    <h1>{{book.title}}</h1>
+                    <div class='card_right__details'>
+                      <ul>
+                        <li>{{book.edition}}</li>
+                        <li>{{book.language}}</li>
+                        <li>{{book.page_count}}pgs</li>
+                      </ul>
+                      <div class="buttons">                        
+                        <div class="bottom">
+                          <el-button type="text" class="btn-login button" @click.prevent="addBook(book.api_id,index)">More Informations</el-button>
+                        </div>
+                      </div>
 
+                    </div>
+                  </div>
+                </div>
+        </div>
     </div>
     <div v-else class="dashboard-text">
           <h2>{{resultSearch}}</h2>
       <hr>
-        <div v-if="loading" id="loader"></div>
-          <div element-loading-text="Loading">
-            <div class="form-control">
-              <el-row>
-                <el-col :span="5" v-for="(book,index) in books" :key="book.id" style="margin: 10px;" >
-                    <el-card :body-style="{ padding: '10px' }">
-                      <center><img :src="book.image"  class="image" style="width: 128px; height:192px"></center>
-                    <div style="padding: 14px;">
-                        <span>{{book.title}}</span>
+              <div v-if="loading" id="loader"></div>
 
-                        <div class="bottom clearfix">
-                          <el-button v-if="!api" type="text" class="btn-login button" @click.prevent="editBook(book.id)">Edit</el-button>
-                          <el-button v-if="api" type="text" class="btn-login button" @click.prevent="addBook(book.api_id,index)">Add</el-button>
-                          <!-- <el-button type="text" class="btn-login button" @click.prevent="addBook(book.api_id,index)">More Informations</el-button> -->
-
+        <div v-for="(book,index) in books" :key="book.id" style="margin: 10px; float:left">
+                  <div class='card'>
+                  <div class='card_left'>
+                    <img :src="book.image">
+                  </div>
+                  <div class='card_right'>
+                    <h1>{{book.title}}</h1>
+                    <div class='card_right__details'>
+                      <ul>
+                        <li>{{book.edition}}</li>
+                        <li>{{book.language}}</li>
+                        <li>{{book.page_count}}pgs</li>
+                      </ul>
+                      <div v-if="!api" class="buttons">
+                        <div class="bottom ">
+                          <el-button type="text" class="btn-login button" @click.prevent="removerBook(book.id,index)">Deletar</el-button>
+                          <el-button type="text" class="btn-login button" @click.prevent="editBook(book.id)">Editar</el-button>
+                          <el-button :disabled="checkReservation(book.id)" type="text" class="btn-login button" @click.prevent="reserveBook(id, book.id)">Reservar</el-button>
                         </div>
+                      </div>
+                      <div v-else class="buttons">
+                        <div class="bottom ">
+                          <el-button type="text" class="btn-login button" @click.prevent="addBook(book.api_id,index)">Add Book</el-button>
+                        </div>
+                      </div>
+
                     </div>
-                  </el-card>
-                </el-col>
-            </el-row>
-          </div>
+                  </div>
+                </div>
+            </div>
         </div>
-    </div>
   </div>
 </template>
 
@@ -55,6 +72,7 @@ import axios from 'axios'
 import { mapGetters } from 'vuex'
 import store from '@/store'
 import * as s from '@/utils/strings'
+import '@/styles/el-card.scss'
 
 export default {
   name: 'dashboard',
@@ -74,12 +92,24 @@ export default {
   data: function(){
     return{
       title: 'New Books',
+      reservedBooks: []
 
     }
   },
   created: function(){
         this.$store.dispatch('GetLast').then(() => {
-        })     
+        })  
+        axios.get(process.env.URL_API+"/reservations", {headers: {"x-access-token": store.getters.token}})
+            .then(response => {
+                console.log(response.data)
+                let reservedBooks = []
+                for(let i = 0; i < response.data.length; i++) {
+                    reservedBooks.push(response.data[i].bookId)
+                }
+
+                this.reservedBooks = reservedBooks;
+        })
+   
   },
   methods:{
 
@@ -114,104 +144,51 @@ export default {
       });
       return false
     },
-    editBook:function(id){
-        this.$router.push({path: "/books/edit/"+id})
-  },
+            removerBook:function(id,index){
+                axios.delete(process.env.URL_API+'/books/'+id,{headers: {"x-access-token": store.getters.token}})
+                    .then( response => {
+                        this.books.splice(index, 1);
+                        this.message = response.data.message
+                    })
+                    .catch(e =>{
+                        this.message = "Não foi possível deletar o livro"
+                    })
+            },
+            editBook:function(id){
+                    this.$router.push({path: "/books/edit/"+id})
+            },
+
+            setImage:function(img){
+                return process.env.URL_API+'/'+img
+            },
+
+            reserveBook:function(userId, bookId) {
+                const token = auth.getToken();
+                let data = {
+                    userId: userId,
+                    bookId: bookId
+                 }
+
+                axios.post(process.env.URL_API + '/reservations', data, {headers: {"x-access-token": token}})
+                .then(response => {
+                    if(response) {
+                        console.log(response)
+                        this.reservedBooks.push(bookId)
+                        alert("Livro "+bookId+" reservado para voçê!")
+                    }
+                })
+            },
+            checkReservation:function(bookId) {
+                for(let i = 0; i < this.reservedBooks.length; i++) {
+                    if(bookId == this.reservedBooks[i]) {
+                        return true;
+                    }
+                }
+                return false 
+            },
+            
 
   }
 
 }
 </script>
-<style>
-
-</style>
-
-<style rel="stylesheet/scss" lang="scss" scoped>
-
-.dashboard {
-  &-container {
-    margin: 30px;
-  }
-}
-</style>
-<style scopedSlots>
-    .el-col{
-        width: 299px;
-        margin: 100px;
-    }
-    .bottom {
-    margin-top: 13px;
-    line-height: 12px;
-  }
-
-  .button {
-    padding: 0;
-    padding-top: 3px;
-    padding-bottom: 3px;
-    padding-left: 3px;
-    padding-right: 3px;
-    margin-left: 5px;
-
-    float: right;
-  }
-
-
-  .clearfix:before,
-  .clearfix:after {
-      display: table;
-      content: "";
-  }
-  
-  .clearfix:after {
-      clear: both
-  }
-#loader {
-    position: relative;
-    left: 50%;
-    top: 150px;
-    width: 100px;
-    height: 100px;
-    margin: -120px 0 0 -120px;
-    border-radius: 100%;
-    animation: spin 0.5s linear infinite;
-    z-index: 1000;
-
-}
- 
-#loader:before {
-    content: "";
-    position: absolute;
-    top: 5px;
-    left: 5px;
-    right: 5px;
-    bottom: 5px;
-    border-radius: 100%;
-    border: 5px solid transparent;
-    border-top-color: #FFC300;
-    animation: spin 3s linear infinite;
-}
- 
-#loader:after {
-    content: "";
-    position: absolute;
-    top: 5px;
-    left: 5px;
-    right: 5px;
-    bottom: 5px;
-    border-radius: 100%;
-    border: 5px solid transparent;
-    border-top-color: #263238;
-    animation: spin 3s linear infinite; 
-    animation-delay: 2s;
-
-}
- 
-@keyframes spin {
-    0%   {
-        -webkit-transform: rotate(0deg); 
-    }
-    100% {
-        -webkit-transform: rotate(360deg);
-    }
-}
-</style>

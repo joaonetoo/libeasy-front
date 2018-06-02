@@ -1,5 +1,5 @@
 <template>
-    <div class="form-control">
+    <!-- <div class="form-control">
     <el-row>
     <el-col :span="5" v-for="(book,index) in books" :key="book.id" style="margin: 10px;" >
         <el-card :body-style="{ padding: '10px' }">
@@ -16,8 +16,35 @@
         </el-card>
     </el-col>
     </el-row>
-    </div>
+    </div> -->
+        <div>
+        <div v-for="(book,index) in books" :key="book.id" style="margin: 10px; float:left">
+            <div class='card'>
+            <div class='card_left'>
+            <img :src="book.image">
+            </div>
+            <div class='card_right'>
+            <h1>{{book.title}}</h1>
+            <div class='card_right__details'>
+                <ul>
+                <li>{{book.edition}}</li>
+                <li>{{book.language}}</li>
+                <li>{{book.page_count}}pgs</li>
+                </ul>
+                <div class="buttons">                        
+                <div class="bottom">
+                    <el-button type="text" class="btn-login button" @click.prevent="removerBook(book.id,index)">Deletar</el-button>
+                    <el-button type="text" class="btn-login button" @click.prevent="editBook(book.id)">Editar</el-button>
+                    <el-button :disabled="checkReservation(book.id)" type="text" class="btn-login button" @click.prevent="reserveBook(id, book.id)">Reservar</el-button>
+                </div>
+                </div>
 
+            </div>
+            </div>
+        </div>
+        </div>
+
+</div>
 </template>
 
 <script>
@@ -26,6 +53,7 @@
     import * as auth from '@/utils/auth/'
     import store from '@/store'
     import { mapGetters } from 'vuex'
+    import '@/styles/el-card.scss'
 
     import CreateReserveVue from '../reserve/CreateReserve.vue';
 
@@ -113,36 +141,3 @@
         
     }
 </script>
-<style scopedSlots>
-    .el-col{
-        width: 299px;
-        margin: 100px;
-    }
-    .bottom {
-    margin-top: 13px;
-    line-height: 12px;
-  }
-
-  .button {
-    padding: 0;
-    padding-top: 3px;
-    padding-bottom: 3px;
-    padding-left: 3px;
-    padding-right: 3px;
-    margin-left: 5px;
-
-    float: right;
-  }
-
-
-  .clearfix:before,
-  .clearfix:after {
-      display: table;
-      content: "";
-  }
-  
-  .clearfix:after {
-      clear: both
-  }
-   
-</style>

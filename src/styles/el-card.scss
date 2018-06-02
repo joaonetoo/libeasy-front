@@ -1,0 +1,152 @@
+.dashboard {
+    &-container {
+      margin: 30px;
+    }
+  }
+      .bottom {
+      margin-top: 15px;
+      margin-right: 5px;
+  
+      line-height: 12px;
+    }
+  
+  
+    .button {
+      padding-top: 5px;
+      padding-bottom: 5px;
+      padding-left: 3px;
+      padding-right: 3px;
+      margin-left: 2px;
+      position: relative;
+    }
+  
+  #loader {
+      position: relative;
+      left: 50%;
+      top: 150px;
+      width: 100px;
+      height: 100px;
+      margin: -120px 0 0 -120px;
+      border-radius: 100%;
+      animation: spin 0.5s linear infinite;
+      z-index: 1000;
+  
+  }
+   
+  #loader:before {
+      content: "";
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      right: 5px;
+      bottom: 5px;
+      border-radius: 100%;
+      border: 5px solid transparent;
+      border-top-color: #FFC300;
+      animation: spin 3s linear infinite;
+  }
+   
+  #loader:after {
+      content: "";
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      right: 5px;
+      bottom: 5px;
+      border-radius: 100%;
+      border: 5px solid transparent;
+      border-top-color: #263238;
+      animation: spin 3s linear infinite; 
+      animation-delay: 2s;
+  
+  }
+   
+  @keyframes spin {
+      0%   {
+          -webkit-transform: rotate(0deg); 
+      }
+      100% {
+          -webkit-transform: rotate(360deg);
+      }
+  }
+  
+  .buttons {
+    float: right;  
+  }
+  .el-button{
+      border:0.5px solid  #ffffff;
+    color: rgb(255, 195, 0)
+  }
+  .el-button:hover{
+    border:0.5px solid  #ffffff;
+  color: rgb(255, 195, 0)
+}
+
+  .card {
+    width: 328px;
+    height: 192px;
+    background: transparent;
+    position: float;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    box-shadow: 0px 20px 30px 3px rgba(0, 0, 0, 0.55);
+  }
+  .card_left {
+    width: 128px;
+    height: 192px;
+    float: left;
+    background: transparent;
+  }
+   .card_left img {
+    width: 128px;
+    height: 192px;
+    border-radius: 10px 0 0 10px;
+    -webkit-border-radius: 10px 0 0 10px;
+    -moz-border-radius: 10px 0 0 10px;
+    position: relative;
+  }
+   .card_right {
+    width: 200px;
+    float: left;
+    background: #263238;
+    height: 192px;
+    border-radius: 0 10px 10px 0;
+    -webkit-border-radius: 0 10px 10px 0;
+    -moz-border-radius: 0 10px 10px 0;
+  }
+   .card_right h1 {
+    color: white;
+    text-align: left;
+    font-size: 14px;
+    margin: 10px 0 0 0;
+    padding: 0 0 0 10px;
+    letter-spacing: 1px;
+  }
+   .card_right__details ul {
+    list-style-type: none;
+    padding: 0 0 0 10px;
+    margin: 10px 0 0 0;
+  }
+   .card_right__details ul li {
+    display: inline;
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    font-size: 12px;
+    padding: 0 20px 0 0;
+  }
+   .card_right__review p {
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    padding: 0 40px 0 10px;
+    letter-spacing: 1px;
+    margin: 10px 0 10px 0;
+    line-height: 10px;
+  }
+  

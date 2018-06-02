@@ -65,7 +65,8 @@ const books = {
         .then(res =>{
           let books = res.data
           if (books.length > 11){
-            books = books.slice(books.length-11, books.length-1)
+            books = books.slice(books.length-11, books.length)
+            books = books.reverse()
           }
           books.forEach(book => {
               if(!book.api_id){
