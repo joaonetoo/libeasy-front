@@ -158,11 +158,13 @@ export default {
         if (store.getters.roles == 'librarian'){
             this.$store.dispatch('GetBooks',this.text).then(() => {
               this.text = ""
+              this.$router.push({path: "/"})
           })        
         }
         else{
             this.$store.dispatch('GetBooksClient',this.text).then(() => {
               this.text = ""
+              this.$router.push({path: "/"})
           })        
           }
       }

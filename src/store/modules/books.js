@@ -4,7 +4,9 @@ const books = {
   state: {
     books: [],
     loading: true,
-    resultSearch: ""
+    resultSearch: "",
+    api: false,
+    title: "New Books"
 
 },
   mutations: {
@@ -16,7 +18,11 @@ const books = {
     },
     SET_RESULT_SEARCHING: (state,s) =>{
         state.resultSearch = s
-    }
+    },
+    SET_API: (state,a) =>{
+        state.api = a
+    },
+
   
     },
 
@@ -31,7 +37,8 @@ const books = {
             let books = res.data
             commit('SET_BOOKS',books)
             commit('SET_LOADING',false)
-            commit('SET_RESULT_SEARCHING',"Resultados encontrados para: "+"'"+array+"'")
+            commit('SET_API',true)            
+            commit('SET_RESULT_SEARCHING',"Results found for: "+"'"+array+"'")
 
         })
     },
@@ -48,7 +55,7 @@ const books = {
             });
             commit('SET_BOOKS',books)
             commit('SET_LOADING',false)
-            commit('SET_RESULT_SEARCHING',"Resultados encontrados para: "+"'"+array+"'")
+            commit('SET_RESULT_SEARCHING',"Results found for: "+"'"+array+"'")
         })
     },
     
@@ -61,10 +68,13 @@ const books = {
             books = books.slice(books.length-11, books.length-1)
           }
           books.forEach(book => {
-            book.image = process.env.BASE_API+'/'+book.image
+              if(!book.api_id){
+                book.image = process.env.BASE_API+'/'+book.image
+              }
           });
           commit('SET_BOOKS',books)
           commit('SET_LOADING',false)
+          commit('SET_API',false)            
           commit('SET_RESULT_SEARCHING',"New Books")
   
         })

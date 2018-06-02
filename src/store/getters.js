@@ -8,7 +8,9 @@ const getters = {
   id: state => state.user.id,
   books: state => state.books.books,
   loading: state=> state.books.loading,
-  resultSearch: state=> state.books.resultSearch
+  resultSearch: state=> state.books.resultSearch,
+  api: state=> state.books.api,
+
 }
 
 

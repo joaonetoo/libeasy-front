@@ -1,13 +1,7 @@
 <template>
   <div class="dashboard-container">
     <div v-if="roles === 'client'">
-
-        <transition name="router-anim" enter-active-class="animated fadeInDown" leave-active-class="animted fadeOutDown">
           <h2>{{resultSearch}}</h2>
-        </transition>
-       <div id="demo">
-      </div>
-
       <hr>
         <div v-if="loading" id="loader"></div>
           <div element-loading-text="Loading">
@@ -28,22 +22,24 @@
 
     </div>
     <div v-else class="dashboard-text">
-      <transition name="router-anim" enter-active-class="animated fadeInDown" leave-active-class="animted fadeOutDown">
           <h2>{{resultSearch}}</h2>
-      </transition>
-      <div id="demo">
-      </div>
-
       <hr>
         <div v-if="loading" id="loader"></div>
           <div element-loading-text="Loading">
             <div class="form-control">
               <el-row>
-                <el-col :span="5" v-for="(book) in books" :key="book.id" style="margin: 10px;" >
+                <el-col :span="5" v-for="(book,index) in books" :key="book.id" style="margin: 10px;" >
                     <el-card :body-style="{ padding: '10px' }">
                       <center><img :src="book.image"  class="image" style="width: 128px; height:192px"></center>
                     <div style="padding: 14px;">
                         <span>{{book.title}}</span>
+
+                        <div class="bottom clearfix">
+                          <el-button v-if="!api" type="text" class="btn-login button" @click.prevent="editBook(book.id)">Edit</el-button>
+                          <el-button v-if="api" type="text" class="btn-login button" @click.prevent="addBook(book.api_id,index)">Add</el-button>
+                          <!-- <el-button type="text" class="btn-login button" @click.prevent="addBook(book.api_id,index)">More Informations</el-button> -->
+
+                        </div>
                     </div>
                   </el-card>
                 </el-col>
@@ -55,8 +51,10 @@
 </template>
 
 <script>
+import axios from 'axios'
 import { mapGetters } from 'vuex'
 import store from '@/store'
+import * as s from '@/utils/strings'
 
 export default {
   name: 'dashboard',
@@ -69,7 +67,8 @@ export default {
       'avatar',
       'books',
       'loading',
-      'resultSearch'
+      'resultSearch',
+      'api'
     ])
   },
   data: function(){
@@ -79,10 +78,45 @@ export default {
     }
   },
   created: function(){
-    if(store.getters.books.length === 0){
-      this.$store.dispatch('GetLast').then(() => {
-      })     
-    }
+        this.$store.dispatch('GetLast').then(() => {
+        })     
+  },
+  methods:{
+
+    addBook:function(apiId,index){
+      axios
+      .post( process.env.BASE_API+'/books/create',{api_id: apiId}, {headers: {"x-access-token": store.getters.token}})
+      .then(res =>{
+        this.message = res.data.message
+        if(this.message ===  s.bookExists){
+          this.$notify.error({
+            title: 'Erro',
+            message: this.message
+          });
+        }else{
+          this.$notify({
+          message: this.message,
+          type: 'success'
+
+          });
+          this.books.splice(index, 1);
+
+        }
+
+
+      })
+    },
+    verify:function(api_id){
+      store.getters.books.forEach(book => {
+        if(book.api_id === api_id){
+          return true
+        }
+      });
+      return false
+    },
+    editBook:function(id){
+        this.$router.push({path: "/books/edit/"+id})
+  },
 
   }
 
