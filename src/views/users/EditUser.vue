@@ -5,6 +5,9 @@
         <el-card>
             <center> <h1><strong> Edit User </strong></h1> </center>
             <hr>
+        <center> <div class="avatar-wrapper">
+        <img class="user-avatar" :src="avatar">
+        </div></center>
 
             <el-form ref="form" :model="user" >
 
@@ -37,7 +40,7 @@
                 </el-form-item>
 
                 
-                <el-button type="primary" @click="dialogTableVisible = true">Mudar Senhar</el-button>
+                <el-button type="primary" @click="dialogTableVisible = true">Mudar Senha</el-button>
                 <el-dialog v-el-drag-dialog @dragDialog="handleDrag" title="Edit Password" :visible.sync="dialogTableVisible">
                         <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="120px" class="demo-ruleForm">
                         <el-form-item label="Password" prop="pass">
@@ -60,8 +63,10 @@
 </template>
 
 <script>
+    import { mapGetters } from 'vuex'
     import axios from 'axios'
     import store from '@/store'
+    import {VueAvatar} from 'vue-avatar-editor-improved'
     export default {
     name: 'EditUser',
     data: function(){
@@ -110,8 +115,19 @@
           ]          
         }
       
-        }
+    } 
     },
+      components: {
+        VueAvatar
+    },
+  computed: {
+    ...mapGetters([
+      'avatar'
+        ])
+    },
+
+
+
     created: function(){
         if (store.getters.roles === 'librarian' || store.getters.roles === 'client'){
             axios
@@ -143,6 +159,10 @@
             .put(process.env.URL_API+'/users/'+this.$route.params.id, data,{headers: {"x-access-token": token}})
             .then(response =>{
                 this.$router.push({path: "/dashboard"})
+                this.$notify({
+                        message: response.data.message,
+                        type: 'success'
+                        })
             }).catch(e=>{
                 this.$notify.error({
                     title: 'Erro',
@@ -157,33 +177,19 @@
                 password: this.ruleForm2.checkPass
             }
             if (valid) {
+                this.$notify({
+                    title: 'Success',
+                    message: 'Password Edited',
+                    type: 'success'
+                    });
             axios
             .put(process.env.URL_API+'/users/'+this.$route.params.id, data,{headers: {"x-access-token": token}})
             .then(response =>{
                 this.$store.dispatch('LogOut').then(() => {
                     location.reload()})
-            }).catch(e=>{
-                this.$notify.error({
-                    title: 'Erro',
-                    message: "Preencha todos os campos do formulário"
-                });
-            })
+                })
             }
             })
-        },
-
-        success: function(msg){
-            if(msg == "User Editado"){
-                this.$notify({
-                    message: msg,
-                    type: 'success'
-                });
-            }else{
-                this.$notify.error({
-                    title: 'Erro',
-                    message: "Não foi possível Editar o Perfil"
-                });    
-            }
         },
       resetForm(formName) {
         this.$refs[formName].resetFields();
@@ -195,4 +201,12 @@
 </script>
 
 <style>
+
+.avatar-wrapper {
+      margin-top: 15px;
+}
+.user-avatar {
+        width: 200px;
+        border-radius: 150px;
+      }
 </style>
