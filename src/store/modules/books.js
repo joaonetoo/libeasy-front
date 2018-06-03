@@ -51,7 +51,9 @@ const books = {
         .then(res => {
             let books = res.data
             books.forEach(book => {
-                book.image = process.env.BASE_API+'/'+book.image
+                if(!book.api_id){
+                    book.image = process.env.BASE_API+'/'+book.image
+                }
             });
             commit('SET_BOOKS',books)
             commit('SET_LOADING',false)

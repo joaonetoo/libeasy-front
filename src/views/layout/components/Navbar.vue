@@ -162,10 +162,11 @@ export default {
           })        
         }
         else{
-            this.$store.dispatch('GetBooksClient',this.text).then(() => {
+              let search = this.text
               this.text = ""
-              this.$router.push({path: "/"})
-          })        
+              // location.reload()
+              this.$router.push({path: "/result/"+search})
+
           }
       }
     }

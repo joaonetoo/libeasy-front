@@ -39,7 +39,14 @@ export const constantRouterMap = [
     children: [{
       path: 'dashboard',
       component: () => import('@/views/dashboard/index')
-    }]
+    },
+    {
+      path: '/result/:text',
+      name: 'result',
+      component: () => import('@/views/dashboard/result'),
+      hidden: true
+    },
+    ]
   },
   {
     path: '/materials',

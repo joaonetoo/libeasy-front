@@ -1,47 +1,46 @@
 <template>
-  <div class="dashboard-container">
-    <modal name="book-modal" transition="scale" :width="656" :height="400">
-  <div class="box">
-    <div class="box-part" >
-      <div class="partition" >
-        <div class="partition-title">{{bookTitle}}</div>
-        <hr>
-          <div class="partition-category">{{bookDescription}}</div>
-
-      </div>
-    </div>
-    <div class="box-part" id="bp-right">
-      <div class="partition" >
-
-          <template v-if="categories.length >= 1">
-            <div class="partition-title">Categories</div>
-            <div v-for="categorie in categories" :key="categorie.id">
-              <div class="partition-category" >{{categorie.description}} </div>
-            </div>
-            <br>
-            <hr>  
-          </template>
-
-          <template v-if="authors.length >= 1">
-            <div class="partition-title">Authors</div>
-            <div v-for="author in authors" :key="author.id">
-              <div class="partition-category" >{{author.name}}</div>
-            </div>
-            <br>
-            <hr>  
-          </template>
-          
-          <div class="partition-category" > <b>Pages: </b> {{bookPageCount}} | <b>Edition: </b>{{bookEdition}} | <b>Language: </b>{{bookLanguage}} </div>
-            </div>
-      <div class="box-messages">
-      </div>
-    </div>
-  </div>
-</modal>
-
-    <div v-if="roles === 'client'">
+<div class="dashboard-container">
           <h2>{{resultSearch}}</h2>
-          <hr>
+        <modal name="book-modal" transition="scale" :width="656" :height="400">
+          <div class="box">
+            <div class="box-part" >
+              <div class="partition" >
+                <div class="partition-title">{{bookTitle}}</div>
+                <hr>
+                  <div class="partition-category">{{bookDescription}}</div>
+
+              </div>
+            </div>
+            <div class="box-part" id="bp-right">
+              <div class="partition" >
+
+                  <template v-if="categories.length >= 1">
+                    <div class="partition-title">Categories</div>
+                    <div v-for="categorie in categories" :key="categorie.id">
+                      <div class="partition-category" >{{categorie.description}} </div>
+                    </div>
+                    <br>
+                    <hr>  
+                  </template>
+
+                  <template v-if="authors.length >= 1">
+                    <div class="partition-title">Authors</div>
+                    <div v-for="author in authors" :key="author.id">
+                      <div class="partition-category" >{{author.name}}</div>
+                    </div>
+                    <br>
+                    <hr>  
+                  </template>
+                  
+                  <div class="partition-category" > <b>Pages: </b> {{bookPageCount}} | <b>Edition: </b>{{bookEdition}} | <b>Language: </b>{{bookLanguage}} </div>
+                    </div>
+              <div class="box-messages">
+              </div>
+            </div>
+          </div>
+        </modal>
+
+      <hr>
         <div v-if="loading" id="loader"></div>
         <div v-for="(book,index) in books" :key="book.id" style="margin: 10px; float:left">
                   <div class='card'>
@@ -58,67 +57,29 @@
                       </ul>
                       <div class="buttons">                        
                         <div class="bottom">
-                          <el-button type="text" class="btn-login button" @click="show(book.categories, book.authors,book.title, book.page_count, book.description, book.language,book.edition)">Informations</el-button>
-                          <el-button :disabled="checkReservation(book.id)" type="text" class="btn-login button" @click.prevent="reserveBook(id, book.id)">Reserve</el-button>
-                        </div>
-                      </div>
-
-                    </div>
-                  </div>
-                </div>
-                
-        </div>
-    </div>
-    <div v-else class="dashboard-text">
-          <h2>{{resultSearch}}</h2>
-      <hr>
-              <div v-if="loading" id="loader"></div>
-
-        <div v-for="(book,index) in books" :key="book.id" style="margin: 10px; float:left">
-                  <div class='card'>
-                  <div class='card_left'>
-                    <img :src="book.image">
-                  </div>
-                  <div class='card_right'>
-                    <h1>{{book.title}}</h1>
-                    <div class='card_right__details'>
-                      <ul>
-                        <li>{{book.edition}}</li>
-                        <li>{{book.language}}</li>
-                        <li>{{book.page_count}}pgs</li>
-                      </ul>
-                      <div v-if="!api" class="buttons">
-                        <div class="bottom ">
-                          <el-button type="text" class="btn-login button" @click.prevent="removerBook(book.id,index)">Deletar</el-button>
-                          <el-button type="text" class="btn-login button" @click.prevent="editBook(book.id)">Editar</el-button>
                           <el-button :disabled="checkReservation(book.id)" type="text" class="btn-login button" @click.prevent="reserveBook(id, book.id)">Reservar</el-button>
-                        </div>
-                      </div>
-                      <div v-else class="buttons">
-                        <div class="bottom ">
                           <el-button type="text" class="btn-login button" @click="show(book.categories, book.authors,book.title, book.page_count, book.description, book.language,book.edition)">Informations</el-button>
-                          <el-button type="text" class="btn-login button" @click.prevent="addBook(book.api_id,index)">Add Book</el-button>
+
                         </div>
                       </div>
 
                     </div>
                   </div>
                 </div>
-            </div>
         </div>
-  </div>
+</div>
 </template>
-
 <script>
 import axios from 'axios'
 import { mapGetters } from 'vuex'
 import store from '@/store'
 import * as s from '@/utils/strings'
 import '@/styles/el-card.scss'
+import * as auth from '@/utils/auth/'
 
 export default {
-  name: 'dashboard',
-
+  name: 'result',
+  
   computed: {
     ...mapGetters([
       'login',
@@ -147,8 +108,9 @@ export default {
     }
   },
   created: function(){
-        this.$store.dispatch('GetLast').then(() => {
-        })  
+
+        this.$store.dispatch('GetBooksClient',this.$route.params.text).then(() => {
+         })  
         axios.get(process.env.URL_API+"/reservations", {headers: {"x-access-token": store.getters.token}})
             .then(response => {
                 console.log(response.data)
@@ -236,7 +198,7 @@ export default {
                 }
                 return false 
             },
-                show (categories,authors,title,page_count,description,language,edition) {
+              show (categories,authors,title,page_count,description,language,edition) {
                   if(categories){
                     this.categories = categories
                   }else{
@@ -274,7 +236,6 @@ export default {
                   }
                   this.$modal.show('book-modal');
                 },
-
 
   }
 
