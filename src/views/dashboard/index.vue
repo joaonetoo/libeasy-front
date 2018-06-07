@@ -43,7 +43,7 @@
           <h2>{{resultSearch}}</h2>
           <hr>
         <div v-if="loading" id="loader"></div>
-        <div v-for="(book,index) in books" :key="book.id" style="margin: 10px; float:left">
+        <div v-for="(book) in books" :key="book.id" style="margin: 10px; float:left">
                   <div class='card'>
                   <div class='card_left'>
                     <img :src="book.image">

@@ -12,8 +12,8 @@
                         fa-thumbs-up
                     </el-input>
                 </el-form-item>
-                <el-form-item label="Password" class="fonter" prop="pass">
-                        <el-input type="password" v-model="user.password" auto-complete="off"></el-input>
+                <el-form-item label="Password" class="fonter" prop="pass" >
+                        <el-input type="password" v-model="user.password" auto-complete="off" @keyup.enter.native="signIn()"></el-input>
                         <router-link style="float: right" :to="{ path: '/users/add' }">Não possui conta? Cadastra-se</router-link>
                 </el-form-item>
                 <center><el-button class="btn-login" @click.prevent="signIn()"  type="primary">Login</el-button></center>
