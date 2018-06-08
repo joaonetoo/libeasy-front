@@ -59,13 +59,13 @@ export const constantRouterMap = [
         path: 'add',
         name: 'AddMaterial',
         component: () => import('@/views/materials/CreateMaterial'),
-        meta: { title: 'Adicionar',icon:'add'}
+        meta: { title: 'Add',icon:'add'}
       },
       {
         path: 'list',
         name: 'ListMaterial',
         component: () => import('@/views/materials/ListMaterial'),
-        meta: { title: 'Todos', icon:'list'}
+        meta: { title: 'All', icon:'list'}
       },
       {
         path: 'edit/:id',
@@ -127,9 +127,9 @@ export const constantRouterMap = [
     children: [
       {
         path: 'add',
-        name: 'Adicionar',
+        name: 'Add',
         component: () => import('@/views/books/CreateBook'),
-        meta: { title: 'Adicionar', icon: 'el-icon-edit' }
+        meta: { title: 'Add', icon: 'el-icon-edit' }
       },
       {
         path: 'list',
@@ -148,7 +148,31 @@ export const constantRouterMap = [
       },
     ]
   },
-
+  {
+    path: '/loans',
+    component: Layout,
+    redirect: '/loans/',
+    name: 'Loans',
+    meta: { title: 'Loans', icon: 'el-icon-edit' },
+    children: [
+      {
+        path: 'add/:bookId',
+        name: 'Add',
+        component: () => import('@/views/loans/NewLoan'),
+        meta: { title: 'Add', icon: 'el-icon-edit' }
+      },
+      {
+        path: 'list',
+        name: 'Listar',
+        component: () => import('@/views/loans/NewLoan'),
+        meta: { 
+          title: 'List',
+          icon: 'List' 
+        }
+      },
+      
+    ]
+  },
   { path: '*', redirect: '/404', hidden: true }
 ]
 
