@@ -82,7 +82,7 @@
     import * as s from '@/utils/auth/'
     import store from '@/store'
 
-    export default{
+    export default {
         name: 'CreateBook',
         data() {
             return {

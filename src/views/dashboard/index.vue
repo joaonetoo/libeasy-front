@@ -213,13 +213,12 @@ export default {
             },
 
             reserveBook:function(userId, bookId) {
-                const token = auth.getToken();
                 let data = {
                     userId: userId,
                     bookId: bookId
                  }
 
-                axios.post(process.env.URL_API + '/reservations', data, {headers: {"x-access-token": token}})
+                axios.post(process.env.URL_API + '/reservations', data, {headers: {"x-access-token": store.getters.token}})
                 .then(response => {
                     if(response) {
                         console.log(response)

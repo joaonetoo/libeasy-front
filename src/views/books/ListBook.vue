@@ -56,14 +56,14 @@
                 </ul>
                 <div class="buttons">                        
                 <div class="bottom">
-                    <el-button v-if="roles === 'librarian'" type="text" class="btn-login button" @click.prevent="removerBook(book.id,index)">Deletar</el-button>
-                    <el-button v-if="roles === 'librarian'" type="text" class="btn-login button" @click.prevent="editBook(book.id)">Editar</el-button>
+                    <el-button v-if="roles === 'librarian'" type="text" class="btn-login button" @click.prevent="removerBook(book.id,index)">Delete</el-button>
+                    <el-button v-if="roles === 'librarian'" type="text" class="btn-login button" @click.prevent="editBook(book.id)">Edit</el-button>
                     <el-button :disabled="checkReservation(book.id)" type="text" class="btn-login button" @click.prevent="reserveBook(id, book.id)">
-                        <span v-if="checkReservation(book.id)">Reservado</span>
-                        <span v-else>Reservar</span>
+                        <span v-if="checkReservation(book.id)">Reserved</span>
+                        <span v-else>Reserve</span>
                     </el-button>
                     <el-button type="text" class="btn-login button" @click="show(book.categories, book.authors,book.title, book.page_count, book.description, book.language,book.edition)">Informations</el-button>
-
+                    <el-button  :disabled="checkLoan(book.id)" type="text" style="margin-top: 10px; float:right;" class="btn-login button" @click="loanBook(book.id)">Loans</el-button>
                 </div>
                 </div>
 
@@ -96,6 +96,7 @@
         books: [],
         title: 'New Books',
         reservedBooks: [],
+        loanBooks: [],
         showModal: false,
         categories: [],
         authors: [],
@@ -130,6 +131,18 @@
 
                 this.reservedBooks = reservedBooks;
             })
+            axios
+            .get(process.env.URL_API+"/loans", {headers: {"x-access-token": store.getters.token}})
+            .then(response => {
+                console.log(response.data)
+                let loanBooks = []
+                for(let i = 0; i < response.data.length; i++) {
+                    loanBooks.push(response.data[i].bookId)
+                }
+
+                this.loanBooks = loanBooks;
+            })
+
         },
         methods:{
             removerBook:function(id,index){
@@ -144,6 +157,9 @@
             },
             editBook:function(id){
                     this.$router.push({path: "/books/edit/"+id})
+            },
+            loanBook:function(id){
+                    this.$router.push({path: "/loans/create/"+id})
             },
 
             setImage:function(img){
@@ -193,7 +209,14 @@
                 }
                 return false 
             },
-            show (categories,authors,title,page_count,description,language,edition) {
+            checkLoan:function(bookId) {
+                for(let i = 0; i < this.loanBooks.length; i++) {
+                    if(bookId == this.loanBooks[i]) {
+                        return true;
+                    }
+                }
+                return false 
+            },            show (categories,authors,title,page_count,description,language,edition) {
                   if(categories){
                     this.categories = categories
                   }else{

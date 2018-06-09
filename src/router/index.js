@@ -134,32 +134,21 @@ export const constantRouterMap = [
       }, 
     ]
   },
-
   {
     path: '/loans',
     component: Layout,
-    redirect: '/loans/',
+    redirect: '/loans',
     name: 'Loans',
     meta: { title: 'Loans', icon: 'el-icon-edit' },
     children: [
       {
-        path: 'add/:bookId',
-        name: 'Add',
+        path: 'create/:bookId',
+        name: 'Create',
         component: () => import('@/views/loans/NewLoan'),
-        meta: { title: 'Add', icon: 'el-icon-edit' }
-      },
-      {
-        path: 'list',
-        name: 'Listar',
-        component: () => import('@/views/loans/NewLoan'),
-        meta: { 
-          title: 'List',
-          icon: 'List' 
-        }
-      },
-      
+        hidden: true
+      }
     ]
-  },
+  }, 
 
   { path: '*', redirect: '/404', hidden: true }
 ]
