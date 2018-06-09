@@ -119,21 +119,23 @@ export const constantRouterMap = [
   {
     path: '/reserve',
     component: Layout,
-    redirect: '/reserve/',
+    redirect: '/reserve/list',
     name: 'Reserve',
-    meta: { title: 'Reservations', icon: 'el-icon-edit' },
+    meta: { title: 'Reserve', icon: 'el-icon-edit' },
     children: [
       {
         path: 'list',
-        name: 'List',
+        name: 'Listar Reservas',
         component: () => import('@/views/reserve/ListReservations'),
         meta: { 
-          title: 'List Reservations',
-          icon: 'List' 
+          title: 'List',
+          icon: 'List Reservations' 
         }
-      }, 
+      },
     ]
   },
+
+ 
   {
     path: '/loans',
     component: Layout,

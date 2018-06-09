@@ -174,32 +174,47 @@
                 }
 
                 this.reservedBooks.push(bookId)
-                axios.get(process.env.URL_API + '/reservations/searchByUserId/'+userId, {headers: {"x-access-token": token}})
-                .then(response => {
-                    if(response) {
-                        if(response.data.length > 5) {
-                            this.reservedBooks.pop()
-                            this.$notify({
-                            message: "Maximum reserves reached",
-                            type: 'error'
-                            })
-                        } else {
-                            axios.post(process.env.URL_API + '/reservations', data, {headers: {"x-access-token": token}})
-                            .then(response => {
-                                if(response) {
-                                    console.log(response)
+                axios.get(process.env.URL_API + '/loans/searchByBookId/' + bookId, {headers: {"x-access-token": token}})
+                .then(loans => {
+                    if(loans.data.length > 0) {
+                        console.log(loans)
+                        loans.data.forEach(element => {
+                            if(!element.delivered) {
+                                this.reservedBooks.pop();
+                                this.$notify({
+                                    message: "Borrowed book",
+                                    type: 'error'
+                                })
+                                return;
+                            }
+                        })
+                    } else {
+                        axios.get(process.env.URL_API + '/reservations/searchByUserId/'+userId, {headers: {"x-access-token": token}})
+                        .then(response => {
+                            if(response) {
+                                if(response.data.length >= 10) {
+                                    this.reservedBooks.pop()
                                     this.$notify({
-                                    message: "Book reserved for you",
-                                    type: 'success'
+                                    message: "Maximum reserves reached",
+                                    type: 'error'
                                     })
                                 } else {
-                                    this.reservedBooks.pop();
+                                    axios.post(process.env.URL_API + '/reservations', data, {headers: {"x-access-token": token}})
+                                    .then(response => {
+                                        if(response) {
+                                            this.$notify({
+                                            message: "Book reserved for you",
+                                            type: 'success'
+                                            })
+                                        } else {
+                                            this.reservedBooks.pop();
+                                        }
+                                    })
                                 }
-                            })
-                        }
+                            }
+                        })
                     }
                 })
-                
             },
             checkReservation:function(bookId) {
                 for(let i = 0; i < this.reservedBooks.length; i++) {

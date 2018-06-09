@@ -3,13 +3,18 @@
     :data="this.reservations"
     height="550"
     style="width: 100%"
-    :default-sort = "{prop: 'id', order: 'ascending'}"
     :row-class-name="tableRowClassName">
     <el-table-column
       prop="date"
       label="Date"
       sortable
-      width="200">
+      width="180">
+    </el-table-column>
+    <el-table-column
+      prop="expirydate"
+      label="Expiry date"
+      sortable
+      width="180">
     </el-table-column>
     <el-table-column
       prop="id"
@@ -24,7 +29,7 @@
     </el-table-column>
     <el-table-column
       prop="user.first_name"
-      label="User name">
+      label="Username">
     </el-table-column>
     <el-table-column
       prop="expired"
@@ -58,9 +63,16 @@
 import axios from 'axios'
 import '@/styles/custom-buttons.scss'
 import * as s from '@/utils/auth/'
+import { mapGetters } from 'vuex'
 import store from '@/store'
 export default {
-    name:'CreateReserve',
+    name:'ListReservations',
+    computed: {
+            ...mapGetters([
+                'id',
+                'roles'
+            ])
+        },
     data: function() {
         return {
             reservations: []
@@ -68,14 +80,36 @@ export default {
     },
 
     created: function() {
-        axios.get(process.env.URL_API + '/reservations', {headers: {"x-access-token": store.getters.token}})
-        .then(response => {
-            if(response) {
-                
-                this.reservations = response.data
-                console.log(this.reservations)
-            }
-        })
+
+        if(store.getters.roles === 'librarian') {
+            axios.get(process.env.URL_API + '/reservations', {headers: {"x-access-token": store.getters.token}})
+            .then(response => {
+                if(response) {
+                    response.data.forEach(element => {
+                        let date = new Date(element.date)
+                        element.date = date.getDate()+"/"+date.getMonth()+"/"
+                        +date.getFullYear();
+                        element.expirydate = date.getDate()+2+"/"+date.getMonth()+"/"
+                        +date.getFullYear(); ;
+                        this.reservations.push(element)
+                    });
+                }
+            })
+        } else if (store.getters.roles === 'client') {
+            axios.get(process.env.URL_API + '/reservations/searchByUserId/'+this.id, {headers: {"x-access-token": store.getters.token}})
+            .then(response => {
+                if(response) {
+                    response.data.forEach(element => {
+                        let date = new Date(element.date)
+                        element.date = date.getDate()+"/"+date.getMonth()+"/"
+                        +date.getFullYear();
+                        element.expirydate = date.getDate()+2+"/"+date.getMonth()+"/"
+                        +date.getFullYear();
+                        this.reservations.push(element)
+                    });
+                }
+            })
+        }
     },
 
     methods: {
