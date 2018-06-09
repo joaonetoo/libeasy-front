@@ -221,9 +221,11 @@ export default {
                 axios.post(process.env.URL_API + '/reservations', data, {headers: {"x-access-token": store.getters.token}})
                 .then(response => {
                     if(response) {
-                        console.log(response)
                         this.reservedBooks.push(bookId)
-                        alert("Livro "+bookId+" reservado para voçê!")
+                        this.$notify({
+                          message: "Booked succefully",
+                          type: 'success'
+                        });
                     }
                 })
             },
