@@ -2,7 +2,6 @@
 <template>
 <!--Depois dou uma refatorada kk -->
     <div class="app-container">
-        <el-card>
             <center> <h1><strong> Edit User </strong></h1> </center>
             <hr>
         <center> <div class="avatar-wrapper">
@@ -15,8 +14,8 @@
                     <el-input v-model="user.login" icon-class="user" placeholder="Login">
                     </el-input>
                 </el-form-item>
-                <el-form-item label="Nome">
-                        <el-input v-model="user.first_name" placeholder="Seu nome completo">
+                <el-form-item label="Name">
+                        <el-input v-model="user.first_name" placeholder="Your full name">
                         </el-input>
                 </el-form-item> 
                 <el-form-item prop="email" label="Email" :rules="[
@@ -28,19 +27,12 @@
                  <el-form-item class="vertical_input" label="Cpf" style="width: 40%;" >
                         <el-input  type="text" placeholder="XXX.XXX.XXX-XX" v-model="user.cpf" v-mask-cpf></el-input>
                 </el-form-item>
-                <el-form-item class="vertical_input" label="Data de Nascimento" style="width: 40%;">
-                    <el-date-picker v-model="user.birthday" type="date" placeholder="Data de Nascimento">
+                <el-form-item class="vertical_input" label="Birthday" style="width: 40%;">
+                    <el-date-picker v-model="user.birthday" type="date" placeholder="Birthday">
                     </el-date-picker>
                 </el-form-item>
-                <el-form-item label="Tipo">
-                    <el-select v-model="user.type" placeholder="Selecione seu tipo de usuário">
-                    <el-option label="Bibliotecário" value="librarian"></el-option>
-                    <el-option label="Cliente" value="client"></el-option>
-                    </el-select>
-                </el-form-item>
-
                 
-                <el-button type="primary" @click="dialogTableVisible = true">Mudar Senha</el-button>
+                <el-button class="btn-login" @click="dialogTableVisible = true">Edit Password</el-button>
                 <el-dialog v-el-drag-dialog @dragDialog="handleDrag" title="Edit Password" :visible.sync="dialogTableVisible">
                         <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="120px" class="demo-ruleForm">
                         <el-form-item label="Password" prop="pass">
@@ -50,15 +42,14 @@
                             <el-input type="password" v-model="ruleForm2.checkPass" auto-complete="off"></el-input>
                         </el-form-item>
                         <el-form-item>
-                            <el-button type="primary" @click="editPassword('ruleForm2')">Update</el-button>
-                            <el-button @click="resetForm('ruleForm2')">Reset</el-button>
+                            <el-button class="btn-login" @click="editPassword('ruleForm2')">Update</el-button>
+                            <el-button class="btn-login" @click="resetForm('ruleForm2')">Reset</el-button>
                         </el-form-item>
                         </el-form>
                 </el-dialog>
                              
-                <center><el-button class="btn-login" @click.prevent="editUser()" type="primary">Editar</el-button></center>
+                <center><el-button class="btn-login" @click.prevent="editUser()" type="primary">Update</el-button></center>
             </el-form>
-        </el-card>
     </div>
 </template>
 
@@ -129,7 +120,6 @@
 
 
     created: function(){
-        if (store.getters.roles === 'librarian' || store.getters.roles === 'client'){
             axios
             .get(process.env.URL_API+'/users/'+this.$route.params.id,{headers: {"x-access-token": store.getters.token}})
             .then(response=>{
@@ -138,10 +128,6 @@
             .catch(e=>{
                 console.log("error")
             })
-        }else{
-            this.$router.push({name: "Dashboard"})
-
-        }
     },  
         methods:{
         editUser: function(){
@@ -152,8 +138,7 @@
                 email: this.user.email,
                 cpf: this.user.cpf,
                 birthday: this.user.birthday,
-                address: this.user.address,
-                type: this.user.type
+                address: this.user.address
             } 
             axios
             .put(process.env.URL_API+'/users/'+this.$route.params.id, data,{headers: {"x-access-token": token}})
