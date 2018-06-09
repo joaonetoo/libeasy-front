@@ -58,7 +58,10 @@
                 <div class="bottom">
                     <el-button v-if="roles === 'librarian'" type="text" class="btn-login button" @click.prevent="removerBook(book.id,index)">Deletar</el-button>
                     <el-button v-if="roles === 'librarian'" type="text" class="btn-login button" @click.prevent="editBook(book.id)">Editar</el-button>
-                    <el-button :disabled="checkReservation(book.id)" type="text" class="btn-login button" @click.prevent="reserveBook(id, book.id)">Reservar</el-button>
+                    <el-button :disabled="checkReservation(book.id)" type="text" class="btn-login button" @click.prevent="reserveBook(id, book.id)">
+                        <span v-if="checkReservation(book.id)">Reservado</span>
+                        <span v-else>Reservar</span>
+                    </el-button>
                     <el-button type="text" class="btn-login button" @click="show(book.categories, book.authors,book.title, book.page_count, book.description, book.language,book.edition)">Informations</el-button>
 
                 </div>
@@ -80,8 +83,6 @@
     import { mapGetters } from 'vuex'
     import '@/styles/el-card.scss'
 
-    import CreateReserveVue from '../reserve/CreateReserve.vue';
-
     export default {
         name: 'ListBook',
         computed: {
@@ -102,8 +103,7 @@
         bookPageCount: '',
         bookDescription: '',
         bookLanguage: '',
-        bookEdition: ''
-
+        bookEdition: '',
         }
     },
         created: function(){
@@ -123,7 +123,6 @@
 
             axios.get(process.env.URL_API+"/reservations", {headers: {"x-access-token": store.getters.token}})
             .then(response => {
-                console.log(response.data)
                 let reservedBooks = []
                 for(let i = 0; i < response.data.length; i++) {
                     reservedBooks.push(response.data[i].bookId)
@@ -140,7 +139,7 @@
                         this.message = response.data.message
                     })
                     .catch(e =>{
-                        this.message = "Não foi possível deletar o livro"
+                        this.message = "Could not be removed"
                     })
             },
             editBook:function(id){
@@ -156,16 +155,35 @@
                 let data = {
                     userId: userId,
                     bookId: bookId
-                 }
+                }
 
-                axios.post(process.env.URL_API + '/reservations', data, {headers: {"x-access-token": token}})
+                this.reservedBooks.push(bookId)
+                axios.get(process.env.URL_API + '/reservations/searchByUserId/'+userId, {headers: {"x-access-token": token}})
                 .then(response => {
                     if(response) {
-                        console.log(response)
-                        this.reservedBooks.push(bookId)
-                        alert("Livro "+bookId+" reservado para voçê!")
+                        if(response.data.length > 5) {
+                            this.reservedBooks.pop()
+                            this.$notify({
+                            message: "Maximum reserves reached",
+                            type: 'error'
+                            })
+                        } else {
+                            axios.post(process.env.URL_API + '/reservations', data, {headers: {"x-access-token": token}})
+                            .then(response => {
+                                if(response) {
+                                    console.log(response)
+                                    this.$notify({
+                                    message: "Book reserved for you",
+                                    type: 'success'
+                                    })
+                                } else {
+                                    this.reservedBooks.pop();
+                                }
+                            })
+                        }
                     }
                 })
+                
             },
             checkReservation:function(bookId) {
                 for(let i = 0; i < this.reservedBooks.length; i++) {

@@ -28,7 +28,7 @@ export const constantRouterMap = [
   { path: '/users', component: Layout, hidden:true, children: [{path: ':id', name: 'User Edit', component: () => import('@/views/users/EditUser')}]},
   { path: '/login', component: () => import('@/views/login/index'), hidden: true },
   { path: '/404', component: () => import('@/views/404'), hidden: true },
-  { path: '/reserve/add', component: () => import('@/views/reserve/CreateReserve'), hidden:true},
+
 
   {
     path: '/',
@@ -83,41 +83,8 @@ export const constantRouterMap = [
     
   },
 
-  {
-    path: '/example',
-    component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'example' },
-    children: [
-      {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
-      },
-      {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
-      }
-    ]
-  },
-
-  {
-    path: '/form',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
-      }
-    ]
-  },
-
+  
+  
   {
     path: '/books',
     component: Layout,
@@ -148,6 +115,26 @@ export const constantRouterMap = [
       },
     ]
   },
+
+  {
+    path: '/reserve',
+    component: Layout,
+    redirect: '/reserve/',
+    name: 'Reserve',
+    meta: { title: 'Reservations', icon: 'el-icon-edit' },
+    children: [
+      {
+        path: 'list',
+        name: 'List',
+        component: () => import('@/views/reserve/ListReservations'),
+        meta: { 
+          title: 'List Reservations',
+          icon: 'List' 
+        }
+      }, 
+    ]
+  },
+
   {
     path: '/loans',
     component: Layout,
@@ -173,6 +160,7 @@ export const constantRouterMap = [
       
     ]
   },
+
   { path: '*', redirect: '/404', hidden: true }
 ]
 
