@@ -85,7 +85,8 @@
                       <ul>
                         <li>{{book.edition}}</li>
                         <li>{{book.language}}</li>
-                        <li>{{book.page_count}}pgs</li>
+                        <li v-if="api">{{book.pageCount}}pgs</li>
+                        <li v-else>{{book.page_count}}pgs</li>
                       </ul>
                       <div v-if="!api" class="buttons">
                         <div class="bottom ">
@@ -168,8 +169,8 @@ export default {
       .post( process.env.BASE_API+'/books/create',{api_id: apiId}, {headers: {"x-access-token": store.getters.token}})
       .then(res =>{
         this.message = res.data.message
-        if(this.message ===  s.bookExists){
-          this.$notify.error({
+        if(this.message ===  s.bookExists || this.message === s.bookNotFound){
+            this.$notify.error({
             title: 'Erro',
             message: this.message
           });

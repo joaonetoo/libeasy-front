@@ -76,59 +76,64 @@ import * as s from '@/utils/strings'
         },
 
         created: function(){
-            axios
-            .get(process.env.URL_API+'/reservations/searchByBookId/'+this.$route.params.bookId,{headers: {"x-access-token": store.getters.token}})
-            .then(response =>{
-                if(response.data){
-                this.is_reservation = response.data
-                this.user = response.data.user
-                this.book = response.data.book
-                this.reservation.bookId = this.book.id
-                this.reservation.userId = this.user.id
-                this.verifyUser = this.user.first_name
-                }
-                else{
-                    axios
-                    .get(process.env.URL_API+'/books/'+this.$route.params.bookId,{headers: {"x-access-token": store.getters.token}})
-                    .then(response =>{
-                        this.book = response.data
-                        console.log(this.book)
-                        this.reservation.bookId = this.book.id
-                    })
-                }
+            if (store.getters.roles === 'librarian'){
 
-            })
-            axios
-            .get(process.env.URL_API+'/users/')
-            .then(response => {
-                response.data.forEach( u => {
-                    this.results.push({name: u.first_name, id: u.id, photo: u.profile_pic, cpf: u.cpf})
-                });
-            })
-
-        },
-        methods: {
-            addLoan: function(){
-                    const data = {
-                        bookId: this.reservation.bookId,
-                        userId: this.reservation.userId
+                axios
+                .get(process.env.URL_API+'/reservations/searchByBookId/'+this.$route.params.bookId,{headers: {"x-access-token": store.getters.token}})
+                .then(response =>{
+                    if(response.data){
+                    this.is_reservation = response.data
+                    this.user = response.data.user
+                    this.book = response.data.book
+                    this.reservation.bookId = this.book.id
+                    this.reservation.userId = this.user.id
+                    this.verifyUser = this.user.first_name
                     }
-                    axios
-                    .post(process.env.URL_API+'/loans/', data,{headers: {"x-access-token": store.getters.token}})
-                    .then(response =>{
-                        if(response.data.message === s.loanAdded){
-                            this.$notify({
-                            message: response.data.message,
-                            type: 'success'
-                            });
-                        }else{
-                        this.$notify.error({
-                            title: 'Erro',
-                            message:  response.data.message
-                        });
-  
+                    else{
+                        axios
+                        .get(process.env.URL_API+'/books/'+this.$route.params.bookId,{headers: {"x-access-token": store.getters.token}})
+                        .then(response =>{
+                            this.book = response.data
+                            console.log(this.book)
+                            this.reservation.bookId = this.book.id
+                        })
+                    }
+
+                })
+                axios
+                .get(process.env.URL_API+'/users/')
+                .then(response => {
+                    response.data.forEach( u => {
+                        this.results.push({name: u.first_name, id: u.id, photo: u.profile_pic, cpf: u.cpf})
+                    });
+                })
+            }else{
+                this.$router.push({name: "Dashboard"})
+
+            }
+            },
+            methods: {
+                addLoan: function(){
+                        const data = {
+                            bookId: this.reservation.bookId,
+                            userId: this.reservation.userId
                         }
-                    })
+                        axios
+                        .post(process.env.URL_API+'/loans/', data,{headers: {"x-access-token": store.getters.token}})
+                        .then(response =>{
+                            if(response.data.message === s.loanAdded){
+                                this.$notify({
+                                message: response.data.message,
+                                type: 'success'
+                                });
+                            }else{
+                            this.$notify.error({
+                                title: 'Erro',
+                                message:  response.data.message
+                            });
+    
+                            }
+                        })
                 
             },
             change: function(id){
