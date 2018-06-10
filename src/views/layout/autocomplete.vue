@@ -8,7 +8,9 @@
       @click="setResult(result)"
       class="result"
     >
-    <img style="width: 40px; height:40px; border-radius: 20px;" :src="'http://localhost:3000/'+result.photo">  {{ result.name }}
+    <img v-if="result.photo" style="width: 40px; height:40px; border-radius: 20px;" :src="'http://localhost:3000/'+result.photo">  
+      <img v-else style="width: 40px; height:40px; border-radius: 20px;" src="http://localhost:3000/boy.png">  
+      {{ result.name }}
     </li>
     </ul>
   </div>

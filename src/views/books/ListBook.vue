@@ -138,7 +138,10 @@
                 console.log(response.data)
                 let loanBooks = []
                 for(let i = 0; i < response.data.length; i++) {
-                    loanBooks.push(response.data[i].bookId)
+                    if(!response.data[i].delivered){
+                        loanBooks.push(response.data[i].bookId)
+
+                    }
                 }
 
                 this.loanBooks = loanBooks;

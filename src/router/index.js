@@ -128,7 +128,7 @@ export const constantRouterMap = [
         name: 'Listar Reservas',
         component: () => import('@/views/reserve/ListReservations'),
         meta: { 
-          title: 'List',
+          title: 'Reservations',
           icon: 'List Reservations' 
         }
       },
@@ -139,16 +139,26 @@ export const constantRouterMap = [
   {
     path: '/loans',
     component: Layout,
-    redirect: '/loans',
+    redirect: '/loans/list',
     name: 'Loans',
     meta: { title: 'Loans', icon: 'el-icon-edit' },
     children: [
+      {
+        path: 'list',
+        name: 'Listing',
+        component: () => import('@/views/loans/ListLoan'),
+        meta: { 
+          title: 'Loans',
+          icon: 'List Loan' 
+        },
+        hidden: false
+      },
       {
         path: 'create/:bookId',
         name: 'Create',
         component: () => import('@/views/loans/NewLoan'),
         hidden: true
-      }
+      },
     ]
   }, 
 
