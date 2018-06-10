@@ -6,13 +6,21 @@ const books = {
     loading: true,
     resultSearch: "",
     api: false,
-    title: "New Books"
+    title: "New Books",
+    scroll: 0
 
 },
   mutations: {
     SET_BOOKS: (state, b) => {
         state.books = b
     },
+    ADD_BOOKS: (state, b) => {
+        state.books = state.books.concat(b)
+    },
+    SET_SCROLL: (state,c) =>{
+        state.scroll += c
+    },
+
     SET_LOADING: (state,l) =>{
         state.loading = l
     },
@@ -42,6 +50,22 @@ const books = {
 
         })
     },
+    GetBooksScroll({ commit, state },array) {
+        commit('SET_LOADING',true)
+        // commit('SET_BOOKS',[])
+        commit('SET_SCROLL',40)
+
+        axios
+        .get('http://localhost:3000/books/search2/'+state.resultSearch+'/'+state.scroll,{headers: {"x-access-token": getToken()}})
+        .then(res => {
+            let books = res.data
+            commit('ADD_BOOKS',books)
+            commit('SET_LOADING',false)
+            commit('SET_API',true)            
+
+        })
+    },
+
 
     GetBooksClient({commit, state}, array){
         commit('SET_LOADING',true)

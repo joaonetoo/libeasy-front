@@ -126,6 +126,8 @@ import * as s from '@/utils/strings'
                                 message: response.data.message,
                                 type: 'success'
                                 });
+                                this.$router.push({path: "/"})
+
                             }else{
                             this.$notify.error({
                                 title: 'Erro',

@@ -62,8 +62,9 @@
                         <span v-if="checkReservation(book.id)">Reserved</span>
                         <span v-else>Reserve</span>
                     </el-button>
-                    <el-button type="text" class="btn-login button" @click="show(book.categories, book.authors,book.title, book.page_count, book.description, book.language,book.edition)">Informations</el-button>
-                    <el-button  :disabled="checkLoan(book.id)" type="text" style="margin-top: 10px; float:right;" class="btn-login button" @click="loanBook(book.id)">Loans</el-button>
+                    <el-button v-if="roles == 'librarian'" style="margin-top: 10px; margin-left: 2px; float: left" type="text" class="btn-login button" @click="show(book.categories, book.authors,book.title, book.page_count, book.description, book.language,book.edition)">Informations</el-button>
+                    <el-button v-else  type="text" class="btn-login button" @click="show(book.categories, book.authors,book.title, book.page_count, book.description, book.language,book.edition)">Informations</el-button>
+                    <el-button v-if="roles == 'librarian'" :disabled="checkLoan(book.id)" type="text" style="margin-top: 10px; float:left;" class="btn-login button" @click="loanBook(book.id)">Loans</el-button>
                 </div>
                 </div>
 
@@ -177,7 +178,6 @@
                 axios.get(process.env.URL_API + '/loans/searchByBookId/' + bookId, {headers: {"x-access-token": token}})
                 .then(loans => {
                     if(loans.data.length > 0) {
-                        console.log(loans)
                         loans.data.forEach(element => {
                             if(!element.delivered) {
                                 this.reservedBooks.pop();
@@ -185,14 +185,13 @@
                                     message: "Borrowed book",
                                     type: 'error'
                                 })
-                                return;
                             }
                         })
                     } else {
                         axios.get(process.env.URL_API + '/reservations/searchByUserId/'+userId, {headers: {"x-access-token": token}})
                         .then(response => {
                             if(response) {
-                                if(response.data.length >= 10) {
+                                if(response.data.length >= 20) {
                                     this.reservedBooks.pop()
                                     this.$notify({
                                     message: "Maximum reserves reached",

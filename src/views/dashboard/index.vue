@@ -13,7 +13,7 @@
     <div class="box-part" id="bp-right">
       <div class="partition" >
 
-          <template v-if="categories.length >= 1">
+          <template  v-if="categories.length >= 1 && !api">
             <div class="partition-title">Categories</div>
             <div v-for="categorie in categories" :key="categorie.id">
               <div class="partition-category" >{{categorie.description}} </div>
@@ -21,8 +21,17 @@
             <br>
             <hr>  
           </template>
+          <template  v-if="categories.length >= 1 && api">
+            <div class="partition-title">Categories</div>
+            <div v-for="categorie in categories" >
+              <div class="partition-category" >{{categorie}} </div>
+            </div>
+            <br>
+            <hr>  
+          </template>
 
-          <template v-if="authors.length >= 1">
+
+          <template v-if="authors.length >= 1 && !api">
             <div class="partition-title">Authors</div>
             <div v-for="author in authors" :key="author.id">
               <div class="partition-category" >{{author.name}}</div>
@@ -30,7 +39,15 @@
             <br>
             <hr>  
           </template>
-          
+          <template v-if="authors.length >= 1 && api">
+            <div class="partition-title">Authors</div>
+            <div v-for="author in authors">
+              <div class="partition-category" >{{author}}</div>
+            </div>
+            <br>
+            <hr>  
+          </template>
+
           <div class="partition-category" > <b>Pages: </b> {{bookPageCount}} | <b>Edition: </b>{{bookEdition}} | <b>Language: </b>{{bookLanguage}} </div>
             </div>
       <div class="box-messages">
@@ -58,7 +75,7 @@
                       </ul>
                       <div class="buttons">                        
                         <div class="bottom">
-                          <el-button type="text" class="btn-login button" @click="show(book.categories, book.authors,book.title, book.page_count, book.description, book.language,book.edition)">Informations</el-button>
+                          <el-button type="text" class="btn-login button" @click="show(book.categories, book.authors,book.title, book.pageCount, book.description, book.language,book.edition)">Informations</el-button>
                           <el-button :disabled="checkReservation(book.id)" type="text" class="btn-login button" @click.prevent="reserveBook(id, book.id)">Reserve</el-button>
                         </div>
                       </div>
@@ -90,14 +107,14 @@
                       </ul>
                       <div v-if="!api" class="buttons">
                         <div class="bottom ">
-                          <el-button type="text" class="btn-login button" @click.prevent="removerBook(book.id,index)">Deletar</el-button>
-                          <el-button type="text" class="btn-login button" @click.prevent="editBook(book.id)">Editar</el-button>
-                          <el-button :disabled="checkReservation(book.id)" type="text" class="btn-login button" @click.prevent="reserveBook(id, book.id)">Reservar</el-button>
+                          <el-button type="text" class="btn-login button" @click.prevent="removerBook(book.id,index)">Delete</el-button>
+                          <el-button type="text" class="btn-login button" @click.prevent="editBook(book.id)">Edit</el-button>
+                          <el-button :disabled="checkReservation(book.id)" type="text" class="btn-login button" @click.prevent="reserveBook(id, book.id)">Reserve</el-button>
                         </div>
                       </div>
                       <div v-else class="buttons">
                         <div class="bottom ">
-                          <el-button type="text" class="btn-login button" @click="show(book.categories, book.authors,book.title, book.page_count, book.description, book.language,book.edition)">Informations</el-button>
+                          <el-button type="text" class="btn-login button" @click="show(book.categories, book.authors,book.title, book.pageCount, book.description, book.language,book.edition)">Informations</el-button>
                           <el-button type="text" class="btn-login button" @click.prevent="addBook(book.api_id,index)">Add Book</el-button>
                         </div>
                       </div>
@@ -106,6 +123,7 @@
                   </div>
                 </div>
             </div>
+            
         </div>
   </div>
 </template>
@@ -238,7 +256,7 @@ export default {
                 }
                 return false 
             },
-                show (categories,authors,title,page_count,description,language,edition) {
+                show (categories,authors,title,pageCount,description,language,edition) {
                   if(categories){
                     this.categories = categories
                   }else{
@@ -254,8 +272,8 @@ export default {
                   }else{
                     this.bookTitle = ""
                   }
-                  if(page_count){
-                    this.bookPageCount = page_count
+                  if(pageCount){
+                    this.bookPageCount = pageCount
                   }else{
                     this.bookPageCount = ""
                   }
@@ -276,9 +294,29 @@ export default {
                   }
                   this.$modal.show('book-modal');
                 },
+            scroll (person) {
+                window.onscroll = () => {
+                  let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
 
+                  if (bottomOfWindow && store.getters.api) {
+                      axios
+                      // .get('http://localhost:3000/books/search/'+array,{headers: {"x-access-token": getToken()}})
+                      // .then(response => {
+                      //   person.push(response.data.results[0]);
+                      // });
+                    this.$store.dispatch('GetBooksScroll',store.getters.title).then(()=>{
 
-  }
+                    })
+
+                  }
+                };
+              },
+
+  },
+  mounted() {
+  this.scroll(this.person);
+}
+
 
 }
 </script>

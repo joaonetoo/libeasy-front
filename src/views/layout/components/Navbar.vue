@@ -132,8 +132,8 @@ export default {
         axios
         .put(process.env.BASE_API+'/users/'+store.getters.id,formData,{headers: {'Content-Type': 'multipart/form-data'}})
         .then(response=>{
-          this.$store.dispatch('ChangeAvatar').then(() => {
-            location.reload() 
+          this.$store.dispatch('ChangeAvatar',response.data.user.profile_pic).then(()=>{
+            this.hide()
           })
         })
         .catch(e=>{
