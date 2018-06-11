@@ -27,6 +27,27 @@
         <!-- <el-form-item id="el-form-label" class="el-form-input" label="Categoria do livro">
             <el-input v-model="book.category"></el-input>
         </el-form-item> -->
+        <el-row :key="index" v-for="(categ, index) in book.categories">
+            <el-form-item id="el-form-label" label="Categorias do livro">
+            {{ index+1 }}<el-input v-model="categ.description" placeholder="Categorias do livro" required>                            
+                </el-input>
+                </el-form-item> 
+                <el-form-item>
+                <el-button id="el-form-label" type="primary" circle icon="el-icon-delete" @click.prevent="removeRowCategory(index)"></el-button>
+                </el-form-item>
+        </el-row>
+        <el-button id="el-form-label" type="primary" circle icon="el-icon-plus" @click.prevent="addRowCategory()"></el-button>
+
+        <el-row :key="index" v-for="(autho, index) in book.authors">
+            <el-form-item id="el-form-label" label="Autores do livro">
+                {{ index+1 }}<el-input v-model="autho.name" placeholder="Autores do livro" required>                            
+                </el-input>
+                </el-form-item> 
+                <el-form-item>
+                <el-button id="el-form-label" type="primary" circle icon="el-icon-delete" @click.prevent="removeRowAuthor(index)"></el-button>
+                </el-form-item>
+        </el-row>
+        <el-button id="el-form-label" type="primary" circle icon="el-icon-plus" @click.prevent="addRowAuthor()"></el-button>
 
         <el-form-item id="el-form-label" class="el-form-input" label="Número de páginas">
             <el-input v-model="book.pages"></el-input>
@@ -49,14 +70,7 @@
         name: "BookAdd",
         data: function() {
         return {
-            book: {
-                title:"",
-                description:"",
-                edition:"",
-                language:"",
-                category:"",
-                pages:""
-            },
+            book: [],
             
             message: ""
         };
@@ -67,14 +81,14 @@
             axios
             .get(process.env.URL_API+'/books/'+this.$route.params.id,{headers: {"x-access-token": store.getters.token}})                
             .then(response=>{
-                    this.book = response.data             
+                    this.book = response.data    
+                    console.log(this.book)       
                 })
                 .catch(e=>{
                     console.log("error")
                 })
-            }else{
+            } else {
                 this.$router.push({name: "Dashboard"})
-
             }
         },
 
@@ -82,14 +96,14 @@
             editBook: function() {
             const token = s.getToken()
             const bookId = this.$route.params.id
-            const data ={
+            const data = {
                 title: this.book.title,
                 description:this.book.description,
                 edition:this.book.edition,
                 language:this.book.language,
-                category:this.book.category,
+                category:this.book.categories,
+                author: this.book.authors,
                 pages:this.book.pages,
-
             }
 
             axios
@@ -117,6 +131,29 @@
                 });    
             }
         },
+
+            addRowCategory:function() {
+                this.displayCategory = true
+                this.book.categories.push({
+                    description: ''
+                })
+            },
+
+            removeRowCategory:function(index) {
+                    this.book.categories.splice(index, 1)
+            },
+
+            addRowAuthor:function() {
+                this.displayAuthor = true
+                this.book.authors.push({
+                    name: ''
+                })
+            },
+
+            removeRowAuthor:function(index) {
+                this.book.authors.splice(index, 1)
+            },
+
     }
 }
 </script>
