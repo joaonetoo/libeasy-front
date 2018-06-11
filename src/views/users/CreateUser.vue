@@ -17,7 +17,7 @@
             </div>
             <div class="frm-group">
               <label for="pass1">Name</label>
-              <el-input v-model="user.first_name" placeholder="Seu nome completo">
+              <el-input v-model="user.first_name" placeholder="Your name complete">
 
               </el-input>
             </div>
