@@ -1,36 +1,43 @@
 <template>
   <el-table
-    :data="loans"
+    :data="this.loans"
     height="550"
+    border
     style="width: 100%"
-    :row-class-name="tableRowClassName">
+    :default-sort = "{prop: 'delivered', order: 'ascending'}">>
     <el-table-column
       prop="date"
       label="Date"
       sortable
+      align="center"
       width="180">
     </el-table-column>
     <el-table-column
       prop="expirydate"
       label="Expiry date"
       sortable
+      align="center"
       width="180">
     </el-table-column>
     <el-table-column
       prop="book.title"
-      sortable
-      label="Book ID">
+      align="center"
+      label="Book Title">
     </el-table-column>
     <el-table-column
       prop="user.first_name"
+      align="center"
+      sortable
       label="Username">
     </el-table-column>
-   <el-table-column
+    <el-table-column
       prop="delivered"
+      sortable
+      align="center"
       :filters="[{ text: 'Delivered', value: true }, { text: 'Not delivered', value: false }]"
       :filter-method="filterDelivered"
       filter-placement="bottom-end"
-      label="Situation">
+      label="Delivered">
       <template slot-scope="scope">
         <el-tag
           :type="scope.row.delivered === false ? 'danger' : 'success'"
@@ -41,13 +48,17 @@
       </template>
     </el-table-column>
     <el-table-column
-      label="Deliver">
-      <template slot-scope="scope">
-        <el-button
-          size="mini"
+    align="center"
+    v-if="roles === 'librarian'"
+      label="Confirm delivery">
+        <template slot-scope="scope">
+        <center><el-button
+          size="small"
+          type="success"
+          icon="el-icon-check"
+          circle
           v-if="!scope.row.delivered"
-          @click="deliver(scope.$index, scope.row)">Delivered</el-button>
-
+          @click="deliver(scope.$index, scope.row)"></el-button></center>
       </template>
     </el-table-column>
     
@@ -84,9 +95,9 @@ import store from '@/store'
                             let date = new Date(element.initial_date)
                             let date_end = new Date(element.final_date)
                             element.date = date.getDate()+"/"+date.getMonth()+"/"
-                            +date.getFullYear();
+                            +date.getFullYear()
                             element.expirydate = date_end.getDate()+"/"+date_end.getMonth()+"/"
-                            +date_end.getFullYear(); ;
+                            +date_end.getFullYear()
                             this.loans.push(element)
                         });
                     }
@@ -99,9 +110,9 @@ import store from '@/store'
                             let date = new Date(element.initial_date)
                             let date_end = new Date(element.final_date)
                             element.date = date.getDate()+"/"+date.getMonth()+"/"
-                            +date.getFullYear();
+                            +date.getFullYear()
                             element.expirydate = date_end.getDate()+"/"+date_end.getMonth()+"/"
-                            +date_end.getFullYear(); ;
+                            +date_end.getFullYear()
                             this.loans.push(element)
                         });
                     }
@@ -119,7 +130,7 @@ import store from '@/store'
         },
 
         filterDelivered(value, row) {
-            return row.expired === value;
+            return row.delivered === value;
         },
       deliver(index,row) {
           axios
@@ -129,7 +140,11 @@ import store from '@/store'
                 message: response.data.message,
                 type: 'success'
                 })
-                location.reload()
+                for(let i = 0; i < this.loans.length; i++) {
+                    if(this.loans[i].id == row.id) {
+                        this.loans[i].delivered = true
+                    }
+                }
 
           })
       },

@@ -3,36 +3,44 @@
     :data="this.reservations"
     height="550"
     style="width: 100%"
-    :row-class-name="tableRowClassName">
+    border
+    :default-sort = "{prop: 'expired', order: 'ascending'}">
     <el-table-column
       prop="date"
       label="Date"
+      align="center"
       sortable
-      width="180">
+      width="120">
     </el-table-column>
     <el-table-column
       prop="expirydate"
       label="Expiry date"
+      align="center"
       sortable
-      width="180">
+      width="140">
     </el-table-column>
     <el-table-column
       prop="id"
       sortable
       label="Reserve ID"
-      width="180">
+      align="center"
+      width="120">
     </el-table-column>
     <el-table-column
-      prop="book.id"
+      prop="book.title"
+      align="center"
+      width="200"
       sortable
-      label="Book ID">
+      label="Book Title">
     </el-table-column>
     <el-table-column
       prop="user.first_name"
+      align="center"
       label="Username">
     </el-table-column>
     <el-table-column
       prop="expired"
+      align="center"
       :filters="[{ text: 'Expired', value: true }, { text: 'Not expired', value: false }]"
       :filter-method="filterExpired"
       filter-placement="bottom-end"
@@ -115,9 +123,9 @@ export default {
     methods: {
         tableRowClassName({row, rowIndex}) {
             if (!this.reservations[rowIndex].expired) {
-            return 'warning-row';
+                return 'warning-row';
             } else {
-            return 'success-row';
+                return 'success-row';
             }
         },
 

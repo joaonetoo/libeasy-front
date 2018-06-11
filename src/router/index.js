@@ -134,8 +134,26 @@ export const constantRouterMap = [
       },
     ]
   },
-
  
+  {
+    path: '/fines',
+    component: Layout,
+    redirect: '/fines/list',
+    name: 'Fines',
+    meta: { title: 'Fines', icon: 'el-icon-edit' },
+    children: [
+      {
+        path: 'list',
+        name: 'List Fines',
+        component: () => import('@/views/fines/ListFines'),
+        meta: { 
+          title: 'Fines',
+          icon: 'List Fines' 
+        }
+      },
+    ]
+  },
+
   {
     path: '/loans',
     component: Layout,
