@@ -1,74 +1,81 @@
 <template>
+
 <div>
     <center><img src="./logo.png" width="80px" style="margin-top: 20px;"></center>
       <div class="container" >
-    <div class="wrapper">
-      <div class="frm--create-account">
-        <h1 class="frm__title">Create Account</h1>
-        <!-- create account form starts here -->
-        <form action="" class="frm__create__account" ref="form" :model="user">
-          
-          <div class="frm-group inline">
-            <div class="frm-group">
-              <label for="nick1">Login</label>
-              <el-input v-model="user.login" icon-class="user" placeholder="Login">
-                        fa-thumbs-up
-              </el-input>
-            </div>
-            <div class="frm-group">
-              <label for="pass1">Name</label>
-              <el-input v-model="user.first_name" placeholder="Your name complete">
+      <div class="wrapper">
+        <div class="frm--create-account">
+          <h1 class="frm__title">Create Account</h1>
+          <!-- create account form starts here -->
+          <form  class="frm__create__account" ref="form">
+            
+            <div class="frm-group inline">
+              <div class="frm-group has-sucess">
+                <label for="login">Login</label>
+                <el-input  v-model="user.login" icon-class="user" placeholder="Login" >
+                          fa-thumbs-up
+                </el-input>
+                <span class="glyphicon gliphicon-ok'"></span>
+              </div>
+              <div class="frm-group">
+                <label for="name">Name</label>
+                <el-input v-model="user.first_name" placeholder="Your name complete" required >
 
-              </el-input>
+                </el-input>
+              </div>
             </div>
-          </div>
-          <div class="frm-group">
-            <label prop="email" label="Email" :rules="[
+            <div class="frm-group">
+              <label class="control-label" for="email" label="Email" :rules="[
                     { required: true, message: 'Please input email address', trigger: 'blur' },
                     { type: 'email', message: 'Please input correct email address', trigger: ['blur', 'change'] }
-                    ]">Your E-Mail</label>
-             <el-input v-model="user.email" placeholder="exemplo@examplo.br" ></el-input>
-          </div>
-          <div class="frm-group inline">
-            <div class="frm-group">
-              <label for="password">Password</label>
-              <el-input type="password" v-model="user.password" auto-complete="off"></el-input>
-            </div>
-            <div class="frm-group">
-              <label for="cpf">Cpf</label>
-              <el-input  type="text" placeholder="XXX.XXX.XXX-XX" v-model="user.cpf" v-mask-cpf></el-input>
+                    ]" >Your E-Mail</label>
+              <el-input v-model="user.email"  placeholder="exemplo@examplo.br" class="form-control" required></el-input>
+              <div class="help-block with-errors"></div>
+            </div><br>
             
-            </div>
-          </div>
-          
-          <div class="frm-group inline">
-            <div class="frm-group">
-              <label for="birthday">Date of birth</label>
-              <el-date-picker v-model="user.birthday" type="date" placeholder="   Date of birth">
-              </el-date-picker>
-              
-            </div>
-            <div class="frm-group">
-              <label for="type">Type of profile</label>
-              <el-select v-model="user.type" placeholder="Select your type of profile">
-                    <el-option label="Bibliotecário" value="librarian"></el-option>
-                    <el-option label="Cliente" value="client"></el-option>
-              </el-select>
+            <div class="frm-group inline">
+              <div class="frm-group">
+                <label for="birthday">Date of birth</label>
+                <el-date-picker v-model="user.birthday" type="date" placeholder="   Date of birth" required>
+                </el-date-picker>
+                
+              </div>
+              <div class="frm-group">
+                <label for="type">Type of profile</label>
+                <el-select v-model="user.type" placeholder="Select your type of profile" required>
+                      <el-option label="Bibliotecário" value="librarian"></el-option>
+                      <el-option label="Cliente" value="client"></el-option>
+                </el-select>
 
+              </div>
             </div>
-          </div>
-          
-          <div class="frm-info">
-            <router-link style="float: right" :to="{ path: '/users/login' }" class="frm__link" >Already have an account? Sign in</router-link><br>
-          </div>
-          <div class="frm-group">
-            <input type="submit" class="frm__btn-primary" value="Create account" @click.prevent="addUser()" >
-          </div>
-          
-        </form>
-        <!-- /.create account form starts here -->
+
+            <div class="frm-group inline">
+              <div class="frm-group has-warning has-feedback">
+                <label for="password">Password</label>
+                <el-input type="password" v-model="user.password" auto-complete="off" required></el-input>
+                <span class="glyphicon gliphicon-warning-sign'"></span>
+              </div>
+              <div class="frm-group">
+                <label for="cpf">Cpf</label>
+                <el-input  type="text" placeholder="XXX.XXX.XXX-XX" v-model="user.cpf" v-mask-cpf keyup.enter="addUser()" required></el-input>
+              
+              </div>
+            </div>
+            
+            
+            
+            <div class="frm-info">
+              <router-link style="float: right" :to="{ path: '/users/login' }" class="frm__link" >Already have an account? Sign in</router-link><br>
+            </div>
+            <div class="frm-group">
+              <input type="submit" class="frm__btn-primary" value="Create account" @click.prevent="addUser()">
+            </div>
+            
+          </form>
+          <!-- /.create account form starts here -->
+        </div>
       </div>
-    </div>
   </div>
    
 </div>
@@ -83,21 +90,24 @@
         data: function(){
             return{
                 user:{
-                    login: "",
-                    email: "",
-                    password: "",
-                    first_name: "",
-                    cpf: "",
-                    birthday: "",
-                    address: "",
-                    type: ""
+                    login:"",
+                    email:"",
+                    password:"",
+                    first_name:"",
+                    cpf:"",
+                    birthday:"",
+                    address:"",
+                    type:""
                 },
-            }   
-        },
-        methods:{
+            }
             
+        },
+
+         methods:{
+           
             addUser:function(){
                 axios
+
                 
                 .post(process.env.URL_API+'/users',this.user)
                 .then(response=>{
@@ -233,6 +243,7 @@ h1, h2 {
   box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(160, 170, 179, 0.12), 0 8px 10px -5px rgba(171, 191, 216, 0.4);
 }
 
+
 .frm--create-account label {
   font-family: inherit;
   font-size: 11px;
@@ -243,6 +254,7 @@ h1, h2 {
   margin: 0 0 3px;
   display: block;
 }
+
 
 .frm--create-account input[type="text"],
 .frm--create-account input[type="type"],
