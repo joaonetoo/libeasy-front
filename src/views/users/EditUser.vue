@@ -1,6 +1,4 @@
-
 <template>
-<!--Depois dou uma refatorada kk -->
     <div class="app-container">
             <center> <h1><strong> Edit User </strong></h1> </center>
             <hr>
@@ -8,30 +6,23 @@
         <img class="user-avatar" :src="avatar">
         </div></center>
 
-            <el-form ref="form" :model="user" >
+            <el-form :model="user" :rules="rules" ref="user" class="demo-ruleForm">
+                    <el-form-item label="Login" prop="login">
+                    <el-input v-model="user.login" placeholder="Login"></el-input>
+                     </el-form-item>
+                    <el-form-item label="Name" prop="first_name">
+                    <el-input  v-model="user.first_name" placeholder="Your full name"></el-input>
+                     </el-form-item>
+                    <el-form-item label="Email" prop="email">
+                    <el-input type="email" v-model="user.email" placeholder="exemplo@examplo.br"></el-input>
+                     </el-form-item>
+                     <el-form-item class="vertical_input" label="Cpf" prop="cpf">
+                    <el-input type="text" placeholder="XXX.XXX.XXX-XX" v-model="user.cpf" v-mask-cpf></el-input>
+                     </el-form-item>
+                    <el-form-item class="vertical_input" label="Birthday">
+                    <el-date-picker type="date" v-model="user.birthday"></el-date-picker>
+                     </el-form-item>
 
-                <el-form-item label="Login" style="height: 10%">
-                    <el-input v-model="user.login" icon-class="user" placeholder="Login">
-                    </el-input>
-                </el-form-item>
-                <el-form-item label="Name">
-                        <el-input v-model="user.first_name" placeholder="Your full name">
-                        </el-input>
-                </el-form-item> 
-                <el-form-item prop="email" label="Email" :rules="[
-                    { required: true, message: 'Please input email address', trigger: 'blur' },
-                    { type: 'email', message: 'Please input correct email address', trigger: ['blur', 'change'] }
-                    ]">
-                    <el-input v-model="user.email" placeholder="exemplo@examplo.br" ></el-input>
-                </el-form-item>
-                 <el-form-item class="vertical_input" label="Cpf" style="width: 40%;" >
-                        <el-input  type="text" placeholder="XXX.XXX.XXX-XX" v-model="user.cpf" v-mask-cpf></el-input>
-                </el-form-item>
-                <el-form-item class="vertical_input" label="Birthday" style="width: 40%;">
-                    <el-date-picker v-model="user.birthday" type="date" placeholder="Birthday">
-                    </el-date-picker>
-                </el-form-item>
-                
                 <el-button class="btn-login" @click="dialogTableVisible = true">Edit Password</el-button>
                 <el-dialog v-el-drag-dialog @dragDialog="handleDrag" title="Edit Password" :visible.sync="dialogTableVisible">
                         <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="120px" class="demo-ruleForm">
@@ -48,7 +39,7 @@
                         </el-form>
                 </el-dialog>
                              
-                <center><el-button class="btn-login" @click.prevent="editUser()" type="primary">Update</el-button></center>
+                <center><el-button class="btn-login" @click="editUser('user')">Update</el-button></center>
             </el-form>
     </div>
 </template>
@@ -97,6 +88,23 @@
             pass: "",
             checkPass: ""
         },
+        rules: {
+
+            login: [
+            { required: true, message: 'Please input login', trigger: 'blur' },
+                ],
+            first_name: [
+            { required: true, message: 'Please input your name', trigger: 'blur' },
+                ],
+            email: [
+            {required: true, message: 'Please input email address', trigger: 'blur' },
+            { type: 'email', message: 'Please input correct email address', trigger: ['blur', 'change']}
+                ],
+            cpf: [
+            { required: true, message: 'Please input your Cpf', trigger: 'blur' }
+            ]
+        },
+
         rules2: {
           pass: [
             { validator: validatePass, trigger: 'blur' }
@@ -130,7 +138,8 @@
             })
     },  
         methods:{
-        editUser: function(){
+        editUser: function(formName){
+            this.$refs[formName].validate((valid) => {
             const token = store.getters.token
             const data = {
                 login: this.user.login,
@@ -139,20 +148,32 @@
                 cpf: this.user.cpf,
                 birthday: this.user.birthday,
                 address: this.user.address
-            } 
+            }
+            if (valid) {
             axios
             .put(process.env.URL_API+'/users/'+this.$route.params.id, data,{headers: {"x-access-token": token}})
             .then(response =>{
-                this.$router.push({path: "/dashboard"})
-                this.$notify({
-                        message: response.data.message,
-                        type: 'success'
-                        })
-            }).catch(e=>{
-                this.$notify.error({
+                
+                if(response.data.message != "User changed" ){
+                    this.$notify.error({
                     title: 'Erro',
-                    message: "Preencha todos os campos do formulário"
-                });
+                    message: response.data.message
+                    });
+                }
+                else{    
+                this.$router.push({path: "/dashboard"})
+                this.$notify({  
+                    title: 'Success',
+                    message: response.data.message,
+                    type: 'success'
+                    });
+                }          
+            })
+            }else{
+                this.$notify.error({
+                title: 'Erro',
+                message: "Check the fields"
+                    });}
             })
         },
           editPassword: function(formName){
