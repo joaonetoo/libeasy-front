@@ -7,11 +7,11 @@
       <div class="frm--create-account">
         <h1 class="frm__title">Create Account</h1>
         <!-- create account form starts here -->
-        <form action="" class="frm__create__account">
+        <form @submit="checkLoginForm" action="https://vuejs.org/"  class="frm__create__account">
           <div class="frm-group inline">
             <div class="frm-group">
               <label for="nick1">Login</label>
-              <el-input v-model="user.login" icon-class="user" placeholder="Login">
+              <el-input v-model="user.login" icon-class="user" placeholder="Login" required=“required” name=“text” pattern=“[a-z\s]+$”>
                         fa-thumbs-up
               </el-input>
             </div>
@@ -43,19 +43,30 @@
     import * as s from '@/utils/strings'
     export default {
         name: 'LoginUser',
+
         data:function(){
             return{
                 user:{
-                    login: "",
-                    password: ""
+                    errors: [],
+                    login: null,
+                    password: null
                 }
             }
         },
         methods:{
+            checkLoginForm: function(e){
+              if(this.login && this.password)return true;
+              this.errors=[];
+              if(!this.login)return "Complete o campo, seu porra"
+              if(!this.password)return "Complete o campo, seu porra"
+              e.preventDefault();
+            },
             signIn:function(){
+
                 const data ={
                     login: this.user.login,
                     password: this.user.password
+
                 }
                 axios
                 .post(process.env.URL_API+'/auth',data)
